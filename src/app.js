@@ -2,8 +2,8 @@
 (function () {
   const D = JSON.parse(document.getElementById("wir-data").textContent);
   const W = globalThis.WIR, $ = (id) => document.getElementById(id);
-  let lang = "en", sel = "W", lastWord = "";
-  try { const s = localStorage.getItem("wir-lang"); if (s === "en" || s === "nl") lang = s; } catch (e) {}
+  const lang = D.lang || "en";
+  let sel = "W", lastWord = "";
 
   function renderHero(animate) {
     const h = W.hero(D, Date.now(), sel, lang);
@@ -12,20 +12,19 @@
     const w = $("word"), key = lang + h.v;
     if (key !== lastWord) {
       w.innerHTML = W.wordHTML(h.word);
-      w.classList.toggle("long", h.word.replace("­", "").length > 6);
+      w.classList.toggle("long", h.word.replace("­", "").length > 5);
       w.classList.remove("swap"); void w.offsetWidth;
       if (animate) w.classList.add("swap");
       lastWord = key;
     }
     $("pct").textContent = h.pct;
+    $("pctBox").hidden = h.pct === "–";
     $("pctLab").textContent = h.pctLab;
     $("note").innerHTML = h.note;
     rainTarget = h.rain;
   }
   function renderLists() {
     const t = W.T[lang], now = Date.now();
-    document.documentElement.lang = lang;
-    document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.l === lang)));
     if ($("lane")) {
       $("days").innerHTML = W.daysHTML(D, lang);
       $("lane").innerHTML = W.laneHTML(D, now, sel, lang);
@@ -38,6 +37,7 @@
   }
   function renderCount() {
     const c = W.countdown(D, Date.now(), lang);
+    $("count").hidden = c.val === "—";
     $("cLab").textContent = c.lab;
     $("cT").innerHTML = (c.live ? '<span class="dot"></span>' : "") + c.val;
   }
@@ -49,8 +49,6 @@
   }
   document.addEventListener("click", (e) => {
     const b = e.target.closest("[data-s]"); if (b) select(b.dataset.s, b.classList.contains("blk"));
-    const l = e.target.closest(".lang button");
-    if (l) { lang = l.dataset.l; try { localStorage.setItem("wir-lang", lang); } catch (err) {} renderLists(); renderHero(true); renderCount(); }
   });
 
   // Rain canvas: number of drops follows the chance of rain on screen

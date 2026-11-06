@@ -1,16 +1,17 @@
 # Rain at the GP
 
-Eén vraag, één antwoord: gaat het regenen tijdens dit F1-raceweekend? Met de regenkans per sessie.
+Eén vraag, één antwoord: gaat het regenen tijdens dit F1-raceweekend? Met de regenkans per sessie, en na afloop wat er echt gebeurde.
 
 ## Hoe het werkt
 
 ```
 GitHub Actions (elk uur)
-  ├─ haalt de F1-kalender op      → Jolpica F1 API (gratis, geen sleutel)
-  ├─ haalt de weersverwachting op → Open-Meteo (gratis, geen sleutel)
-  ├─ berekent per sessie de hoogste regenkans tijdens dat tijdvak
-  ├─ bouwt statische pagina's in dist/
-  └─ zet ze online                → Cloudflare Pages
+  ├─ F1-kalender                  → Jolpica F1 API
+  ├─ weersverwachting per uur     → Open-Meteo
+  ├─ uitkomst na elke sessie      → F1-weerstation op het circuit (live timing), anders het dichtstbijzijnde vliegveld (METAR)
+  ├─ slaat verwachting + uitkomst op in data/history/  (commit in de repository)
+  ├─ bouwt pagina's in 3 talen + deelafbeeldingen in dist/
+  └─ zet alles online             → Cloudflare Pages
 ```
 
 Er draait niets bij jou thuis. Er is geen database en geen server.
@@ -19,41 +20,53 @@ Er draait niets bij jou thuis. Er is geen database en geen server.
 
 | Pad | Inhoud |
 |---|---|
-| `/` | Het eerstvolgende (of huidige) raceweekend |
-| `/interlagos/`, `/spa/`, `/zandvoort/` … | Vaste pagina per circuit, voor elk jaar dezelfde URL |
-| `/api/next.json` | Data van het huidige weekend (handig voor Home Assistant of socials) |
-| `/sitemap.xml`, `/robots.txt` | Voor Google |
+| `/`, `/nl/`, `/es/` | Het huidige of eerstvolgende raceweekend |
+| `/interlagos/`, `/nl/spa/`, `/es/zandvoort/` … | Vaste pagina per circuit en taal, elk jaar dezelfde URL |
+| `/track-record/` (+ `/nl/`, `/es/`) | Hoe vaak de verwachting klopte |
+| `/og/*.png` | Deelafbeelding per pagina en taal (voorvertoning in WhatsApp, X, Reddit…) |
+| `/api/next.json` | Data van het huidige weekend (voor Home Assistant of socials) |
+| `/sitemap.xml`, `/robots.txt` | Voor Google, met verwijzingen tussen de talen (hreflang) |
 
-Het antwoord staat in de HTML zelf, in de `<title>`, de meta-omschrijving en de JSON-LD (SportsEvent), dus Google kan het lezen. JavaScript zorgt alleen voor de aftelklok, de regenanimatie, de NL/EN-knop en het tonen van tijden in de tijdzone van de bezoeker.
+Het antwoord staat in de HTML zelf, in de `<title>`, de meta-omschrijving en de JSON-LD (SportsEvent), dus Google kan het lezen. JavaScript zorgt alleen voor de aftelklok, de regenanimatie, het kiezen van een sessie en het tonen van tijden in de tijdzone van de bezoeker.
 
-**Regels die je kunt aanpassen** (bovenaan `scripts/build.mjs` en in `src/shared.js`)
+**Regels die je kunt aanpassen** (`scripts/lib/config.mjs` en `src/shared.js`)
 - Verwachting zichtbaar vanaf **7 dagen** voor de eerste sessie (`FORECAST_WINDOW_DAYS`).
 - Antwoord: **Nee** onder 25%, **Misschien** 25–55%, **Ja** boven 55% (`verdict`).
 - Banden: slicks onder 40%, inters 40–70%, wets boven 70% (`tyre`).
 - Sessieduur: training/kwalificatie 60 min, sprintkwalificatie 45, race 120 (`SESSION_MIN`).
 
-## Na afloop: uitkomst en historie
+## Na afloop: uitkomst
 
-Zodra een sessie voorbij is, toont de site niet meer de kans, maar wat er gebeurde: **Droog** of **Regen**, met de verwachting erbij ("verwachting 74%").
+Zodra een sessie voorbij is, toont de site niet meer de kans, maar wat er gebeurde: **Droog** of **Regen**, met de verwachting erbij.
 
-- **Bron:** METAR-weerrapporten van het dichtstbijzijnde vliegveld, via aviationweather.gov (gratis, officieel). Welk station bij welk circuit hoort staat in `data/circuits.json` (`metar`, `metarName`, `metarKm`). De afstanden zijn schattingen.
-- **Regel:** "Regen" als een rapport tussen 15 minuten voor en 15 minuten na de sessie neerslag meldt (regen, motregen, buien, onweer met regen, hagel), of als een rapport tot een uur erna "recente regen" meldt. Regen in de omgeving (`VC`) telt niet mee.
-- **Let op:** het station ligt soms tientallen kilometers van het circuit (Spa ~40 km, Red Bull Ring ~60 km). Plaatselijke buien kun je zo missen of juist meetellen. De site zegt daarom altijd welk station en hoe ver weg.
-- **Historie:** per raceweekend komt er een bestand in `data/history/`, bijvoorbeeld `2026-21-interlagos.json`. Daarin staan per sessie de laatste verwachting van vóór de start en de gemeten uitkomst. De workflow slaat dit automatisch op in de repository (commit "Update forecast history"). Hiermee bouwen we later de regengeschiedenis per circuit en een trackrecord ("onze verwachtingen klopten in X% van de sessies").
-- De uitkomst wordt tot 3 uur na een sessie bijgewerkt, daarna ligt hij vast.
+1. **Weerstation op het circuit** (eerste keus). Uit de openbare bestanden van de F1 live timing: een regen-ja/nee-vlag per minuut, alleen tussen de start en de finish van de sessie. Dit is een **onofficiële** bron. F1 kan het formaat of de toegang veranderen, en de data is van F1. Uitzetten kan zonder code: GitHub → *Settings → Secrets and variables → Actions → Variables* → `F1_TRACK_WEATHER` = `off`.
+2. **Dichtstbijzijnde vliegveld** (terugval). METAR-rapporten via aviationweather.gov. "Regen" als een rapport tussen 15 minuten voor en 15 minuten na de sessie neerslag meldt, of tot een uur erna "recente regen". Regen in de omgeving (`VC`) telt niet mee. Welk station bij welk circuit hoort staat in `data/circuits.json`; de afstanden zijn schattingen.
 
+De site zegt altijd welke bron gebruikt is. De uitkomst wordt tot 3 uur na de sessie bijgewerkt en ligt daarna vast.
 
+## Historie en trackrecord
+
+- Per raceweekend komt er een bestand in `data/history/`, bijvoorbeeld `2026-21-interlagos.json`, met per sessie de laatste verwachting van vóór de start en de gemeten uitkomst. De workflow slaat dit zelf op (commit "Update forecast history").
+- Elke circuitpagina toont de **regengeschiedenis** van dat circuit ("Het regende tijdens de race in 2 van de laatste 7 GP's hier").
+- `/track-record/` vergelijkt verwachting en uitkomst. Sessies waarbij we "Misschien" zeiden tellen niet als goed of fout.
+
+**Eenmalig: oude seizoenen ophalen.** Ga naar GitHub → *Actions* → **Backfill rain history** → *Run workflow* (standaard 2018 t/m 2026). Dat duurt een paar minuten en vult de regengeschiedenis met metingen van het weerstation op het circuit. Oude seizoenen hebben geen verwachting, dus ze tellen niet mee voor het trackrecord. Bestaande bestanden worden niet overschreven; je kunt hem dus veilig opnieuw draaien.
+
+## Mappen
 
 ```
-data/circuits.json       URL-naam, tijdzone en weerstation per circuit (nieuw circuit? voeg hier toe)
-data/history/            Verwachting + uitkomst per sessie, automatisch bijgehouden
+data/circuits.json       URL-naam, tijdzone en weerstation per circuit
+data/names.json          Namen van GP's en landen in NL en ES
+data/history/            Verwachting + uitkomst per sessie (automatisch)
 src/style.css            Vormgeving
-src/shared.js            Teksten (EN/NL) en het opbouwen van de pagina, gedeeld door build en browser
-src/app.js               Browser: aftellen, regen, taalwissel, sessie kiezen
-scripts/build.mjs        Haalt data op en schrijft dist/
+src/shared.js            Teksten (EN/NL/ES) en opbouw van de pagina, gedeeld door build en browser
+src/app.js               Browser: aftellen, regen, sessie kiezen
+scripts/build.mjs        Hoofdscript: haalt data op en schrijft dist/
+scripts/backfill.mjs     Eenmalig: oude seizoenen ophalen
+scripts/lib/             Bronnen, historie, pagina's, vertalingen, deelafbeeldingen
 scripts/serve.mjs        Lokale preview
 fixtures/races.json      Testkalender voor offline bouwen
-.github/workflows/       De uurlijkse taak
+.github/workflows/       deploy.yml (elk uur) en backfill.yml (handmatig)
 ```
 
 ## Lokaal bekijken (optioneel)
@@ -61,6 +74,7 @@ fixtures/races.json      Testkalender voor offline bouwen
 Vereist [Node.js](https://nodejs.org) 20 of nieuwer.
 
 ```bash
+npm ci                 # eenmalig: installeert de onderdelen voor de deelafbeeldingen
 npm run build          # met echte data
 npm run preview        # open http://localhost:8080
 ```
@@ -116,7 +130,7 @@ Gebruik geen "F1" of "Formula 1" in de domeinnaam: dat zijn beschermde merken.
 
 ## Goed om te weten
 - **GitHub pauzeert uurlijkse taken** in een repository waar 60 dagen geen commit is gedaan. Tijdens het seizoen gebeurt dat niet, want de historie wordt elk raceweekend opgeslagen. In de winterstop wel: je krijgt dan vooraf een mail, klik op *Keep workflow enabled*.
-- **Open-Meteo** is gratis voor niet-commercieel gebruik. Ga je advertenties of affiliate-links plaatsen, neem dan een [Open-Meteo API-abonnement](https://open-meteo.com/en/pricing) en voeg de API-sleutel toe aan `loadWeather` in `scripts/build.mjs`.
+- **Open-Meteo** is gratis voor niet-commercieel gebruik. Ga je advertenties of affiliate-links plaatsen, neem dan een [Open-Meteo API-abonnement](https://open-meteo.com/en/pricing) en voeg de API-sleutel toe aan `loadWeather` in `scripts/lib/sources.mjs`.
 - De bronvermelding (Open-Meteo, CC BY 4.0) staat onderaan elke pagina. Laat die staan.
 
 ## Home Assistant (optioneel)
@@ -136,8 +150,9 @@ rest:
 
 Daarna kun je een automatisering maken die je een melding stuurt als de regenkans boven de 50% komt.
 
+## Bezoekers meten
+Zet **Cloudflare Web Analytics** aan: Cloudflare → *Workers & Pages* → **rainatthegp** → *Metrics* (of *Settings*) → **Web Analytics → Enable**. Gratis, zonder cookies (dus geen cookiebanner nodig), en Cloudflare voegt het script zelf toe. Google Search Console blijft de plek voor zoekwoorden en posities.
+
 ## Volgende stappen
-1. Regenhistorie per circuit ("hoe vaak regende het hier tijdens de race?"), voor zoekverkeer buiten de raceweek.
-2. Automatische deelafbeelding (og:image) per pagina met het actuele antwoord.
-3. Nederlandse pagina's onder `/nl/` met hreflang.
-4. Automatische posts voor socials in de raceweek.
+1. Automatische posts op Bluesky in de raceweek.
+2. Embed-badge voor fansites ("Regen bij de GP? 62%").

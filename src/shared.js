@@ -16,9 +16,11 @@
       noteEarly: (d) => `Forecasts this far out are guesswork. The rain chance per session appears on ${d}.`,
       noteOver: "This race weekend is over.",
       noteDid: (wet, st, km) => `${wet ? "Rain was" : "No rain was"} reported at the ${st} weather station, about ${km} km from the circuit.`,
-      noteNoObs: "No measurement from the nearest weather station yet. Check back in an hour.",
+      noteDidTrack: (wet) => `${wet ? "Rain was" : "No rain was"} measured by the circuit's own weather station.`,
+      noteNoObs: "No measurement yet. Check back in an hour.",
       sumWet: (list) => `Rain during ${list}.`, sumDry: "No rain during any session.",
       sumSrc: (st, km) => `Measured at the ${st} weather station, about ${km} km from the circuit.`,
+      sumSrcTrack: "Measured by the circuit's own weather station.",
       and: "and",
       nextLink: (n) => `Next up: ${n}`,
       cNext: (c) => `${c} in`, cLive: (c) => `${c} live`, cOpens: "Forecast in", cDone: "Weekend over",
@@ -28,11 +30,11 @@
       updated: (d) => `Forecast updated ${d}.`, loc: "en-GB"
     },
     nl: {
-      yes: "Ja", maybe: "Mis­schien", no: "Nee", early: "Nog niet", over: "Voorbij", unknown: "?",
+      yes: "Ja", maybe: "Mis\u00ADschien", no: "Nee", early: "Nog niet", over: "Voorbij", unknown: "?",
       names: { FP1: "Vrije training 1", FP2: "Vrije training 2", FP3: "Vrije training 3", SQ: "Sprintkwalificatie", S: "Sprint", Q: "Kwalificatie", R: "Race", W: "Heel het weekend" },
-      qW: (gp) => `Gaat het regenen tijdens de ${gp}?`,
+      qW: (gp) => `Gaat het regenen bij de ${gp}?`,
       qS: (n, gp) => `Gaat het regenen tijdens de ${n.toLowerCase()} van de ${gp}?`,
-      qDidW: (gp) => `Heeft het geregend tijdens de ${gp}?`,
+      qDidW: (gp) => `Heeft het geregend bij de ${gp}?`,
       qDidS: (n, gp) => `Heeft het geregend tijdens de ${n.toLowerCase()} van de ${gp}?`,
       pctLab: "kans op regen", pctWas: "verwachting was",
       noteW: (p, n) => `Grootste risico: ${n.toLowerCase()} met ${p}%. Tik op een sessie voor het antwoord per sessie.`,
@@ -40,9 +42,11 @@
       noteEarly: (d) => `Zo ver vooruit is een verwachting gokwerk. De regenkans per sessie verschijnt op ${d}.`,
       noteOver: "Dit raceweekend is voorbij.",
       noteDid: (wet, st, km) => `Weerstation ${st}, ongeveer ${km} km van het circuit, ${wet ? "meldde regen" : "meldde geen regen"}.`,
-      noteNoObs: "Nog geen meting van het dichtstbijzijnde weerstation. Kijk over een uur nog eens.",
+      noteDidTrack: (wet) => `Het weerstation op het circuit ${wet ? "mat regen" : "mat geen regen"}.`,
+      noteNoObs: "Nog geen meting. Kijk over een uur nog eens.",
       sumWet: (list) => `Regen tijdens ${list}.`, sumDry: "Geen regen tijdens de sessies.",
       sumSrc: (st, km) => `Gemeten bij weerstation ${st}, ongeveer ${km} km van het circuit.`,
+      sumSrcTrack: "Gemeten door het weerstation op het circuit.",
       and: "en",
       nextLink: (n) => `Volgende: ${n}`,
       cNext: (c) => `${c} over`, cLive: (c) => `${c} live`, cOpens: "Verwachting over", cDone: "Weekend voorbij",
@@ -50,6 +54,32 @@
       tyre: { dry: "Slicks", inter: "Inters", wet: "Wets" },
       leg: ["Droog", "Twijfel", "Nat"], wk: "Weekend", sessions: "Sessies", WKD: "WKD",
       updated: (d) => `Verwachting bijgewerkt ${d}.`, loc: "nl-NL"
+    },
+    es: {
+      yes: "Sí", maybe: "Quizás", no: "No", early: "Aún no", over: "Fin", unknown: "?",
+      names: { FP1: "Libres 1", FP2: "Libres 2", FP3: "Libres 3", SQ: "Clasificación sprint", S: "Sprint", Q: "Clasificación", R: "Carrera", W: "Todo el fin de semana" },
+      qW: (gp) => `¿Lloverá en el ${gp}?`,
+      qS: (n, gp) => `¿Lloverá durante ${n === "Sprint" ? "la sprint" : "la " + n.toLowerCase()} del ${gp}?`,
+      qDidW: (gp) => `¿Llovió en el ${gp}?`,
+      qDidS: (n, gp) => `¿Llovió durante ${n === "Sprint" ? "la sprint" : "la " + n.toLowerCase()} del ${gp}?`,
+      pctLab: "probabilidad de lluvia", pctWas: "la previsión era",
+      noteW: (p, n) => `Mayor riesgo: ${n.toLowerCase()}, con un ${p}%. Toca una sesión para ver su respuesta.`,
+      noteS: "Probabilidad de lluvia en algún momento de la sesión, según la previsión horaria del circuito.",
+      noteEarly: (d) => `Con tanta antelación, una previsión es pura conjetura. La probabilidad por sesión aparece el ${d}.`,
+      noteOver: "Este fin de semana de carreras ha terminado.",
+      noteDid: (wet, st, km) => `La estación meteorológica de ${st}, a unos ${km} km del circuito, ${wet ? "registró" : "no registró"} lluvia.`,
+      noteDidTrack: (wet) => `La estación meteorológica del circuito ${wet ? "registró" : "no registró"} lluvia.`,
+      noteNoObs: "Aún no hay medición. Vuelve a mirar en una hora.",
+      sumWet: (list) => `Llovió durante ${list}.`, sumDry: "No llovió en ninguna sesión.",
+      sumSrc: (st, km) => `Medido en la estación de ${st}, a unos ${km} km del circuito.`,
+      sumSrcTrack: "Medido por la estación meteorológica del circuito.",
+      and: "y",
+      nextLink: (n) => `Siguiente: ${n}`,
+      cNext: (c) => `${c} en`, cLive: (c) => `${c} en directo`, cOpens: "Previsión en", cDone: "Fin de semana terminado",
+      live: "En directo", done: "Terminada", dry: "Seco", wet: "Lluvia", fc: (p) => `previsión ${p}%`,
+      tyre: { dry: "Slicks", inter: "Inters", wet: "Lluvia" },
+      leg: ["Seco", "Dudoso", "Mojado"], wk: "Fin de semana", sessions: "Sesiones", WKD: "FDS",
+      updated: (d) => `Previsión actualizada ${d}.`, loc: "es-ES"
     }
   };
 
@@ -92,7 +122,9 @@
     if (!known.length) return { v: "over", q: t.qDidW(gp), word: t.over, pct: "–", pctLab: t.pctLab, note: t.noteOver + next, rain: 0 };
     const wet = known.filter((s) => outcome(s));
     const st = D.race.station;
-    const note = (wet.length ? t.sumWet(list(wet.map((s) => t.names[s.code].toLowerCase()), lang)) : t.sumDry) + (st ? " " + t.sumSrc(st.name || st.id, st.km) : "");
+    const track = known.every((s) => s.outcome.source === "track");
+    const src = track ? t.sumSrcTrack : st ? t.sumSrc(st.name || st.id, st.km) : "";
+    const note = (wet.length ? t.sumWet(list(wet.map((s) => t.names[s.code].toLowerCase()), lang)) : t.sumDry) + (src ? " " + src : "");
     return { v: wet.length ? "yes" : "no", q: t.qDidW(gp), word: wet.length ? t.yes : t.no, pct: "–", pctLab: t.pctLab, note: esc(note) + next, rain: wet.length ? 60 : 0 };
   }
 
@@ -108,7 +140,7 @@
         v: o == null ? "early" : o ? "yes" : "no", q: t.qDidS(t.names[chosen.code], gp),
         word: o == null ? t.unknown : o ? t.yes : t.no,
         pct: chosen.rain != null ? chosen.rain + "%" : "–", pctLab: t.pctWas,
-        note: esc(o == null || !st ? t.noteNoObs : t.noteDid(o, st.name || st.id, st.km)), rain: o ? 60 : 0
+        note: esc(o == null ? t.noteNoObs : chosen.outcome.source === "track" ? t.noteDidTrack(o) : st ? t.noteDid(o, st.name || st.id, st.km) : ""), rain: o ? 60 : 0
       };
     }
     if (chosen && chosen.rain != null) {
