@@ -100,7 +100,10 @@ h2::before{content:"";width:18px;height:4px;background:var(--accent);transform:s
 .row .bar i{display:block;height:100%;background:var(--c,var(--maybe))}
 .row[aria-pressed="true"]{background:color-mix(in srgb,var(--surface) 82%,var(--accent))}
 .row[aria-pressed="true"]::after{content:"";position:absolute;left:62px;top:0;bottom:0;width:3px;background:var(--accent)}
-.row.done{opacity:.5}
+.row.done{opacity:.6}
+.row.res{opacity:.92}
+.row.res .p{color:var(--c);font-size:1.35rem;text-transform:uppercase;letter-spacing:.02em}
+.blk.done{opacity:.75}
 .row.wk .code{background:var(--fg);color:var(--bg);font-size:1rem;letter-spacing:.04em}
 .tag{font-family:var(--f-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;padding:1px 6px;margin-left:6px;border:1px solid currentColor;border-radius:2px}
 .tag.live{color:var(--soft)}

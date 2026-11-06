@@ -1,6 +1,8 @@
 // Build: fetch calendar + weather, write static pages to dist/.
 //   node scripts/build.mjs            -> live data (Jolpica F1 API + Open-Meteo)
 //   node scripts/build.mjs --offline  -> fixtures + generated test weather (no network)
+// History: data/history/<season>-<round>-<slug>.json keeps, per session, the last forecast
+// before it started and the measured outcome (nearest METAR station). The workflow commits it.
 // Env: SITE_URL (default https://rainatthegp.com), NOW (ISO date, for testing)
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -14,6 +16,9 @@ const NOW = process.env.NOW ? new Date(process.env.NOW) : new Date();
 const FORECAST_WINDOW_DAYS = 7;      // show a forecast once the first session is this close
 const KEEP_CURRENT_HOURS = 6;        // keep a weekend "current" this long after the race
 const SESSION_MIN = { FP1: 60, FP2: 60, FP3: 60, SQ: 45, S: 60, Q: 60, R: 120 };
+const FREEZE_BEFORE_MIN = 75;        // store the forecast made this close to session start
+const OUTCOME_FINAL_HOURS = 3;       // keep re-checking the outcome this long after a session
+const HIST_DIR = path.join(ROOT, OFFLINE ? ".offline-history" : "data/history");
 const SESSION_KEYS = [["FirstPractice", "FP1"], ["SecondPractice", "FP2"], ["ThirdPractice", "FP3"],
   ["SprintQualifying", "SQ"], ["SprintShootout", "SQ"], ["Sprint", "S"], ["Qualifying", "Q"]];
 
@@ -62,6 +67,7 @@ function parseRace(r) {
     season: r.season, round: +r.round, raceName: r.raceName,
     name: { en: name, nl: name.replace(/^(.*) GP$/, "GP van $1") },
     slug: meta.slug || r.Circuit.circuitId.replace(/_/g, "-"),
+    station: meta.metar ? { id: meta.metar, name: meta.metarName || meta.metar, km: meta.metarKm ?? null } : null,
     short: meta.short || r.Circuit.Location.locality, tz: meta.tz || null,
     circuitName: r.Circuit.circuitName, locality: r.Circuit.Location.locality, country: r.Circuit.Location.country,
     lat: +r.Circuit.Location.lat, lon: +r.Circuit.Location.long,
@@ -98,6 +104,94 @@ function applyWeather(race, wx) {
   race.utcOffset = wx.utc_offset_seconds ?? 0;
 }
 
+// ---------- Outcome: METAR observations from the nearest airport ----------
+async function loadMetars(station, hours) {
+  if (OFFLINE) {
+    // Fake observations: dry, except showers on the second day around midday UTC
+    const out = [];
+    for (let t = Math.floor(now / 18e5) * 18e5 - hours * 36e5; t <= now; t += 18e5) {
+      const d = new Date(t), wetHour = d.getUTCDate() % 2 === 1 && d.getUTCHours() >= 14 && d.getUTCHours() <= 16;
+      out.push({ obsTime: t / 1000, wxString: wetHour ? "-SHRA" : null, rawOb: `${station} TEST` });
+    }
+    return out;
+  }
+  const url = `https://aviationweather.gov/api/data/metar?ids=${station}&format=json&hours=${Math.min(Math.ceil(hours), 168)}`;
+  for (let i = 1; i <= 3; i++) {
+    try {
+      const r = await fetch(url, { headers: { "user-agent": "rainatthegp-build" } });
+      if (r.status === 204) return [];
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const txt = await r.text();
+      return txt.trim() ? JSON.parse(txt) : [];
+    } catch (e) {
+      if (i === 3) { console.warn(`METAR ${station} unavailable: ${e.message}`); return null; }
+      await new Promise((res) => setTimeout(res, 2000 * i));
+    }
+  }
+}
+const PRECIP = /^(\+|-)?(TS|SH|FZ)?(DZ|RA|SN|SG|GR|GS|PL|UP)+$/;
+const RECENT = /^RE(TS|SH|FZ)?(DZ|RA|SN|SG|GR|GS|PL|UP)+$/;
+function wxTokens(m) {
+  const ws = m.wxString ? String(m.wxString).split(/\s+/) : [];
+  const raw = m.rawOb ? String(m.rawOb).split(" RMK")[0].split(/\s+/) : [];
+  return ws.concat(raw);
+}
+const obsTime = (m) => (m.obsTime ? m.obsTime * 1000 : Date.parse(m.reportTime || m.obsTime || ""));
+// true = rain observed during the session, false = observations but no rain, null = no observations
+function rainDuring(metars, s) {
+  const inWin = metars.filter((m) => { const t = obsTime(m); return t >= s.start - 15 * 6e4 && t <= s.end + 15 * 6e4; });
+  const after = metars.filter((m) => { const t = obsTime(m); return t > s.start && t <= s.end + 60 * 6e4; });
+  if (!inWin.length) return { wet: null, n: 0 };
+  const wet = inWin.some((m) => wxTokens(m).some((x) => PRECIP.test(x))) || after.some((m) => wxTokens(m).some((x) => RECENT.test(x)));
+  return { wet, n: inWin.length };
+}
+
+// ---------- History ----------
+const histFile = (r) => path.join(HIST_DIR, `${r.season}-${String(r.round).padStart(2, "0")}-${r.slug}.json`);
+async function loadHist(r) {
+  try { return JSON.parse(await fs.readFile(histFile(r), "utf8")); } catch { return null; }
+}
+async function updateHist(r, hasForecast) {
+  const before = await loadHist(r);
+  const h = before ? structuredClone(before) : { season: r.season, round: r.round, slug: r.slug, raceName: r.raceName, station: r.station, sessions: {} };
+  let needObs = false;
+  for (const s of r.sessions) {
+    const e = (h.sessions[s.code] ||= { start: isoZ(s.start), end: isoZ(s.end), forecast: null, forecastAt: null, outcome: null, final: false });
+    e.start = isoZ(s.start); e.end = isoZ(s.end);
+    const st = W.stateOf({ start: s.start, end: s.end }, now);
+    // Freeze the last forecast before the session; if we start mid-weekend, use the past-hours value once.
+    if (hasForecast && s.rain != null && ((st === "up" && s.start - now <= FREEZE_BEFORE_MIN * 6e4) || (st !== "up" && e.forecast == null))) {
+      e.forecast = s.rain; e.forecastAt = isoZ(now);
+    }
+    if (st === "done" && !e.final) needObs = true;
+  }
+  if (needObs && r.station) {
+    const oldest = Math.min(...r.sessions.filter((s) => !h.sessions[s.code].final).map((s) => s.start));
+    const metars = await loadMetars(r.station.id, (now - oldest) / 36e5 + 2);
+    if (metars) for (const s of r.sessions) {
+      const e = h.sessions[s.code];
+      if (e.final || W.stateOf({ start: s.start, end: s.end }, now) !== "done") continue;
+      const res = rainDuring(metars, s);
+      if (res.wet != null) e.outcome = { wet: res.wet, reports: res.n, station: r.station.id, checkedAt: isoZ(now) };
+      if (now - s.end > OUTCOME_FINAL_HOURS * 36e5) e.final = true;
+    }
+  }
+  if (JSON.stringify(before) !== JSON.stringify(h)) {
+    await fs.mkdir(HIST_DIR, { recursive: true });
+    await fs.writeFile(histFile(r), JSON.stringify(h, null, 2) + "\n");
+  }
+  return h;
+}
+function applyHist(r, h) {
+  if (!h) return;
+  for (const s of r.sessions) {
+    const e = h.sessions[s.code]; if (!e) continue;
+    if (W.stateOf({ start: s.start, end: s.end }, now) !== "up" && e.forecast != null) s.rain = e.forecast;
+    if (s.rain == null && e.forecast != null) s.rain = e.forecast;
+    s.outcome = e.outcome ? { wet: e.outcome.wet } : null;
+  }
+}
+
 // ---------- Helpers ----------
 function tzOffsetMs(tz, at) {
   if (!tz) return null;
@@ -112,9 +206,9 @@ function pageData(race, state, next) {
   const localMidnight = Math.floor((race.firstStart + off) / 864e5) * 864e5 - off;
   return {
     state, updated: isoZ(NOW), opensAt: isoZ(race.firstStart - FORECAST_WINDOW_DAYS * 864e5),
-    race: { name: race.name, short: race.short, slug: race.slug, round: race.round, season: race.season, country: race.country, locality: race.locality, tz: race.tz },
+    race: { name: race.name, short: race.short, slug: race.slug, round: race.round, season: race.season, country: race.country, locality: race.locality, tz: race.tz, station: race.station },
     laneStart: isoZ(localMidnight), laneEnd: isoZ(localMidnight + 3 * 864e5),
-    sessions: race.sessions.map((s) => ({ code: s.code, start: isoZ(s.start), end: isoZ(s.end), rain: s.rain ?? null, temp: s.temp ?? null })),
+    sessions: race.sessions.map((s) => ({ code: s.code, start: isoZ(s.start), end: isoZ(s.end), rain: s.rain ?? null, temp: s.temp ?? null, outcome: s.outcome ?? null })),
     next: next ? { name: next.name, slug: next.slug } : null
   };
 }
@@ -133,6 +227,9 @@ function seo(D, race, isHome) {
   } else if (D.state === "early") {
     title = `Will it rain at the ${gp}? Rain chance per session`;
     desc = `Live chance of rain for every session of the ${race.season} ${race.raceName} at ${race.circuitName}. Forecast opens ${W.fLong(D.opensAt, "en", "UTC")}.`;
+  } else if (h.word !== W.T.en.over) {
+    title = `${h.q} ${h.word} – ${race.season} results`;
+    desc = h.note.replace(/<[^>]+>/g, "").replace(/\s*Next up:.*$/, "").trim() + ` Rain forecast vs. result for every session of the ${race.season} ${race.raceName}.`;
   } else {
     title = `Will it rain at the ${gp}? ${race.season} weekend`;
     desc = `Rain chance per session for the ${race.raceName} at ${race.circuitName}, ${race.locality}.`;
@@ -201,7 +298,7 @@ function page(race, D, races, cur, isHome) {
 <p class="gp"><span class="chip">${W.esc(race.country)}</span><span>${W.esc(race.circuitName)}</span><span class="round">R${race.round} · ${race.season}</span></p>
 <h1 class="q" id="q">${W.esc(h.q)}</h1>
 <div class="answer"><div class="word${h.word.length > 6 ? " long" : ""}" id="word" aria-live="polite">${W.wordHTML(h.word)}</div>
-<div class="pct"><b id="pct">${h.pct}</b><span id="pctLab">${W.T.en.pctLab}</span></div></div>
+<div class="pct"><b id="pct">${h.pct}</b><span id="pctLab">${h.pctLab}</span></div></div>
 <p class="note" id="note">${h.note}</p>
 <div class="count"><div class="lab"><span id="cLab">${W.esc(cnt.lab)}</span></div><div class="t"><span id="cT">${cnt.val}</span></div></div>
 </div>
@@ -231,7 +328,10 @@ const cur = races.find((r) => r.raceEnd + KEEP_CURRENT_HOURS * 36e5 > now) || ra
 const stateFor = (r) => (r.raceEnd + KEEP_CURRENT_HOURS * 36e5 <= now ? "over" : r.firstStart - FORECAST_WINDOW_DAYS * 864e5 <= now ? "forecast" : "early");
 
 for (const r of races) {
-  if (stateFor(r) === "forecast") applyWeather(r, await loadWeather(r));
+  const st = stateFor(r);
+  if (st === "forecast") applyWeather(r, await loadWeather(r));
+  if (st === "forecast" || (st === "over" && now - r.raceEnd < 48 * 36e5)) applyHist(r, await updateHist(r, st === "forecast"));
+  else applyHist(r, await loadHist(r));
 }
 
 await fs.rm(DIST, { recursive: true, force: true });

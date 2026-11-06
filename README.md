@@ -32,10 +32,21 @@ Het antwoord staat in de HTML zelf, in de `<title>`, de meta-omschrijving en de 
 - Banden: slicks onder 40%, inters 40–70%, wets boven 70% (`tyre`).
 - Sessieduur: training/kwalificatie 60 min, sprintkwalificatie 45, race 120 (`SESSION_MIN`).
 
-## Mappen
+## Na afloop: uitkomst en historie
+
+Zodra een sessie voorbij is, toont de site niet meer de kans, maar wat er gebeurde: **Droog** of **Regen**, met de verwachting erbij ("verwachting 74%").
+
+- **Bron:** METAR-weerrapporten van het dichtstbijzijnde vliegveld, via aviationweather.gov (gratis, officieel). Welk station bij welk circuit hoort staat in `data/circuits.json` (`metar`, `metarName`, `metarKm`). De afstanden zijn schattingen.
+- **Regel:** "Regen" als een rapport tussen 15 minuten voor en 15 minuten na de sessie neerslag meldt (regen, motregen, buien, onweer met regen, hagel), of als een rapport tot een uur erna "recente regen" meldt. Regen in de omgeving (`VC`) telt niet mee.
+- **Let op:** het station ligt soms tientallen kilometers van het circuit (Spa ~40 km, Red Bull Ring ~60 km). Plaatselijke buien kun je zo missen of juist meetellen. De site zegt daarom altijd welk station en hoe ver weg.
+- **Historie:** per raceweekend komt er een bestand in `data/history/`, bijvoorbeeld `2026-21-interlagos.json`. Daarin staan per sessie de laatste verwachting van vóór de start en de gemeten uitkomst. De workflow slaat dit automatisch op in de repository (commit "Update forecast history"). Hiermee bouwen we later de regengeschiedenis per circuit en een trackrecord ("onze verwachtingen klopten in X% van de sessies").
+- De uitkomst wordt tot 3 uur na een sessie bijgewerkt, daarna ligt hij vast.
+
+
 
 ```
-data/circuits.json       URL-naam + tijdzone per circuit (nieuw circuit? voeg hier toe)
+data/circuits.json       URL-naam, tijdzone en weerstation per circuit (nieuw circuit? voeg hier toe)
+data/history/            Verwachting + uitkomst per sessie, automatisch bijgehouden
 src/style.css            Vormgeving
 src/shared.js            Teksten (EN/NL) en het opbouwen van de pagina, gedeeld door build en browser
 src/app.js               Browser: aftellen, regen, taalwissel, sessie kiezen
@@ -104,7 +115,7 @@ Gebruik geen "F1" of "Formula 1" in de domeinnaam: dat zijn beschermde merken.
 3. Onder **Sitemaps**: dien `sitemap.xml` in.
 
 ## Goed om te weten
-- **GitHub pauzeert uurlijkse taken** in een repository waar 60 dagen geen commit is gedaan. Je krijgt vooraf een mail; klik dan op *Keep workflow enabled*, of doe af en toe een kleine commit.
+- **GitHub pauzeert uurlijkse taken** in een repository waar 60 dagen geen commit is gedaan. Tijdens het seizoen gebeurt dat niet, want de historie wordt elk raceweekend opgeslagen. In de winterstop wel: je krijgt dan vooraf een mail, klik op *Keep workflow enabled*.
 - **Open-Meteo** is gratis voor niet-commercieel gebruik. Ga je advertenties of affiliate-links plaatsen, neem dan een [Open-Meteo API-abonnement](https://open-meteo.com/en/pricing) en voeg de API-sleutel toe aan `loadWeather` in `scripts/build.mjs`.
 - De bronvermelding (Open-Meteo, CC BY 4.0) staat onderaan elke pagina. Laat die staan.
 

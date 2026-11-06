@@ -18,7 +18,7 @@
       lastWord = key;
     }
     $("pct").textContent = h.pct;
-    $("pctLab").textContent = W.T[lang].pctLab;
+    $("pctLab").textContent = h.pctLab;
     $("note").innerHTML = h.note;
     rainTarget = h.rain;
   }
@@ -42,7 +42,7 @@
     $("cT").innerHTML = (c.live ? '<span class="dot"></span>' : "") + c.val;
   }
   function select(code, fromLane) {
-    if (D.state !== "forecast") return;
+    if (D.state === "early") return;
     sel = fromLane && sel === code ? "W" : code;
     renderLists(); renderHero(true);
     if (sel !== "W" && matchMedia("(max-width:700px)").matches) $("hero").scrollIntoView({ behavior: "smooth" });
