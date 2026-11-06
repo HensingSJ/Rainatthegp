@@ -23,10 +23,14 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
       - name: Build pages with live data
         run: node scripts/build.mjs
         env:
           SITE_URL: ${{ vars.SITE_URL || 'https://rainatthegp.com' }}
+          F1_TRACK_WEATHER: ${{ vars.F1_TRACK_WEATHER || 'on' }}
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
