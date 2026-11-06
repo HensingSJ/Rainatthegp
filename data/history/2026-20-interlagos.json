@@ -1,0 +1,63 @@
+{
+  "season": "2026",
+  "round": 20,
+  "slug": "interlagos",
+  "raceName": "Brazilian Grand Prix",
+  "station": {
+    "id": "SBSP",
+    "name": "Congonhas",
+    "km": 8
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2026-11-06T15:30:00Z",
+      "end": "2026-11-06T16:30:00Z",
+      "forecast": 66,
+      "forecastAt": "2026-11-06T21:17:10Z",
+      "outcome": {
+        "wet": false,
+        "reports": 1,
+        "station": "SBSP",
+        "checkedAt": "2026-11-06T21:17:10Z"
+      },
+      "final": true
+    },
+    "FP2": {
+      "start": "2026-11-06T19:00:00Z",
+      "end": "2026-11-06T20:00:00Z",
+      "forecast": 74,
+      "forecastAt": "2026-11-06T21:17:10Z",
+      "outcome": {
+        "wet": false,
+        "reports": 2,
+        "station": "SBSP",
+        "checkedAt": "2026-11-06T21:17:10Z"
+      },
+      "final": false
+    },
+    "FP3": {
+      "start": "2026-11-07T14:30:00Z",
+      "end": "2026-11-07T15:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "Q": {
+      "start": "2026-11-07T18:00:00Z",
+      "end": "2026-11-07T19:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "R": {
+      "start": "2026-11-08T17:00:00Z",
+      "end": "2026-11-08T19:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    }
+  }
+}
