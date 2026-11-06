@@ -1,0 +1,32 @@
+name: Build & deploy
+
+on:
+  schedule:
+    - cron: "7 * * * *"   # every hour at :07 (UTC)
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build pages with live data
+        run: node scripts/build.mjs
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://rainatthegp.com' }}
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=rainatthegp --branch=main
