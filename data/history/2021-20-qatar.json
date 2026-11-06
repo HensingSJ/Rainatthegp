@@ -1,0 +1,29 @@
+{
+  "season": "2021",
+  "round": 20,
+  "slug": "qatar",
+  "circuitId": "losail",
+  "raceName": "Qatar Grand Prix",
+  "station": {
+    "id": "OTHH",
+    "name": "Hamad (Doha)",
+    "km": 30
+  },
+  "sessions": {
+    "R": {
+      "start": "2021-11-21T14:00:00Z",
+      "end": "2021-11-21T16:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "OTHH",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

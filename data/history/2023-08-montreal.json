@@ -1,0 +1,89 @@
+{
+  "season": "2023",
+  "round": 8,
+  "slug": "montreal",
+  "circuitId": "villeneuve",
+  "raceName": "Canadian Grand Prix",
+  "station": {
+    "id": "CYUL",
+    "name": "Montréal-Trudeau",
+    "km": 15
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2023-06-16T17:30:00Z",
+      "end": "2023-06-16T18:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2023-06-16T21:00:00Z",
+      "end": "2023-06-16T22:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2023-06-17T16:30:00Z",
+      "end": "2023-06-17T17:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2023-06-17T20:00:00Z",
+      "end": "2023-06-17T21:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2023-06-18T18:00:00Z",
+      "end": "2023-06-18T20:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

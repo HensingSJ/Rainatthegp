@@ -1,0 +1,29 @@
+{
+  "season": "2020",
+  "round": 4,
+  "slug": "silverstone",
+  "circuitId": "silverstone",
+  "raceName": "British Grand Prix",
+  "station": {
+    "id": "EGTK",
+    "name": "Oxford",
+    "km": 30
+  },
+  "sessions": {
+    "R": {
+      "start": "2020-08-02T13:10:00Z",
+      "end": "2020-08-02T15:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EGTK",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

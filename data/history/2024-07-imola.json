@@ -1,0 +1,89 @@
+{
+  "season": "2024",
+  "round": 7,
+  "slug": "imola",
+  "circuitId": "imola",
+  "raceName": "Emilia Romagna Grand Prix",
+  "station": {
+    "id": "LIPE",
+    "name": "Bologna",
+    "km": 35
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2024-05-17T11:30:00Z",
+      "end": "2024-05-17T12:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LIPE",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2024-05-17T15:00:00Z",
+      "end": "2024-05-17T16:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LIPE",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2024-05-18T10:30:00Z",
+      "end": "2024-05-18T11:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LIPE",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2024-05-18T14:00:00Z",
+      "end": "2024-05-18T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LIPE",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2024-05-19T13:00:00Z",
+      "end": "2024-05-19T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LIPE",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

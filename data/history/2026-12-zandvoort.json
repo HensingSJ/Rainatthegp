@@ -1,0 +1,89 @@
+{
+  "season": "2026",
+  "round": 12,
+  "slug": "zandvoort",
+  "circuitId": "zandvoort",
+  "raceName": "Dutch Grand Prix",
+  "station": {
+    "id": "EHAM",
+    "name": "Schiphol",
+    "km": 20
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2026-08-21T10:30:00Z",
+      "end": "2026-08-21T11:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EHAM",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "SQ": {
+      "start": "2026-08-21T14:30:00Z",
+      "end": "2026-08-21T15:15:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EHAM",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "S": {
+      "start": "2026-08-22T10:00:00Z",
+      "end": "2026-08-22T11:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EHAM",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2026-08-22T14:00:00Z",
+      "end": "2026-08-22T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EHAM",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2026-08-23T13:00:00Z",
+      "end": "2026-08-23T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "EHAM",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

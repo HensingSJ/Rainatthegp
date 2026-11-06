@@ -1,0 +1,29 @@
+{
+  "season": "2021",
+  "round": 13,
+  "slug": "zandvoort",
+  "circuitId": "zandvoort",
+  "raceName": "Dutch Grand Prix",
+  "station": {
+    "id": "EHAM",
+    "name": "Schiphol",
+    "km": 20
+  },
+  "sessions": {
+    "R": {
+      "start": "2021-09-05T13:00:00Z",
+      "end": "2021-09-05T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EHAM",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

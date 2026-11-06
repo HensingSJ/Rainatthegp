@@ -1,0 +1,29 @@
+{
+  "season": "2020",
+  "round": 16,
+  "slug": "bahrain",
+  "circuitId": "bahrain",
+  "raceName": "Sakhir Grand Prix",
+  "station": {
+    "id": "OBBI",
+    "name": "Bahrain International",
+    "km": 25
+  },
+  "sessions": {
+    "R": {
+      "start": "2020-12-06T17:10:00Z",
+      "end": "2020-12-06T19:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "OBBI",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

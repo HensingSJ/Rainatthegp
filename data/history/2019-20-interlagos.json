@@ -1,0 +1,29 @@
+{
+  "season": "2019",
+  "round": 20,
+  "slug": "interlagos",
+  "circuitId": "interlagos",
+  "raceName": "Brazilian Grand Prix",
+  "station": {
+    "id": "SBSP",
+    "name": "Congonhas",
+    "km": 8
+  },
+  "sessions": {
+    "R": {
+      "start": "2019-11-17T17:10:00Z",
+      "end": "2019-11-17T19:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

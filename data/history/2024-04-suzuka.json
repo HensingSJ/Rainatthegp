@@ -1,0 +1,89 @@
+{
+  "season": "2024",
+  "round": 4,
+  "slug": "suzuka",
+  "circuitId": "suzuka",
+  "raceName": "Japanese Grand Prix",
+  "station": {
+    "id": "RJGG",
+    "name": "Chubu Centrair",
+    "km": 45
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2024-04-05T02:30:00Z",
+      "end": "2024-04-05T03:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2024-04-05T06:00:00Z",
+      "end": "2024-04-05T07:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2024-04-06T02:30:00Z",
+      "end": "2024-04-06T03:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2024-04-06T06:00:00Z",
+      "end": "2024-04-06T07:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2024-04-07T05:00:00Z",
+      "end": "2024-04-07T07:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

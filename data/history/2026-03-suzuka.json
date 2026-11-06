@@ -1,0 +1,89 @@
+{
+  "season": "2026",
+  "round": 3,
+  "slug": "suzuka",
+  "circuitId": "suzuka",
+  "raceName": "Japanese Grand Prix",
+  "station": {
+    "id": "RJGG",
+    "name": "Chubu Centrair",
+    "km": 45
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2026-03-27T02:30:00Z",
+      "end": "2026-03-27T03:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2026-03-27T06:00:00Z",
+      "end": "2026-03-27T07:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2026-03-28T02:30:00Z",
+      "end": "2026-03-28T03:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2026-03-28T06:00:00Z",
+      "end": "2026-03-28T07:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2026-03-29T05:00:00Z",
+      "end": "2026-03-29T07:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

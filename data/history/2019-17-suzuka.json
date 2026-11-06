@@ -1,0 +1,29 @@
+{
+  "season": "2019",
+  "round": 17,
+  "slug": "suzuka",
+  "circuitId": "suzuka",
+  "raceName": "Japanese Grand Prix",
+  "station": {
+    "id": "RJGG",
+    "name": "Chubu Centrair",
+    "km": 45
+  },
+  "sessions": {
+    "R": {
+      "start": "2019-10-13T05:10:00Z",
+      "end": "2019-10-13T07:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "RJGG",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

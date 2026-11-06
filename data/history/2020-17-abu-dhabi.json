@@ -1,0 +1,29 @@
+{
+  "season": "2020",
+  "round": 17,
+  "slug": "abu-dhabi",
+  "circuitId": "yas_marina",
+  "raceName": "Abu Dhabi Grand Prix",
+  "station": {
+    "id": "OMAA",
+    "name": "Abu Dhabi International",
+    "km": 15
+  },
+  "sessions": {
+    "R": {
+      "start": "2020-12-13T13:10:00Z",
+      "end": "2020-12-13T15:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "OMAA",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "season": "2019",
+  "round": 12,
+  "slug": "hungaroring",
+  "circuitId": "hungaroring",
+  "raceName": "Hungarian Grand Prix",
+  "station": {
+    "id": "LHBP",
+    "name": "Budapest",
+    "km": 25
+  },
+  "sessions": {
+    "R": {
+      "start": "2019-08-04T13:10:00Z",
+      "end": "2019-08-04T15:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LHBP",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

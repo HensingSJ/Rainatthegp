@@ -1,0 +1,89 @@
+{
+  "season": "2026",
+  "round": 7,
+  "slug": "barcelona",
+  "circuitId": "catalunya",
+  "raceName": "Barcelona Grand Prix",
+  "station": {
+    "id": "LEBL",
+    "name": "Barcelona-El Prat",
+    "km": 30
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2026-06-12T11:30:00Z",
+      "end": "2026-06-12T12:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LEBL",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2026-06-12T15:00:00Z",
+      "end": "2026-06-12T16:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LEBL",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2026-06-13T10:30:00Z",
+      "end": "2026-06-13T11:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LEBL",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2026-06-13T14:00:00Z",
+      "end": "2026-06-13T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LEBL",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2026-06-14T13:00:00Z",
+      "end": "2026-06-14T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LEBL",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

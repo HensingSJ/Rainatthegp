@@ -1,0 +1,29 @@
+{
+  "season": "2019",
+  "round": 5,
+  "slug": "barcelona",
+  "circuitId": "catalunya",
+  "raceName": "Spanish Grand Prix",
+  "station": {
+    "id": "LEBL",
+    "name": "Barcelona-El Prat",
+    "km": 30
+  },
+  "sessions": {
+    "R": {
+      "start": "2019-05-12T13:10:00Z",
+      "end": "2019-05-12T15:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LEBL",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

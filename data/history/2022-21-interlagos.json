@@ -1,0 +1,89 @@
+{
+  "season": "2022",
+  "round": 21,
+  "slug": "interlagos",
+  "circuitId": "interlagos",
+  "raceName": "São Paulo Grand Prix",
+  "station": {
+    "id": "SBSP",
+    "name": "Congonhas",
+    "km": 8
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2022-11-11T15:30:00Z",
+      "end": "2022-11-11T16:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2022-11-11T19:00:00Z",
+      "end": "2022-11-11T20:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2022-11-12T15:30:00Z",
+      "end": "2022-11-12T16:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "S": {
+      "start": "2022-11-12T19:30:00Z",
+      "end": "2022-11-12T20:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2022-11-13T18:00:00Z",
+      "end": "2022-11-13T20:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 4,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

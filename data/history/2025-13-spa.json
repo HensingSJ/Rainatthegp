@@ -1,0 +1,89 @@
+{
+  "season": "2025",
+  "round": 13,
+  "slug": "spa",
+  "circuitId": "spa",
+  "raceName": "Belgian Grand Prix",
+  "station": {
+    "id": "EBLG",
+    "name": "Liège",
+    "km": 40
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2025-07-25T10:30:00Z",
+      "end": "2025-07-25T11:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EBLG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "SQ": {
+      "start": "2025-07-25T14:30:00Z",
+      "end": "2025-07-25T15:15:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EBLG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "S": {
+      "start": "2025-07-26T10:00:00Z",
+      "end": "2025-07-26T11:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EBLG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2025-07-26T14:00:00Z",
+      "end": "2025-07-26T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EBLG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2025-07-27T13:00:00Z",
+      "end": "2025-07-27T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "EBLG",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

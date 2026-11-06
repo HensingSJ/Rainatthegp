@@ -1,0 +1,29 @@
+{
+  "season": "2018",
+  "round": 1,
+  "slug": "melbourne",
+  "circuitId": "albert_park",
+  "raceName": "Australian Grand Prix",
+  "station": {
+    "id": "YMEN",
+    "name": "Essendon",
+    "km": 12
+  },
+  "sessions": {
+    "R": {
+      "start": "2018-03-25T05:10:00Z",
+      "end": "2018-03-25T07:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "YMEN",
+        "reports": 6,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

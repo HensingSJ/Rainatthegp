@@ -1,0 +1,89 @@
+{
+  "season": "2023",
+  "round": 18,
+  "slug": "austin",
+  "circuitId": "americas",
+  "raceName": "United States Grand Prix",
+  "station": {
+    "id": "KAUS",
+    "name": "Austin-Bergstrom",
+    "km": 5
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2023-10-20T17:30:00Z",
+      "end": "2023-10-20T18:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KAUS",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2023-10-20T21:00:00Z",
+      "end": "2023-10-20T22:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KAUS",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "SQ": {
+      "start": "2023-10-21T18:00:00Z",
+      "end": "2023-10-21T18:45:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KAUS",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "S": {
+      "start": "2023-10-21T22:00:00Z",
+      "end": "2023-10-21T23:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KAUS",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2023-10-22T19:00:00Z",
+      "end": "2023-10-22T21:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KAUS",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

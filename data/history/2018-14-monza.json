@@ -1,0 +1,29 @@
+{
+  "season": "2018",
+  "round": 14,
+  "slug": "monza",
+  "circuitId": "monza",
+  "raceName": "Italian Grand Prix",
+  "station": {
+    "id": "LIML",
+    "name": "Milan Linate",
+    "km": 20
+  },
+  "sessions": {
+    "R": {
+      "start": "2018-09-02T13:10:00Z",
+      "end": "2018-09-02T15:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LIML",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

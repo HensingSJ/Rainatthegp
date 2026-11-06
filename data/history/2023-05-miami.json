@@ -1,0 +1,89 @@
+{
+  "season": "2023",
+  "round": 5,
+  "slug": "miami",
+  "circuitId": "miami",
+  "raceName": "Miami Grand Prix",
+  "station": {
+    "id": "KOPF",
+    "name": "Opa-locka",
+    "km": 10
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2023-05-05T18:00:00Z",
+      "end": "2023-05-05T19:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KOPF",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2023-05-05T21:30:00Z",
+      "end": "2023-05-05T22:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KOPF",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2023-05-06T16:30:00Z",
+      "end": "2023-05-06T17:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KOPF",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2023-05-06T20:00:00Z",
+      "end": "2023-05-06T21:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "KOPF",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2023-05-07T19:30:00Z",
+      "end": "2023-05-07T21:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KOPF",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

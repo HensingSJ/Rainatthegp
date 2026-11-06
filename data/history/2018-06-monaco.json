@@ -1,0 +1,29 @@
+{
+  "season": "2018",
+  "round": 6,
+  "slug": "monaco",
+  "circuitId": "monaco",
+  "raceName": "Monaco Grand Prix",
+  "station": {
+    "id": "LFMN",
+    "name": "Nice",
+    "km": 18
+  },
+  "sessions": {
+    "R": {
+      "start": "2018-05-27T13:10:00Z",
+      "end": "2018-05-27T15:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LFMN",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

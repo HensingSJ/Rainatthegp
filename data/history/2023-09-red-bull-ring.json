@@ -1,0 +1,89 @@
+{
+  "season": "2023",
+  "round": 9,
+  "slug": "red-bull-ring",
+  "circuitId": "red_bull_ring",
+  "raceName": "Austrian Grand Prix",
+  "station": {
+    "id": "LOWG",
+    "name": "Graz",
+    "km": 60
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2023-06-30T11:30:00Z",
+      "end": "2023-06-30T12:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LOWG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2023-06-30T15:00:00Z",
+      "end": "2023-06-30T16:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LOWG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "SQ": {
+      "start": "2023-07-01T10:30:00Z",
+      "end": "2023-07-01T11:15:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LOWG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "S": {
+      "start": "2023-07-01T14:30:00Z",
+      "end": "2023-07-01T15:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "LOWG",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2023-07-02T13:00:00Z",
+      "end": "2023-07-02T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LOWG",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

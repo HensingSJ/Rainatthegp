@@ -1,0 +1,89 @@
+{
+  "season": "2026",
+  "round": 16,
+  "slug": "sepang",
+  "circuitId": "sepang",
+  "raceName": "Bahrain Grand Prix in Malaysia",
+  "station": {
+    "id": "WMKK",
+    "name": "Kuala Lumpur International",
+    "km": 6
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2026-10-02T04:30:00Z",
+      "end": "2026-10-02T05:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "WMKK",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2026-10-02T08:00:00Z",
+      "end": "2026-10-02T09:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "WMKK",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2026-10-03T04:30:00Z",
+      "end": "2026-10-03T05:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "WMKK",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2026-10-03T08:00:00Z",
+      "end": "2026-10-03T09:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "WMKK",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2026-10-04T07:00:00Z",
+      "end": "2026-10-04T09:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "WMKK",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "season": "2021",
+  "round": 18,
+  "slug": "mexico-city",
+  "circuitId": "rodriguez",
+  "raceName": "Mexico City Grand Prix",
+  "station": {
+    "id": "MMMX",
+    "name": "Mexico City International",
+    "km": 3
+  },
+  "sessions": {
+    "R": {
+      "start": "2021-11-07T19:00:00Z",
+      "end": "2021-11-07T21:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "MMMX",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

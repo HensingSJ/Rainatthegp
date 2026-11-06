@@ -1,0 +1,29 @@
+{
+  "season": "2020",
+  "round": 13,
+  "slug": "imola",
+  "circuitId": "imola",
+  "raceName": "Emilia Romagna Grand Prix",
+  "station": {
+    "id": "LIPE",
+    "name": "Bologna",
+    "km": 35
+  },
+  "sessions": {
+    "R": {
+      "start": "2020-11-01T12:10:00Z",
+      "end": "2020-11-01T14:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LIPE",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

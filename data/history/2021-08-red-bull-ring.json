@@ -1,0 +1,29 @@
+{
+  "season": "2021",
+  "round": 8,
+  "slug": "red-bull-ring",
+  "circuitId": "red_bull_ring",
+  "raceName": "Styrian Grand Prix",
+  "station": {
+    "id": "LOWG",
+    "name": "Graz",
+    "km": 60
+  },
+  "sessions": {
+    "R": {
+      "start": "2021-06-27T13:00:00Z",
+      "end": "2021-06-27T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LOWG",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

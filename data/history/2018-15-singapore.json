@@ -1,0 +1,29 @@
+{
+  "season": "2018",
+  "round": 15,
+  "slug": "singapore",
+  "circuitId": "marina_bay",
+  "raceName": "Singapore Grand Prix",
+  "station": {
+    "id": "WSAP",
+    "name": "Paya Lebar",
+    "km": 8
+  },
+  "sessions": {
+    "R": {
+      "start": "2018-09-16T12:10:00Z",
+      "end": "2018-09-16T14:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "WSAP",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

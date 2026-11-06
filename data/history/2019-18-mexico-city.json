@@ -1,0 +1,29 @@
+{
+  "season": "2019",
+  "round": 18,
+  "slug": "mexico-city",
+  "circuitId": "rodriguez",
+  "raceName": "Mexican Grand Prix",
+  "station": {
+    "id": "MMMX",
+    "name": "Mexico City International",
+    "km": 3
+  },
+  "sessions": {
+    "R": {
+      "start": "2019-10-27T19:10:00Z",
+      "end": "2019-10-27T21:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "MMMX",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "season": "2023",
+  "round": 11,
+  "slug": "hungaroring",
+  "circuitId": "hungaroring",
+  "raceName": "Hungarian Grand Prix",
+  "station": {
+    "id": "LHBP",
+    "name": "Budapest",
+    "km": 25
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2023-07-21T11:30:00Z",
+      "end": "2023-07-21T12:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "LHBP",
+        "reports": 4,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2023-07-21T15:00:00Z",
+      "end": "2023-07-21T16:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LHBP",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2023-07-22T10:30:00Z",
+      "end": "2023-07-22T11:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LHBP",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2023-07-22T14:00:00Z",
+      "end": "2023-07-22T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LHBP",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2023-07-23T13:00:00Z",
+      "end": "2023-07-23T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LHBP",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

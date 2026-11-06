@@ -1,0 +1,29 @@
+{
+  "season": "2019",
+  "round": 7,
+  "slug": "montreal",
+  "circuitId": "villeneuve",
+  "raceName": "Canadian Grand Prix",
+  "station": {
+    "id": "CYUL",
+    "name": "Montréal-Trudeau",
+    "km": 15
+  },
+  "sessions": {
+    "R": {
+      "start": "2019-06-09T18:10:00Z",
+      "end": "2019-06-09T20:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

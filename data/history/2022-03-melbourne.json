@@ -1,0 +1,89 @@
+{
+  "season": "2022",
+  "round": 3,
+  "slug": "melbourne",
+  "circuitId": "albert_park",
+  "raceName": "Australian Grand Prix",
+  "station": {
+    "id": "YMEN",
+    "name": "Essendon",
+    "km": 12
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2022-04-08T03:00:00Z",
+      "end": "2022-04-08T04:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "YMEN",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2022-04-08T06:00:00Z",
+      "end": "2022-04-08T07:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "YMEN",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2022-04-09T03:00:00Z",
+      "end": "2022-04-09T04:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "YMEN",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2022-04-09T06:00:00Z",
+      "end": "2022-04-09T07:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "YMEN",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2022-04-10T05:00:00Z",
+      "end": "2022-04-10T07:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "YMEN",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

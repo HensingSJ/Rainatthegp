@@ -1,0 +1,29 @@
+{
+  "season": "2019",
+  "round": 19,
+  "slug": "austin",
+  "circuitId": "americas",
+  "raceName": "United States Grand Prix",
+  "station": {
+    "id": "KAUS",
+    "name": "Austin-Bergstrom",
+    "km": 5
+  },
+  "sessions": {
+    "R": {
+      "start": "2019-11-03T19:10:00Z",
+      "end": "2019-11-03T21:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "KAUS",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

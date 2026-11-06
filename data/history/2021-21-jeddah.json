@@ -1,0 +1,29 @@
+{
+  "season": "2021",
+  "round": 21,
+  "slug": "jeddah",
+  "circuitId": "jeddah",
+  "raceName": "Saudi Arabian Grand Prix",
+  "station": {
+    "id": "OEJN",
+    "name": "Jeddah",
+    "km": 15
+  },
+  "sessions": {
+    "R": {
+      "start": "2021-12-05T17:30:00Z",
+      "end": "2021-12-05T19:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "OEJN",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

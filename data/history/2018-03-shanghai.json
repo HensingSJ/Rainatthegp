@@ -1,0 +1,29 @@
+{
+  "season": "2018",
+  "round": 3,
+  "slug": "shanghai",
+  "circuitId": "shanghai",
+  "raceName": "Chinese Grand Prix",
+  "station": {
+    "id": "ZSSS",
+    "name": "Shanghai Hongqiao",
+    "km": 30
+  },
+  "sessions": {
+    "R": {
+      "start": "2018-04-15T06:10:00Z",
+      "end": "2018-04-15T08:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "ZSSS",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

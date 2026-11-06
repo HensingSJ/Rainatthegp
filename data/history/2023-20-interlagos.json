@@ -1,0 +1,89 @@
+{
+  "season": "2023",
+  "round": 20,
+  "slug": "interlagos",
+  "circuitId": "interlagos",
+  "raceName": "São Paulo Grand Prix",
+  "station": {
+    "id": "SBSP",
+    "name": "Congonhas",
+    "km": 8
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2023-11-03T14:30:00Z",
+      "end": "2023-11-03T15:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2023-11-03T18:00:00Z",
+      "end": "2023-11-03T19:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "SQ": {
+      "start": "2023-11-04T14:30:00Z",
+      "end": "2023-11-04T15:15:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "S": {
+      "start": "2023-11-04T18:30:00Z",
+      "end": "2023-11-04T19:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2023-11-05T17:00:00Z",
+      "end": "2023-11-05T19:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "SBSP",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

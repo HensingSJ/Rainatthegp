@@ -1,0 +1,29 @@
+{
+  "season": "2020",
+  "round": 7,
+  "slug": "spa",
+  "circuitId": "spa",
+  "raceName": "Belgian Grand Prix",
+  "station": {
+    "id": "EBLG",
+    "name": "Liège",
+    "km": 40
+  },
+  "sessions": {
+    "R": {
+      "start": "2020-08-30T13:10:00Z",
+      "end": "2020-08-30T15:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "EBLG",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

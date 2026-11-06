@@ -1,0 +1,29 @@
+{
+  "season": "2021",
+  "round": 11,
+  "slug": "hungaroring",
+  "circuitId": "hungaroring",
+  "raceName": "Hungarian Grand Prix",
+  "station": {
+    "id": "LHBP",
+    "name": "Budapest",
+    "km": 25
+  },
+  "sessions": {
+    "R": {
+      "start": "2021-08-01T13:00:00Z",
+      "end": "2021-08-01T15:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "metar",
+        "station": "LHBP",
+        "reports": 7,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "season": "2023",
+  "round": 4,
+  "slug": "baku",
+  "circuitId": "baku",
+  "raceName": "Azerbaijan Grand Prix",
+  "station": {
+    "id": "UBBB",
+    "name": "Baku",
+    "km": 25
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2023-04-28T09:30:00Z",
+      "end": "2023-04-28T10:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "UBBB",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2023-04-28T13:00:00Z",
+      "end": "2023-04-28T14:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "UBBB",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "SQ": {
+      "start": "2023-04-29T09:30:00Z",
+      "end": "2023-04-29T10:15:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "UBBB",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "S": {
+      "start": "2023-04-29T13:30:00Z",
+      "end": "2023-04-29T14:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "UBBB",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2023-04-30T11:00:00Z",
+      "end": "2023-04-30T13:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "UBBB",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

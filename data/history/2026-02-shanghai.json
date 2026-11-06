@@ -1,0 +1,89 @@
+{
+  "season": "2026",
+  "round": 2,
+  "slug": "shanghai",
+  "circuitId": "shanghai",
+  "raceName": "Chinese Grand Prix",
+  "station": {
+    "id": "ZSSS",
+    "name": "Shanghai Hongqiao",
+    "km": 30
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2026-03-13T03:30:00Z",
+      "end": "2026-03-13T04:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "ZSSS",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "SQ": {
+      "start": "2026-03-13T07:30:00Z",
+      "end": "2026-03-13T08:15:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "ZSSS",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "S": {
+      "start": "2026-03-14T03:00:00Z",
+      "end": "2026-03-14T04:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "ZSSS",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2026-03-14T07:00:00Z",
+      "end": "2026-03-14T08:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "ZSSS",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2026-03-15T07:00:00Z",
+      "end": "2026-03-15T09:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "ZSSS",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

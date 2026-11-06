@@ -1,0 +1,29 @@
+{
+  "season": "2021",
+  "round": 1,
+  "slug": "bahrain",
+  "circuitId": "bahrain",
+  "raceName": "Bahrain Grand Prix",
+  "station": {
+    "id": "OBBI",
+    "name": "Bahrain International",
+    "km": 25
+  },
+  "sessions": {
+    "R": {
+      "start": "2021-03-28T15:00:00Z",
+      "end": "2021-03-28T17:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "OBBI",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

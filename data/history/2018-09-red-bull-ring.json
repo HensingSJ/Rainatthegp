@@ -1,0 +1,29 @@
+{
+  "season": "2018",
+  "round": 9,
+  "slug": "red-bull-ring",
+  "circuitId": "red_bull_ring",
+  "raceName": "Austrian Grand Prix",
+  "station": {
+    "id": "LOWG",
+    "name": "Graz",
+    "km": 60
+  },
+  "sessions": {
+    "R": {
+      "start": "2018-07-01T13:10:00Z",
+      "end": "2018-07-01T15:10:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "LOWG",
+        "reports": 5,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

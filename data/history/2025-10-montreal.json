@@ -1,0 +1,89 @@
+{
+  "season": "2025",
+  "round": 10,
+  "slug": "montreal",
+  "circuitId": "villeneuve",
+  "raceName": "Canadian Grand Prix",
+  "station": {
+    "id": "CYUL",
+    "name": "Montréal-Trudeau",
+    "km": 15
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2025-06-13T17:30:00Z",
+      "end": "2025-06-13T18:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2025-06-13T21:00:00Z",
+      "end": "2025-06-13T22:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2025-06-14T16:30:00Z",
+      "end": "2025-06-14T17:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 1,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2025-06-14T20:00:00Z",
+      "end": "2025-06-14T21:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 2,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2025-06-15T18:00:00Z",
+      "end": "2025-06-15T20:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "metar",
+        "station": "CYUL",
+        "reports": 3,
+        "checkedAt": "2026-11-06T22:25:13Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}
