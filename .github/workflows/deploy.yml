@@ -3,7 +3,7 @@ name: Build & deploy
 on:
   schedule:
     - cron: "7 * * * *"   # every hour at :07 (UTC)
-  workflow_dispatch:
+  workflow_dispatch:       # "Run workflow" button in GitHub
   push:
     branches: [main]
 
@@ -11,13 +11,16 @@ concurrency:
   group: deploy
   cancel-in-progress: false
 
+permissions:
+  contents: write          # needed to save data/history back to the repository
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - name: Build pages with live data
@@ -30,3 +33,13 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=rainatthegp --branch=main
+      - name: Save forecasts and outcomes
+        run: |
+          if [ ! -d data/history ]; then echo "No history yet"; exit 0; fi
+          git add data/history
+          if git diff --cached --quiet; then echo "No history changes"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898599+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update forecast history"
+          git pull --rebase --autostash
+          git push
