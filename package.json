@@ -8,5 +8,13 @@
     "build:offline": "node scripts/build.mjs --offline",
     "preview": "node scripts/serve.mjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@fontsource/saira-extra-condensed": "5.3.0",
+    "@fontsource/titillium-web": "5.3.0",
+    "@resvg/resvg-js": "2.6.2",
+    "satori": "0.63.2"
+  }
 }

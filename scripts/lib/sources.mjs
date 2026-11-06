@@ -4,10 +4,10 @@ import { OFFLINE, NOW, now, read, sleep, UA, SESSION_MIN, USE_F1_TRACK } from ".
 const CIRCUITS = JSON.parse(await read("data/circuits.json"));
 const NAMES = JSON.parse(await read("data/names.json"));
 
-export async function getText(url, tries = 3) {
+export async function getText(url, tries = 3, headers = UA) {
   for (let i = 1; ; i++) {
     try {
-      const r = await fetch(url, { headers: UA });
+      const r = await fetch(url, { headers });
       if (r.status === 204 || r.status === 404 || r.status === 403) return { status: r.status, text: "" };
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return { status: r.status, text: (await r.text()).replace(/^﻿/, "") };
@@ -45,9 +45,9 @@ export function parseRace(r) {
   const meta = CIRCUITS[r.Circuit.circuitId] || {};
   const sessions = [], seen = new Set();
   for (const [k, code] of SESSION_KEYS) {
-    if (r[k] && !seen.has(code)) { seen.add(code); sessions.push({ code, start: iso(r[k].date, r[k].time) }); }
+    if (r[k] && !seen.has(code)) { seen.add(code); sessions.push({ code, start: iso(r[k].date, r[k].time), timed: !!r[k].time }); }
   }
-  sessions.push({ code: "R", start: iso(r.date, r.time) });
+  sessions.push({ code: "R", start: iso(r.date, r.time), timed: !!r.time });
   sessions.sort((a, b) => a.start - b.start);
   for (const s of sessions) s.end = s.start + SESSION_MIN[s.code] * 6e4;
   const name = gpName(r.raceName);
@@ -107,6 +107,21 @@ export async function loadMetars(station, hours) {
     return text.trim() ? JSON.parse(text) : [];
   } catch (e) { console.warn(`METAR ${station} unavailable: ${e.message}`); return null; }
 }
+// Historical METAR archive (Iowa Environmental Mesonet), for seasons older than ~2 weeks
+export async function loadIemMetars(station, from, to) {
+  const a = new Date(from - 2 * 36e5), b = new Date(to + 27 * 36e5); // day2 is exclusive
+  const q = new URLSearchParams({ station, data: "wxcodes", tz: "Etc/UTC", format: "onlycomma", latlon: "no", missing: "empty", trace: "empty", direct: "no",
+    year1: a.getUTCFullYear(), month1: a.getUTCMonth() + 1, day1: a.getUTCDate(), year2: b.getUTCFullYear(), month2: b.getUTCMonth() + 1, day2: b.getUTCDate() });
+  q.append("report_type", "3"); q.append("report_type", "4");
+  try {
+    const { status, text } = await getText(`https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?${q}`, 3);
+    if (!text) { console.warn(`IEM ${station}: HTTP ${status}`); return null; }
+    const lines = text.trim().split(/\r?\n/), head = lines.shift().split(",");
+    const iv = head.indexOf("valid"), iw = head.indexOf("wxcodes");
+    if (iv < 0) { console.warn(`IEM ${station}: unexpected answer: ${lines[0]?.slice(0, 80)}`); return null; }
+    return lines.map((l) => l.split(",")).map((c) => ({ obsTime: Date.parse(c[iv].replace(" ", "T") + "Z") / 1000, wxString: (c[iw] || "").trim() || null }));
+  } catch (e) { console.warn(`IEM ${station} unavailable: ${e.message}`); return null; }
+}
 const PRECIP = /^(\+|-)?(TS|SH|FZ)?(DZ|RA|SN|SG|GR|GS|PL|UP)+$/;
 const RECENT = /^RE(TS|SH|FZ)?(DZ|RA|SN|SG|GR|GS|PL|UP)+$/;
 const wxTokens = (m) => (m.wxString ? String(m.wxString).split(/\s+/) : []).concat(m.rawOb ? String(m.rawOb).split(" RMK")[0].split(/\s+/) : []);
@@ -124,10 +139,17 @@ export function metarRain(metars, s) {
 const F1_BASE = "https://livetiming.formula1.com/static/";
 const F1_NAMES = { FP1: ["Practice 1"], FP2: ["Practice 2"], FP3: ["Practice 3"], SQ: ["Sprint Qualifying", "Sprint Shootout"], S: ["Sprint"], Q: ["Qualifying"], R: ["Race"] };
 const indexCache = new Map();
+const BROWSER = { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36", accept: "application/json,text/plain,*/*" };
 export async function f1Index(year) {
   if (!indexCache.has(year)) {
     indexCache.set(year, (async () => {
-      try { const { text } = await getText(`${F1_BASE}${year}/Index.json`, 2); return text ? JSON.parse(text) : null; }
+      const url = `${F1_BASE}${year}/Index.json`;
+      try {
+        let res = await getText(url, 2);
+        if (!res.text) res = await getText(url, 1, BROWSER); // some servers refuse non-browser clients
+        if (!res.text) { console.warn(`F1 index ${year}: HTTP ${res.status}`); return null; }
+        return JSON.parse(res.text);
+      }
       catch (e) { console.warn(`F1 index ${year} unavailable: ${e.message}`); return null; }
     })());
   }

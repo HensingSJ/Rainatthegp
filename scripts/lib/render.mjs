@@ -111,6 +111,7 @@ function historySection(lang, race, hist) {
   return `<section aria-labelledby="h-hist"><h2 id="h-hist">${esc(s.histH(race.short))}</h2>
 ${n ? `<p class="lead">${esc(s.histSum(a, n, b))}</p>` : ""}
 <ul class="hist">${rows}</ul>
+${race.station && done.some((h) => Object.values(h.sessions).some((e) => e.outcome?.source === "metar")) ? `<p class="muted small">${esc(s.histSrc(race.station.name, race.station.km))}</p>` : ""}
 <div class="legend"><span><i style="background:var(--wet)"></i>${s.histLeg[0]}</span><span><i style="background:var(--dry)"></i>${s.histLeg[1]}</span><span><i style="background:var(--track);outline:1px solid var(--line)"></i>${s.histLeg[2]}</span></div></section>`;
 }
 
