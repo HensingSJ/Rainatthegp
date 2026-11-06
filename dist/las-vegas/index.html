@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Will it rain at the Las Vegas GP? Rain chance per session</title>
+<meta name="description" content="Live chance of rain for every session of the 2026 Las Vegas Grand Prix at Las Vegas Strip Street Circuit. Forecast opens Friday 13 November.">
+<link rel="canonical" href="https://willitrainthisgp.com/las-vegas/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Will It Rain This GP?">
+<meta property="og:title" content="Will it rain at the Las Vegas GP? Rain chance per session"><meta property="og:description" content="Live chance of rain for every session of the 2026 Las Vegas Grand Prix at Las Vegas Strip Street Circuit. Forecast opens Friday 13 November."><meta property="og:url" content="https://willitrainthisgp.com/las-vegas/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#151c24">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%202c3%204.5%206%208%206%2011.5A6%206%200%200%201%206%2013.5C6%2010%209%206.5%2012%202z%22%20fill%3D%22%232f8dff%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Extra+Condensed:wght@700;800;900&family=Titillium+Web:wght@400;600;700&family=Chivo+Mono:wght@400;500&display=swap">
+<style>/* Layout: broadcast-graphics feel. Full-bleed weather hero with live rain matching the forecast,
+   a weekend strip with a "now" marker, a timing-tower list of sessions, then circuit info + links. */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --fg:#0e1318; --muted:#5d6874; --line:#d6dce3; --track:#dfe4ea;
+  --accent:#2f6bff;
+  --dry:#ff7a33; --maybe:#8fa3b8; --wet:#2f8dff;
+  --soft:#e10600; --inter:#2fa14d; --wetT:#1b6fe0; --tyre:#15191e; --hub:#3a4048;
+  --f-display:"Saira Extra Condensed","Arial Narrow",Impact,sans-serif;
+  --f-body:"Titillium Web",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"Chivo Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0b0f13; --surface:#141a20; --fg:#e9eef3; --muted:#93a0ad; --line:#252e37; --track:#1c242c;
+  --accent:#6b98ff; --maybe:#9db0c4; --wet:#55a6ff; --tyre:#05070a; --hub:#2a3038; color-scheme:dark}}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.45}
+a{color:inherit}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.in{max-width:820px;margin:0 auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;overflow:hidden;color:#f3f6f9;isolation:isolate;
+  --s1:#3c4a59;--s2:#151c24;--glow:#9fb3c8;
+  background:radial-gradient(120% 90% at 85% -10%,var(--s1),var(--s2) 70%);transition:background .6s}
+.hero[data-v="no"]{--s1:#ff9a52;--s2:#2b1830;--glow:#ffb37a}
+.hero[data-v="maybe"]{--s1:#5a6b7d;--s2:#141b23;--glow:#c7d4e2}
+.hero[data-v="yes"]{--s1:#2a5d9c;--s2:#081120;--glow:#7cc0ff}
+.hero[data-v="early"],.hero[data-v="over"]{--s1:#3a4552;--s2:#11161c;--glow:#aab8c6}
+#rain{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.hero .in{padding-block:18px 26px;display:grid;gap:18px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:800;font-size:1.3rem;letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:8px;text-decoration:none;color:#f3f6f9}
+.brand svg{width:22px;height:22px}
+.lang{display:flex;background:rgba(255,255,255,.1);border-radius:4px;transform:skewX(-12deg);overflow:hidden}
+.lang button{font:700 .8rem var(--f-body);letter-spacing:.08em;padding:6px 12px;border:0;background:transparent;color:rgba(255,255,255,.7);cursor:pointer}
+.lang button span{display:inline-block;transform:skewX(12deg)}
+.lang button[aria-pressed="true"]{background:#f3f6f9;color:#0e1318}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hero button:focus-visible,.hero a:focus-visible{outline-color:var(--glow)}
+
+.gp{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.85rem;margin:0}
+.chip{font-family:var(--f-mono);font-weight:500;font-size:.72rem;padding:2px 7px;border:1px solid rgba(255,255,255,.45);border-radius:2px;letter-spacing:.04em}
+.round{font-family:var(--f-mono);font-weight:500;font-size:.75rem;opacity:.7;letter-spacing:.04em}
+
+h1.q{font-size:clamp(1.1rem,4.2vw,1.5rem);font-weight:600;max-width:32ch;text-wrap:balance;margin:6px 0 -6px;line-height:1.25}
+.answer{display:flex;align-items:flex-end;gap:clamp(12px,3vw,28px);flex-wrap:wrap}
+.word{font-family:var(--f-display);font-weight:900;text-transform:uppercase;line-height:.82;
+  font-size:clamp(5.6rem,27vw,13rem);letter-spacing:-.01em;transform:skewX(-9deg);transform-origin:bottom left;
+  color:#fff;text-shadow:0 0 40px color-mix(in srgb,var(--glow) 45%,transparent);overflow-wrap:anywhere;max-width:100%}
+.word.long{font-size:clamp(4rem,17vw,9.5rem)}
+.word .l{display:inline-block}
+.word.swap .l{animation:drop .5s cubic-bezier(.2,.9,.25,1.2) both;animation-delay:calc(var(--i)*45ms)}
+@keyframes drop{from{transform:translateY(-28%);opacity:.2}to{transform:none;opacity:1}}
+.pct{display:grid;gap:2px;padding-bottom:clamp(6px,1.8vw,18px)}
+.pct b{font-family:var(--f-display);font-weight:800;font-size:clamp(2.6rem,10vw,4.5rem);line-height:.9;font-variant-numeric:tabular-nums}
+.pct span{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.note{font-size:.95rem;opacity:.88;max-width:58ch;margin:0}
+.note a{color:#fff}
+
+.count{display:inline-flex;align-items:stretch;transform:skewX(-12deg);width:max-content;max-width:100%}
+.count .lab{background:#f3f6f9;color:#0e1318;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;padding:7px 12px;display:flex;align-items:center}
+.count .t{background:rgba(0,0,0,.45);font-family:var(--f-mono);font-size:1rem;padding:6px 12px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:8px}
+.count .lab>span,.count .t>span{transform:skewX(12deg);display:inline-flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--soft);animation:pulse 1.2s infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+/* ---------- Sections ---------- */
+main .in{display:grid;gap:32px;padding-block:24px 40px}
+h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:1.05rem;margin:0 0 12px;color:var(--muted);display:flex;align-items:center;gap:10px}
+h2::before{content:"";width:18px;height:4px;background:var(--accent);transform:skewX(-20deg)}
+
+.strip{position:relative;padding-top:22px}
+.days{display:grid;grid-template-columns:repeat(3,1fr);font-family:var(--f-mono);font-size:.72rem;color:var(--muted);text-transform:uppercase;position:absolute;top:0;left:0;right:0}
+.days span{padding-left:4px;border-left:1px solid var(--line)}
+.lane{position:relative;height:44px;background:var(--track);border-radius:4px;overflow:hidden}
+.blk{position:absolute;top:6px;bottom:6px;border-radius:3px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-display);font-weight:800;font-size:.95rem;color:#fff;min-width:30px;cursor:pointer;border:0;padding:0 4px;transform:translateX(-50%)}
+.blk[aria-pressed="true"]{box-shadow:0 0 0 2px var(--fg)}
+.now{position:absolute;top:0;bottom:0;width:2px;background:var(--soft);z-index:2}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-1px;margin-right:6px}
+
+.tower{display:grid;gap:4px;list-style:none;padding:0;margin:0}
+.row{width:100%;display:grid;grid-template-columns:62px minmax(0,1fr) auto 70px;align-items:center;gap:12px;
+  background:var(--surface);border:0;color:var(--fg);text-align:left;font:inherit;padding:0 14px 0 0;min-height:58px;cursor:pointer;position:relative;
+  clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:transform .15s}
+.row:hover{transform:translateX(4px)}
+.row .code{align-self:stretch;display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:900;font-size:1.35rem;color:#fff;background:var(--c,var(--maybe))}
+.row .nm{min-width:0;display:grid}
+.row .nm b{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .nm small{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.row .ty{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.row .ty svg{width:26px;height:26px;flex:none}
+.row .p{font-family:var(--f-display);font-weight:800;font-size:1.8rem;text-align:right;font-variant-numeric:tabular-nums;line-height:1}
+.row .bar{position:absolute;left:62px;right:10px;bottom:0;height:3px;background:var(--track)}
+.row .bar i{display:block;height:100%;background:var(--c,var(--maybe))}
+.row[aria-pressed="true"]{background:color-mix(in srgb,var(--surface) 82%,var(--accent))}
+.row[aria-pressed="true"]::after{content:"";position:absolute;left:62px;top:0;bottom:0;width:3px;background:var(--accent)}
+.row.done{opacity:.5}
+.row.wk .code{background:var(--fg);color:var(--bg);font-size:1rem;letter-spacing:.04em}
+.tag{font-family:var(--f-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;padding:1px 6px;margin-left:6px;border:1px solid currentColor;border-radius:2px}
+.tag.live{color:var(--soft)}
+
+.about{display:grid;gap:10px;max-width:65ch}
+.about p{margin:0}
+.about table{border-collapse:collapse;font-size:.9rem;width:100%}
+.about td,.about th{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+.about th{font-weight:600;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+.about td{font-family:var(--f-mono);font-size:.85rem}
+.tablewrap{overflow-x:auto}
+
+.cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;list-style:none;padding:0;margin:0}
+.cal a{background:var(--surface);padding:10px 12px;display:grid;gap:1px;border-left:4px solid var(--line);text-decoration:none}
+.cal a:hover{border-left-color:var(--accent)}
+.cal a.cur{border-left-color:var(--accent)}
+.cal a.past{opacity:.55}
+.cal b{font-weight:700}
+.cal span{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+
+footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:grid;gap:4px}
+
+@media (max-width:480px){
+  .row{grid-template-columns:52px minmax(0,1fr) 30px 58px;gap:10px}
+  .row .ty span{display:none}
+  .row .bar,.row[aria-pressed="true"]::after{left:52px}
+  .row .code{font-size:1.15rem}.row .p{font-size:1.5rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SportsEvent","name":"2026 Las Vegas Grand Prix","sport":"Motor racing","startDate":"2026-11-20T00:30:00Z","endDate":"2026-11-22T06:00:00Z","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","url":"https://willitrainthisgp.com/las-vegas/","location":{"@type":"Place","name":"Las Vegas Strip Street Circuit","address":{"@type":"PostalAddress","addressLocality":"Las Vegas","addressCountry":"USA"},"geo":{"@type":"GeoCoordinates","latitude":36.1147,"longitude":-115.173}},"subEvent":[{"@type":"SportsEvent","name":"Las Vegas Grand Prix – Practice 1","startDate":"2026-11-20T00:30:00Z","endDate":"2026-11-20T01:30:00Z","location":{"@type":"Place","name":"Las Vegas Strip Street Circuit"}},{"@type":"SportsEvent","name":"Las Vegas Grand Prix – Practice 2","startDate":"2026-11-20T04:00:00Z","endDate":"2026-11-20T05:00:00Z","location":{"@type":"Place","name":"Las Vegas Strip Street Circuit"}},{"@type":"SportsEvent","name":"Las Vegas Grand Prix – Practice 3","startDate":"2026-11-21T00:30:00Z","endDate":"2026-11-21T01:30:00Z","location":{"@type":"Place","name":"Las Vegas Strip Street Circuit"}},{"@type":"SportsEvent","name":"Las Vegas Grand Prix – Qualifying","startDate":"2026-11-21T04:00:00Z","endDate":"2026-11-21T05:00:00Z","location":{"@type":"Place","name":"Las Vegas Strip Street Circuit"}},{"@type":"SportsEvent","name":"Las Vegas Grand Prix – Race","startDate":"2026-11-22T04:00:00Z","endDate":"2026-11-22T06:00:00Z","location":{"@type":"Place","name":"Las Vegas Strip Street Circuit"}}]}</script>
+</head>
+<body>
+<header class="hero gut" id="hero" data-v="early">
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="in">
+<div class="top">
+<a class="brand" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 4.5 6 8 6 11.5A6 6 0 0 1 6 13.5C6 10 9 6.5 12 2z" fill="#7cc0ff"/><path d="M3 21h18" stroke="#fff" stroke-width="2" stroke-dasharray="3 2"/></svg>Will it rain?</a>
+<div class="lang" role="group" aria-label="Language"><button type="button" data-l="en" aria-pressed="true"><span>EN</span></button><button type="button" data-l="nl" aria-pressed="false"><span>NL</span></button></div>
+</div>
+<p class="gp"><span class="chip">USA</span><span>Las Vegas Strip Street Circuit</span><span class="round">R22 · 2026</span></p>
+<h1 class="q" id="q">Will it rain at the Las Vegas GP?</h1>
+<div class="answer"><div class="word long" id="word" aria-live="polite"><span class="l" style="--i:0">N</span><span class="l" style="--i:1">o</span><span class="l" style="--i:2">t</span> <span class="l" style="--i:4">y</span><span class="l" style="--i:5">e</span><span class="l" style="--i:6">t</span></div>
+<div class="pct"><b id="pct">–</b><span id="pctLab">chance of rain</span></div></div>
+<p class="note" id="note">Forecasts this far out are guesswork. The rain chance per session appears on Thursday 12 November.</p>
+<div class="count"><div class="lab"><span id="cLab">Forecast in</span></div><div class="t"><span id="cT">6d 04:30:00</span></div></div>
+</div>
+</header>
+<main class="gut"><div class="in">
+
+<section aria-labelledby="h-sessions"><h2 id="h-sessions">Sessions</h2><ul class="tower" id="tower"><li><button type="button" id="row-FP1" data-s="FP1" class="row" style="--c:var(--muted)" aria-pressed="false">
+<span class="code">FP1</span>
+<span class="nm"><b>Practice 1</b><small>Thu 19 Nov · 16:30</small></span>
+<span class="ty"></span>
+<span class="p">–</span>
+<span class="bar" aria-hidden="true"><i style="width:0%"></i></span></button></li><li><button type="button" id="row-FP2" data-s="FP2" class="row" style="--c:var(--muted)" aria-pressed="false">
+<span class="code">FP2</span>
+<span class="nm"><b>Practice 2</b><small>Thu 19 Nov · 20:00</small></span>
+<span class="ty"></span>
+<span class="p">–</span>
+<span class="bar" aria-hidden="true"><i style="width:0%"></i></span></button></li><li><button type="button" id="row-FP3" data-s="FP3" class="row" style="--c:var(--muted)" aria-pressed="false">
+<span class="code">FP3</span>
+<span class="nm"><b>Practice 3</b><small>Fri 20 Nov · 16:30</small></span>
+<span class="ty"></span>
+<span class="p">–</span>
+<span class="bar" aria-hidden="true"><i style="width:0%"></i></span></button></li><li><button type="button" id="row-Q" data-s="Q" class="row" style="--c:var(--muted)" aria-pressed="false">
+<span class="code">Q</span>
+<span class="nm"><b>Qualifying</b><small>Fri 20 Nov · 20:00</small></span>
+<span class="ty"></span>
+<span class="p">–</span>
+<span class="bar" aria-hidden="true"><i style="width:0%"></i></span></button></li><li><button type="button" id="row-R" data-s="R" class="row" style="--c:var(--muted)" aria-pressed="false">
+<span class="code">R</span>
+<span class="nm"><b>Race</b><small>Sat 21 Nov · 20:00</small></span>
+<span class="ty"></span>
+<span class="p">–</span>
+<span class="bar" aria-hidden="true"><i style="width:0%"></i></span></button></li></ul></section>
+<section class="about" aria-labelledby="h-about">
+<h2 id="h-about">Las Vegas Grand Prix weather</h2>
+<p>The 2026 Las Vegas Grand Prix is round 22 of the season, held at Las Vegas Strip Street Circuit in Las Vegas, USA. This page gives the chance of rain for each session, taken from the hourly forecast for the circuit's exact location and refreshed every hour once the weekend is 7 days away.</p>
+<div class="tablewrap"><table><thead><tr><th>Session</th><th>Day</th><th>Local time</th><th>UTC</th></tr></thead><tbody><tr><th scope="row">Practice 1</th><td>Thu 19 Nov</td><td>16:30</td><td>00:30</td></tr><tr><th scope="row">Practice 2</th><td>Thu 19 Nov</td><td>20:00</td><td>04:00</td></tr><tr><th scope="row">Practice 3</th><td>Fri 20 Nov</td><td>16:30</td><td>00:30</td></tr><tr><th scope="row">Qualifying</th><td>Fri 20 Nov</td><td>20:00</td><td>04:00</td></tr><tr><th scope="row">Race</th><td>Sat 21 Nov</td><td>20:00</td><td>04:00</td></tr></tbody></table></div>
+</section>
+<section aria-labelledby="h-cal"><h2 id="h-cal">2026 calendar</h2><ul class="cal"><li><a href="/mexico-city/" class="past"><b>Mexico City GP</b><span>R20 · 1 Nov · Mexico City</span></a></li><li><a href="/interlagos/" class="cur"><b>São Paulo GP</b><span>R21 · 8 Nov · Interlagos</span></a></li><li><a href="/las-vegas/" class=""><b>Las Vegas GP</b><span>R22 · 22 Nov · Las Vegas</span></a></li><li><a href="/qatar/" class=""><b>Qatar GP</b><span>R23 · 29 Nov · Lusail</span></a></li><li><a href="/abu-dhabi/" class=""><b>Abu Dhabi GP</b><span>R24 · 6 Dec · Yas Marina</span></a></li></ul></section>
+<footer>
+<span id="updated"></span>
+<span>Weather data by <a href="https://open-meteo.com/" rel="noopener">Open-Meteo.com</a> (CC BY 4.0). Calendar via the <a href="https://github.com/jolpica/jolpica-f1" rel="noopener">Jolpica F1 API</a>.</span>
+<span>An independent fan site. Not affiliated with Formula 1, the FIA or any team.</span>
+</footer>
+</div></main>
+<script type="application/json" id="wir-data">{"state":"early","updated":"2026-11-06T20:00:00Z","opensAt":"2026-11-13T00:30:00Z","race":{"name":{"en":"Las Vegas GP","nl":"GP van Las Vegas"},"short":"Las Vegas","slug":"las-vegas","round":22,"season":"2026","country":"USA","locality":"Las Vegas","tz":"America/Los_Angeles"},"laneStart":"2026-11-19T08:00:00Z","laneEnd":"2026-11-22T08:00:00Z","sessions":[{"code":"FP1","start":"2026-11-20T00:30:00Z","end":"2026-11-20T01:30:00Z","rain":null,"temp":null},{"code":"FP2","start":"2026-11-20T04:00:00Z","end":"2026-11-20T05:00:00Z","rain":null,"temp":null},{"code":"FP3","start":"2026-11-21T00:30:00Z","end":"2026-11-21T01:30:00Z","rain":null,"temp":null},{"code":"Q","start":"2026-11-21T04:00:00Z","end":"2026-11-21T05:00:00Z","rain":null,"temp":null},{"code":"R","start":"2026-11-22T04:00:00Z","end":"2026-11-22T06:00:00Z","rain":null,"temp":null}],"next":null}</script>
+<script>// Shared rendering logic. Runs in Node (build: server-rendered HTML for SEO)
+// and in the browser (live countdown, language toggle, session selection).
+// Plain script, no imports/exports: it attaches itself to globalThis.WIR.
+(function () {
+  const T = {
+    en: {
+      yes: "Yes", maybe: "Maybe", no: "No", early: "Not yet", over: "Over",
+      names: { FP1: "Practice 1", FP2: "Practice 2", FP3: "Practice 3", SQ: "Sprint Qualifying", S: "Sprint", Q: "Qualifying", R: "Race", W: "Whole weekend" },
+      qW: (gp) => `Will it rain at the ${gp}?`,
+      qS: (n, gp) => `Will it rain during ${n.toLowerCase()} at the ${gp}?`,
+      qOver: (gp) => `Will it rain at the ${gp}?`,
+      pctLab: "chance of rain",
+      noteW: (p, n) => `Biggest risk: ${n.toLowerCase()} at ${p}%. Tap a session for its own answer.`,
+      noteS: "Chance of rain at any point during the session, from the hourly forecast for the circuit.",
+      noteEarly: (d) => `Forecasts this far out are guesswork. The rain chance per session appears on ${d}.`,
+      noteOver: "This race weekend is over.",
+      nextLink: (n) => `Next up: ${n}`,
+      cNext: (c) => `${c} in`, cLive: (c) => `${c} live`, cOpens: "Forecast in", cDone: "Weekend over",
+      live: "Live", done: "Done", tyre: { dry: "Slicks", inter: "Inters", wet: "Wets" },
+      leg: ["Dry", "Unsure", "Wet"], wk: "Weekend", sessions: "Sessions", WKD: "WKD",
+      updated: (d) => `Forecast updated ${d}.`, loc: "en-GB"
+    },
+    nl: {
+      yes: "Ja", maybe: "Mis­schien", no: "Nee", early: "Nog niet", over: "Voorbij",
+      names: { FP1: "Vrije training 1", FP2: "Vrije training 2", FP3: "Vrije training 3", SQ: "Sprintkwalificatie", S: "Sprint", Q: "Kwalificatie", R: "Race", W: "Heel het weekend" },
+      qW: (gp) => `Gaat het regenen tijdens de ${gp}?`,
+      qS: (n, gp) => `Gaat het regenen tijdens de ${n.toLowerCase()} van de ${gp}?`,
+      qOver: (gp) => `Gaat het regenen tijdens de ${gp}?`,
+      pctLab: "kans op regen",
+      noteW: (p, n) => `Grootste risico: ${n.toLowerCase()} met ${p}%. Tik op een sessie voor het antwoord per sessie.`,
+      noteS: "Kans op regen op enig moment tijdens de sessie, uit de uurverwachting voor het circuit.",
+      noteEarly: (d) => `Zo ver vooruit is een verwachting gokwerk. De regenkans per sessie verschijnt op ${d}.`,
+      noteOver: "Dit raceweekend is voorbij.",
+      nextLink: (n) => `Volgende: ${n}`,
+      cNext: (c) => `${c} over`, cLive: (c) => `${c} live`, cOpens: "Verwachting over", cDone: "Weekend voorbij",
+      live: "Live", done: "Klaar", tyre: { dry: "Slicks", inter: "Inters", wet: "Wets" },
+      leg: ["Droog", "Twijfel", "Nat"], wk: "Weekend", sessions: "Sessies", WKD: "WKD",
+      updated: (d) => `Verwachting bijgewerkt ${d}.`, loc: "nl-NL"
+    }
+  };
+
+  const verdict = (p) => (p > 55 ? "yes" : p >= 25 ? "maybe" : "no");
+  const vColor = { no: "var(--dry)", maybe: "var(--maybe)", yes: "var(--wet)" };
+  const tyre = (p) => (p > 70 ? "wet" : p >= 40 ? "inter" : "dry");
+  const tyreC = { dry: "var(--soft)", inter: "var(--inter)", wet: "var(--wetT)" };
+  const tyreSVG = (t) => `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="var(--tyre)"/><circle cx="12" cy="12" r="8" fill="none" stroke="${tyreC[t]}" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="var(--hub)"/></svg>`;
+  const ms = (s) => new Date(s).getTime();
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const stateOf = (s, now) => (now >= ms(s.end) ? "done" : now >= ms(s.start) ? "live" : "up");
+
+  function fmt(ts, lang, opts, tz) {
+    const o = Object.assign({}, opts);
+    if (tz) o.timeZone = tz;
+    return new Intl.DateTimeFormat(T[lang].loc, o).format(new Date(ts));
+  }
+  const fDay = (ts, lang, tz) => fmt(ts, lang, { weekday: "short", day: "numeric", month: "short" }, tz);
+  const fTime = (ts, lang, tz) => fmt(ts, lang, { hour: "2-digit", minute: "2-digit" }, tz);
+  const fLong = (ts, lang, tz) => fmt(ts, lang, { weekday: "long", day: "numeric", month: "long" }, tz);
+
+  // Highest remaining risk of the weekend, or the selected session
+  function focus(D, now, sel) {
+    const withRain = D.sessions.filter((s) => s.rain != null);
+    if (!withRain.length) return null;
+    if (sel && sel !== "W") return withRain.find((s) => s.code === sel) || null;
+    const rem = withRain.filter((s) => stateOf(s, now) !== "done");
+    return (rem.length ? rem : withRain).reduce((a, b) => (b.rain > a.rain ? b : a));
+  }
+
+  function hero(D, now, sel, lang) {
+    const t = T[lang], gp = D.race.name[lang] || D.race.name.en;
+    if (D.state === "over") {
+      return { v: "over", q: t.qOver(gp), word: t.over, pct: "–", note: t.noteOver + (D.next ? ` <a href="/${D.next.slug}/">${esc(t.nextLink(D.next.name[lang] || D.next.name.en))} →</a>` : ""), rain: 0 };
+    }
+    if (D.state === "early") {
+      return { v: "early", q: t.qW(gp), word: t.early, pct: "–", note: esc(t.noteEarly(fLong(D.opensAt, lang, D.race.tz))), rain: 0 };
+    }
+    const s = focus(D, now, sel);
+    if (!s) return { v: "early", q: t.qW(gp), word: t.early, pct: "–", note: "", rain: 0 };
+    const v = verdict(s.rain);
+    const isW = !sel || sel === "W";
+    return {
+      v, q: isW ? t.qW(gp) : t.qS(t.names[s.code], gp), word: t[v], pct: s.rain + "%",
+      note: esc(isW ? t.noteW(s.rain, t.names[s.code]) : t.noteS), rain: s.rain
+    };
+  }
+
+  function wordHTML(word) {
+    return [...word].map((c, i) => (c === "­" ? "&shy;" : c === " " ? " " : `<span class="l" style="--i:${i}">${esc(c)}</span>`)).join("");
+  }
+
+  function laneHTML(D, now, sel, lang) {
+    const a = ms(D.laneStart), b = ms(D.laneEnd), span = b - a, pos = (x) => ((x - a) / span) * 100;
+    let h = "";
+    for (const s of D.sessions) {
+      const mid = (ms(s.start) + ms(s.end)) / 2;
+      const w = ((ms(s.end) - ms(s.start)) / span) * 100;
+      const col = s.rain == null ? "var(--muted)" : vColor[verdict(s.rain)];
+      h += `<button type="button" class="blk" id="blk-${s.code}" data-s="${s.code}" style="left:${pos(mid).toFixed(2)}%;width:${w.toFixed(2)}%;background:${col}" aria-pressed="${sel === s.code}" aria-label="${esc(T[lang].names[s.code])}${s.rain != null ? " " + s.rain + "%" : ""}">${s.code}</button>`;
+    }
+    if (now > a && now < b) h += `<div class="now" style="left:${pos(now).toFixed(2)}%" aria-hidden="true"></div>`;
+    return h;
+  }
+  function daysHTML(D, lang) {
+    const a = ms(D.laneStart);
+    return [0, 1, 2].map((i) => `<span>${esc(fmt(a + i * 864e5 + 12 * 36e5, lang, { weekday: "short" }, D.race.tz))}</span>`).join("");
+  }
+  function legendHTML(lang) {
+    const t = T[lang];
+    return ["no", "maybe", "yes"].map((v, i) => `<span><i style="background:${vColor[v]}"></i>${t.leg[i]} (${["&lt;25", "25–55", "&gt;55"][i]}%)</span>`).join("");
+  }
+
+  function towerHTML(D, now, sel, lang, tz) {
+    const t = T[lang];
+    const rows = [];
+    const f = focus(D, now, "W");
+    if (f) rows.push({ code: "W", rain: f.rain });
+    rows.push(...D.sessions);
+    return rows.map((s) => {
+      const isW = s.code === "W", st = isW ? "up" : stateOf(s, now);
+      const has = s.rain != null, v = has ? verdict(s.rain) : null, ty = has ? tyre(s.rain) : null;
+      const when = isW ? "" : `${fDay(s.start, lang, tz)} · ${fTime(s.start, lang, tz)}${s.temp != null ? " · " + s.temp + "°C" : ""}`;
+      return `<li><button type="button" id="row-${s.code}" data-s="${s.code}" class="row${isW ? " wk" : ""}${st === "done" ? " done" : ""}" style="--c:${has ? vColor[v] : "var(--muted)"}" aria-pressed="${(sel || "W") === s.code}">
+<span class="code">${isW ? t.WKD : s.code}</span>
+<span class="nm"><b>${esc(t.names[s.code])}</b><small>${esc(when)}${st !== "up" ? `<span class="tag ${st}">${st === "live" ? t.live : t.done}</span>` : ""}</small></span>
+<span class="ty">${has ? tyreSVG(ty) + `<span>${t.tyre[ty]}</span>` : ""}</span>
+<span class="p">${has ? s.rain + "%" : "–"}</span>
+<span class="bar" aria-hidden="true"><i style="width:${has ? s.rain : 0}%"></i></span></button></li>`;
+    }).join("");
+  }
+
+  function countdown(D, now, lang) {
+    const t = T[lang];
+    if (D.state === "early") return { lab: t.cOpens, val: dur(ms(D.opensAt) - now), live: false };
+    const live = D.sessions.find((s) => stateOf(s, now) === "live");
+    if (live) return { lab: t.cLive(live.code), val: dur(ms(live.end) - now), live: true };
+    const nx = D.sessions.find((s) => stateOf(s, now) === "up");
+    if (nx) return { lab: t.cNext(nx.code), val: dur(ms(nx.start) - now), live: false };
+    return { lab: t.cDone, val: "—", live: false };
+  }
+  function dur(d) {
+    d = Math.max(0, d);
+    const h = Math.floor(d / 36e5), m = Math.floor((d % 36e5) / 6e4), s = Math.floor((d % 6e4) / 1e3);
+    const p = (n) => String(n).padStart(2, "0");
+    return (h >= 24 ? Math.floor(h / 24) + "d " + p(h % 24) : p(h)) + ":" + p(m) + ":" + p(s);
+  }
+
+  globalThis.WIR = { T, verdict, tyre, hero, wordHTML, laneHTML, daysHTML, legendHTML, towerHTML, countdown, fDay, fTime, fLong, fmt, esc, stateOf, ms };
+})();
+</script>
+<script>// Browser: re-renders with the viewer's time zone and language, runs the countdown and the rain.
+(function () {
+  const D = JSON.parse(document.getElementById("wir-data").textContent);
+  const W = globalThis.WIR, $ = (id) => document.getElementById(id);
+  let lang = "en", sel = "W", lastWord = "";
+  try { const s = localStorage.getItem("wir-lang"); if (s === "en" || s === "nl") lang = s; } catch (e) {}
+
+  function renderHero(animate) {
+    const h = W.hero(D, Date.now(), sel, lang);
+    $("hero").dataset.v = h.v;
+    $("q").textContent = h.q;
+    const w = $("word"), key = lang + h.v;
+    if (key !== lastWord) {
+      w.innerHTML = W.wordHTML(h.word);
+      w.classList.toggle("long", h.word.replace("­", "").length > 6);
+      w.classList.remove("swap"); void w.offsetWidth;
+      if (animate) w.classList.add("swap");
+      lastWord = key;
+    }
+    $("pct").textContent = h.pct;
+    $("pctLab").textContent = W.T[lang].pctLab;
+    $("note").innerHTML = h.note;
+    rainTarget = h.rain;
+  }
+  function renderLists() {
+    const t = W.T[lang], now = Date.now();
+    document.documentElement.lang = lang;
+    document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.l === lang)));
+    if ($("lane")) {
+      $("days").innerHTML = W.daysHTML(D, lang);
+      $("lane").innerHTML = W.laneHTML(D, now, sel, lang);
+      $("legend").innerHTML = W.legendHTML(lang);
+    }
+    $("h-wk") && ($("h-wk").textContent = t.wk);
+    $("h-sessions").textContent = t.sessions;
+    $("tower").innerHTML = W.towerHTML(D, now, sel, lang, undefined);
+    if ($("updated") && D.state === "forecast") $("updated").textContent = t.updated(W.fDay(D.updated, lang) + " " + W.fTime(D.updated, lang));
+  }
+  function renderCount() {
+    const c = W.countdown(D, Date.now(), lang);
+    $("cLab").textContent = c.lab;
+    $("cT").innerHTML = (c.live ? '<span class="dot"></span>' : "") + c.val;
+  }
+  function select(code, fromLane) {
+    if (D.state !== "forecast") return;
+    sel = fromLane && sel === code ? "W" : code;
+    renderLists(); renderHero(true);
+    if (sel !== "W" && matchMedia("(max-width:700px)").matches) $("hero").scrollIntoView({ behavior: "smooth" });
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-s]"); if (b) select(b.dataset.s, b.classList.contains("blk"));
+    const l = e.target.closest(".lang button");
+    if (l) { lang = l.dataset.l; try { localStorage.setItem("wir-lang", lang); } catch (err) {} renderLists(); renderHero(true); renderCount(); }
+  });
+
+  // Rain canvas: number of drops follows the chance of rain on screen
+  const cv = $("rain"), cx = cv.getContext("2d");
+  let Wd = 0, Hd = 0, drops = [], splash = [], rainTarget = 0, rainNow = 0;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function size() { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); Wd = r.width; Hd = r.height; cv.width = Wd * d; cv.height = Hd * d; cx.setTransform(d, 0, 0, d, 0, 0); }
+  function mk(y) { return { x: Math.random() * (Wd + 120) - 60, y: y ?? Math.random() * Hd, l: 10 + Math.random() * 18, v: 7 + Math.random() * 7, a: 0.15 + Math.random() * 0.35 }; }
+  function frame() {
+    rainNow += (rainTarget - rainNow) * 0.04;
+    const want = Math.round(Math.pow(rainNow / 100, 1.4) * Wd * 0.55);
+    while (drops.length < want) drops.push(mk(reduce ? undefined : -20));
+    if (drops.length > want) drops.length = Math.max(want, 0);
+    cx.clearRect(0, 0, Wd, Hd); cx.lineCap = "round"; cx.lineWidth = 1.1;
+    for (const d of drops) {
+      cx.strokeStyle = `rgba(210,230,255,${d.a})`;
+      cx.beginPath(); cx.moveTo(d.x, d.y); cx.lineTo(d.x - d.l * 0.28, d.y + d.l); cx.stroke();
+      if (!reduce) { d.y += d.v; d.x -= d.v * 0.28; if (d.y > Hd - 4) { if (Math.random() < 0.3) splash.push({ x: d.x, y: Hd - 2, r: 1, a: 0.5 }); Object.assign(d, mk(-20)); } }
+    }
+    for (let i = splash.length - 1; i >= 0; i--) { const s = splash[i]; cx.strokeStyle = `rgba(210,230,255,${s.a})`; cx.beginPath(); cx.ellipse(s.x, s.y, s.r * 2, s.r * 0.6, 0, 0, Math.PI * 2); cx.stroke(); s.r += 0.5; s.a -= 0.03; if (s.a <= 0) splash.splice(i, 1); }
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  addEventListener("resize", () => { size(); if (reduce) frame(); });
+
+  renderLists(); renderHero(false); renderCount(); size();
+  if (reduce) { rainNow = rainTarget; frame(); } else requestAnimationFrame(frame);
+  setInterval(renderCount, 1000);
+  setInterval(() => { renderLists(); renderHero(false); }, 60000);
+})();
+</script>
+</body>
+</html>

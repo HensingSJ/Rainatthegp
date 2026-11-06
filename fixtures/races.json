@@ -1,0 +1,30 @@
+{
+  "_note": "Alleen voor offline testen (npm run build:offline). De echte build haalt de kalender op bij api.jolpi.ca.",
+  "MRData": { "RaceTable": { "season": "2026", "Races": [
+    { "season": "2026", "round": "20", "raceName": "Mexico City Grand Prix",
+      "Circuit": { "circuitId": "rodriguez", "circuitName": "Autódromo Hermanos Rodríguez", "Location": { "lat": "19.4042", "long": "-99.0907", "locality": "Mexico City", "country": "Mexico" } },
+      "date": "2026-11-01", "time": "20:00:00Z",
+      "FirstPractice": { "date": "2026-10-30", "time": "18:30:00Z" }, "SecondPractice": { "date": "2026-10-30", "time": "22:00:00Z" },
+      "ThirdPractice": { "date": "2026-10-31", "time": "17:30:00Z" }, "Qualifying": { "date": "2026-10-31", "time": "21:00:00Z" } },
+    { "season": "2026", "round": "21", "raceName": "São Paulo Grand Prix",
+      "Circuit": { "circuitId": "interlagos", "circuitName": "Autódromo José Carlos Pace", "Location": { "lat": "-23.7036", "long": "-46.6997", "locality": "São Paulo", "country": "Brazil" } },
+      "date": "2026-11-08", "time": "17:00:00Z",
+      "FirstPractice": { "date": "2026-11-06", "time": "15:30:00Z" }, "SecondPractice": { "date": "2026-11-06", "time": "19:00:00Z" },
+      "ThirdPractice": { "date": "2026-11-07", "time": "14:30:00Z" }, "Qualifying": { "date": "2026-11-07", "time": "18:00:00Z" } },
+    { "season": "2026", "round": "22", "raceName": "Las Vegas Grand Prix",
+      "Circuit": { "circuitId": "vegas", "circuitName": "Las Vegas Strip Street Circuit", "Location": { "lat": "36.1147", "long": "-115.173", "locality": "Las Vegas", "country": "USA" } },
+      "date": "2026-11-22", "time": "04:00:00Z",
+      "FirstPractice": { "date": "2026-11-20", "time": "00:30:00Z" }, "SecondPractice": { "date": "2026-11-20", "time": "04:00:00Z" },
+      "ThirdPractice": { "date": "2026-11-21", "time": "00:30:00Z" }, "Qualifying": { "date": "2026-11-21", "time": "04:00:00Z" } },
+    { "season": "2026", "round": "23", "raceName": "Qatar Grand Prix",
+      "Circuit": { "circuitId": "losail", "circuitName": "Lusail International Circuit", "Location": { "lat": "25.49", "long": "51.4542", "locality": "Lusail", "country": "Qatar" } },
+      "date": "2026-11-29", "time": "16:00:00Z",
+      "FirstPractice": { "date": "2026-11-27", "time": "13:30:00Z" }, "SprintQualifying": { "date": "2026-11-27", "time": "17:30:00Z" },
+      "Sprint": { "date": "2026-11-28", "time": "14:00:00Z" }, "Qualifying": { "date": "2026-11-28", "time": "18:00:00Z" } },
+    { "season": "2026", "round": "24", "raceName": "Abu Dhabi Grand Prix",
+      "Circuit": { "circuitId": "yas_marina", "circuitName": "Yas Marina Circuit", "Location": { "lat": "24.4672", "long": "54.6031", "locality": "Abu Dhabi", "country": "UAE" } },
+      "date": "2026-12-06", "time": "13:00:00Z",
+      "FirstPractice": { "date": "2026-12-04", "time": "09:30:00Z" }, "SecondPractice": { "date": "2026-12-04", "time": "13:00:00Z" },
+      "ThirdPractice": { "date": "2026-12-05", "time": "10:30:00Z" }, "Qualifying": { "date": "2026-12-05", "time": "14:00:00Z" } }
+  ] } }
+}
