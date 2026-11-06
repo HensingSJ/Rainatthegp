@@ -1,0 +1,38 @@
+name: Backfill rain history
+
+# Run once by hand: Actions -> Backfill rain history -> Run workflow.
+# Fills data/history with rain measurements from past seasons (F1 trackside weather station).
+on:
+  workflow_dispatch:
+    inputs:
+      from:
+        description: "First season"
+        default: "2018"
+      to:
+        description: "Last season"
+        default: "2026"
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Fetch past measurements
+        run: node scripts/backfill.mjs --from ${{ inputs.from }} --to ${{ inputs.to }}
+      - name: Save history
+        run: |
+          if [ ! -d data/history ]; then echo "Nothing found"; exit 0; fi
+          git add data/history
+          if git diff --cached --quiet; then echo "No new history"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898599+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Backfill rain history ${{ inputs.from }}-${{ inputs.to }}"
+          git pull --rebase --autostash
+          git push
