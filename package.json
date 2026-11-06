@@ -1,0 +1,12 @@
+{
+  "name": "rainatthegp",
+  "private": true,
+  "type": "module",
+  "description": "Rain at the GP: rain chance per session for every F1 race weekend.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:offline": "node scripts/build.mjs --offline",
+    "preview": "node scripts/serve.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
