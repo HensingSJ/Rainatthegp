@@ -43,10 +43,11 @@
       "forecastAt": "2026-11-07T13:55:06Z",
       "outcome": {
         "wet": false,
-        "source": "metar",
-        "station": "SBSP",
-        "reports": 1,
-        "checkedAt": "2026-11-07T15:37:56Z"
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 66,
+        "checkedAt": "2026-11-07T16:08:51Z"
       },
       "final": false
     },
