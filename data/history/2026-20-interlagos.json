@@ -61,12 +61,15 @@
       "forecastAt": "2026-11-07T18:40:51Z",
       "outcome": {
         "wet": true,
-        "source": "metar",
-        "station": "SBSP",
-        "reports": 3,
-        "checkedAt": "2026-11-07T21:23:02Z"
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 22,
+        "reports": 70,
+        "actualStart": "2026-11-07T18:00:00+00:00",
+        "actualEnd": "2026-11-07T19:00:00+00:00",
+        "checkedAt": "2026-11-07T22:39:50Z"
       },
-      "final": false
+      "final": true
     },
     "R": {
       "start": "2026-11-08T17:00:00Z",
