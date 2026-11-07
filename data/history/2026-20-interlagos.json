@@ -32,9 +32,9 @@
         "source": "metar",
         "station": "SBSP",
         "reports": 2,
-        "checkedAt": "2026-11-06T22:24:59Z"
+        "checkedAt": "2026-11-07T00:51:24Z"
       },
-      "final": false
+      "final": true
     },
     "FP3": {
       "start": "2026-11-07T14:30:00Z",
