@@ -1,0 +1,94 @@
+{
+  "season": "2025",
+  "round": 1,
+  "slug": "melbourne",
+  "circuitId": "albert_park",
+  "raceName": "Australian Grand Prix",
+  "station": {
+    "id": "YMEN",
+    "name": "Essendon",
+    "km": 12
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2025-03-14T01:30:00Z",
+      "end": "2025-03-14T02:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 67,
+        "checkedAt": "2026-11-07T16:19:05Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP2": {
+      "start": "2025-03-14T05:00:00Z",
+      "end": "2025-03-14T06:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 66,
+        "checkedAt": "2026-11-07T16:19:05Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "FP3": {
+      "start": "2025-03-15T01:30:00Z",
+      "end": "2025-03-15T02:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 67,
+        "checkedAt": "2026-11-07T16:19:05Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "Q": {
+      "start": "2025-03-15T05:00:00Z",
+      "end": "2025-03-15T06:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": false,
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 63,
+        "checkedAt": "2026-11-07T16:19:05Z"
+      },
+      "final": true,
+      "backfill": true
+    },
+    "R": {
+      "start": "2025-03-16T04:00:00Z",
+      "end": "2025-03-16T06:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": {
+        "wet": true,
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 20,
+        "reports": 125,
+        "checkedAt": "2026-11-07T16:19:05Z"
+      },
+      "final": true,
+      "backfill": true
+    }
+  }
+}

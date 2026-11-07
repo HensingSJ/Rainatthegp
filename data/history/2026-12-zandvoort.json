@@ -16,11 +16,12 @@
       "forecast": null,
       "forecastAt": null,
       "outcome": {
-        "wet": false,
-        "source": "metar",
-        "station": "EHAM",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "wet": true,
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 20,
+        "reports": 68,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -31,11 +32,12 @@
       "forecast": null,
       "forecastAt": null,
       "outcome": {
-        "wet": false,
-        "source": "metar",
-        "station": "EHAM",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "wet": true,
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 0,
+        "reports": 48,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -46,11 +48,12 @@
       "forecast": null,
       "forecastAt": null,
       "outcome": {
-        "wet": false,
-        "source": "metar",
-        "station": "EHAM",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "wet": true,
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 0,
+        "reports": 38,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -61,11 +64,12 @@
       "forecast": null,
       "forecastAt": null,
       "outcome": {
-        "wet": false,
-        "source": "metar",
-        "station": "EHAM",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "wet": true,
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 0,
+        "reports": 63,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -77,10 +81,11 @@
       "forecastAt": null,
       "outcome": {
         "wet": true,
-        "source": "metar",
-        "station": "EHAM",
-        "reports": 5,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 0,
+        "reports": 130,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true

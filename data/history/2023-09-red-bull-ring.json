@@ -32,10 +32,11 @@
       "forecastAt": null,
       "outcome": {
         "wet": false,
-        "source": "metar",
-        "station": "LOWG",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 70,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -46,11 +47,12 @@
       "forecast": null,
       "forecastAt": null,
       "outcome": {
-        "wet": false,
-        "source": "metar",
-        "station": "LOWG",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "wet": true,
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 3,
+        "reports": 48,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -62,10 +64,11 @@
       "forecastAt": null,
       "outcome": {
         "wet": true,
-        "source": "metar",
-        "station": "LOWG",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 20,
+        "reports": 40,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -77,10 +80,11 @@
       "forecastAt": null,
       "outcome": {
         "wet": false,
-        "source": "metar",
-        "station": "LOWG",
-        "reports": 5,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 94,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true

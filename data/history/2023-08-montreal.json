@@ -17,10 +17,11 @@
       "forecastAt": null,
       "outcome": {
         "wet": false,
-        "source": "metar",
-        "station": "CYUL",
-        "reports": 1,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 50,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -31,11 +32,12 @@
       "forecast": null,
       "forecastAt": null,
       "outcome": {
-        "wet": false,
-        "source": "metar",
-        "station": "CYUL",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "wet": true,
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 16,
+        "reports": 92,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -47,10 +49,11 @@
       "forecastAt": null,
       "outcome": {
         "wet": true,
-        "source": "metar",
-        "station": "CYUL",
-        "reports": 1,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 20,
+        "reports": 60,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -61,11 +64,12 @@
       "forecast": null,
       "forecastAt": null,
       "outcome": {
-        "wet": false,
-        "source": "metar",
-        "station": "CYUL",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "wet": true,
+        "source": "openf1",
+        "rain": true,
+        "wetTyres": 20,
+        "reports": 70,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
@@ -77,10 +81,11 @@
       "forecastAt": null,
       "outcome": {
         "wet": false,
-        "source": "metar",
-        "station": "CYUL",
-        "reports": 3,
-        "checkedAt": "2026-11-06T22:25:13Z"
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 103,
+        "checkedAt": "2026-11-07T16:19:05Z"
       },
       "final": true,
       "backfill": true
