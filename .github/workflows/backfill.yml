@@ -11,6 +11,10 @@ on:
       to:
         description: "Last season"
         default: "2026"
+      upgrade:
+        description: "Re-check airport measurements with OpenF1 (2023+)"
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -25,7 +29,7 @@ jobs:
         with:
           node-version: 22
       - name: Fetch past measurements
-        run: node scripts/backfill.mjs --from ${{ inputs.from }} --to ${{ inputs.to }}
+        run: node scripts/backfill.mjs --from ${{ inputs.from }} --to ${{ inputs.to }} ${{ inputs.upgrade && '--upgrade' || '' }}
       - name: Save history
         run: |
           if [ ! -d data/history ]; then echo "Nothing found"; exit 0; fi
