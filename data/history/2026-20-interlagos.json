@@ -16,9 +16,11 @@
       "forecastAt": "2026-11-06T21:17:10Z",
       "outcome": {
         "wet": false,
-        "reports": 1,
-        "station": "SBSP",
-        "checkedAt": "2026-11-06T21:17:10Z"
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 66,
+        "checkedAt": "2026-11-07T16:16:30Z"
       },
       "final": true
     },
@@ -29,10 +31,11 @@
       "forecastAt": "2026-11-06T21:17:10Z",
       "outcome": {
         "wet": false,
-        "source": "metar",
-        "station": "SBSP",
-        "reports": 2,
-        "checkedAt": "2026-11-07T00:51:24Z"
+        "source": "openf1",
+        "rain": false,
+        "wetTyres": 0,
+        "reports": 69,
+        "checkedAt": "2026-11-07T16:16:30Z"
       },
       "final": true
     },
@@ -47,7 +50,7 @@
         "rain": false,
         "wetTyres": 0,
         "reports": 66,
-        "checkedAt": "2026-11-07T16:09:41Z"
+        "checkedAt": "2026-11-07T16:16:30Z"
       },
       "final": false
     },
