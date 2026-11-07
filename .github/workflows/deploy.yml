@@ -45,5 +45,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898599+github-actions[bot]@users.noreply.github.com"
           git commit -m "Update forecast history"
-          git pull --rebase --autostash
-          git push
+          # Another run may have saved the same file in the meantime: keep this (newer) version
+          for i in 1 2 3; do
+            git pull --rebase --autostash -X theirs && git push && exit 0
+            sleep 5
+          done
+          exit 1
