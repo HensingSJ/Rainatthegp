@@ -41,7 +41,7 @@ function pageData(race, state, next) {
   const localMidnight = Math.floor((race.firstStart + off) / 864e5) * 864e5 - off;
   return {
     state, updated: isoZ(NOW), opensAt: isoZ(race.firstStart - FORECAST_WINDOW_DAYS * 864e5),
-    race: { name: race.name, short: race.short, slug: race.slug, round: race.round, season: race.season, tz: race.tz, station: race.station },
+    race: { name: race.name, short: race.short, slug: race.slug, round: race.round, season: race.season, tz: race.tz, station: race.station, lat: race.lat, lon: race.lon, radar: race.radar },
     laneStart: isoZ(localMidnight), laneEnd: isoZ(localMidnight + 3 * 864e5),
     sessions: race.sessions.map((s) => ({ code: s.code, start: isoZ(s.start), end: isoZ(s.end), rain: s.rain ?? null, temp: s.temp ?? null, outcome: s.outcome ?? null })),
     next: next ? { name: next.name, slug: next.slug } : null

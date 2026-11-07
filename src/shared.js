@@ -27,6 +27,10 @@
       live: "Live", done: "Done", dry: "Dry", wet: "Wet", fc: (p) => `forecast ${p}%`,
       tyre: { dry: "Slicks", inter: "Inters", wet: "Wets" },
       leg: ["Dry", "Unsure", "Wet"], wk: "Weekend", sessions: "Sessions", WKD: "WKD",
+      radarH: "Live rain radar", radarPlay: "Play", radarPause: "Pause", radarNow: "latest",
+      radarNote: "Last 2 hours in 10-minute steps. The red dot is the circuit.",
+      radarSat: "No ground radar here: this is a satellite estimate of rainfall, less precise than radar.",
+      radarErr: "The radar isn't available right now. Try again in a few minutes.",
       updated: (d) => `Forecast updated ${d}.`, loc: "en-GB"
     },
     nl: {
@@ -53,6 +57,10 @@
       live: "Live", done: "Klaar", dry: "Droog", wet: "Regen", fc: (p) => `verwachting ${p}%`,
       tyre: { dry: "Slicks", inter: "Inters", wet: "Wets" },
       leg: ["Droog", "Twijfel", "Nat"], wk: "Weekend", sessions: "Sessies", WKD: "WKD",
+      radarH: "Live buienradar", radarPlay: "Afspelen", radarPause: "Pauze", radarNow: "laatste",
+      radarNote: "Afgelopen 2 uur in stappen van 10 minuten. De rode stip is het circuit.",
+      radarSat: "Hier is geen grondradar: dit is een schatting van neerslag op basis van satellietbeelden, minder precies dan radar.",
+      radarErr: "De radar is nu niet beschikbaar. Probeer het over een paar minuten opnieuw.",
       updated: (d) => `Verwachting bijgewerkt ${d}.`, loc: "nl-NL"
     },
     es: {
@@ -79,6 +87,10 @@
       live: "En directo", done: "Terminada", dry: "Seco", wet: "Lluvia", fc: (p) => `previsión ${p}%`,
       tyre: { dry: "Slicks", inter: "Inters", wet: "Lluvia" },
       leg: ["Seco", "Dudoso", "Mojado"], wk: "Fin de semana", sessions: "Sesiones", WKD: "FDS",
+      radarH: "Radar de lluvia en directo", radarPlay: "Reproducir", radarPause: "Pausa", radarNow: "último",
+      radarNote: "Últimas 2 horas en pasos de 10 minutos. El punto rojo es el circuito.",
+      radarSat: "Aquí no hay radar terrestre: es una estimación de lluvia por satélite, menos precisa que un radar.",
+      radarErr: "El radar no está disponible ahora mismo. Inténtalo de nuevo en unos minutos.",
       updated: (d) => `Previsión actualizada ${d}.`, loc: "es-ES"
     }
   };

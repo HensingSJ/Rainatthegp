@@ -73,7 +73,83 @@
   }
   addEventListener("resize", () => { size(); if (reduce) frame(); });
 
-  renderLists(); renderHero(false); renderCount(); size();
+  // ---------- Live rain radar (LibreWXR, RainViewer-compatible) ----------
+  const RADAR = {
+    api: "https://api.librewxr.net/public/weather-maps.json",   // RainViewer: https://api.rainviewer.com/public/weather-maps.json
+    fallbackHost: "https://api.librewxr.net",
+    color: 2, opts: "1_0", maxZoom: 10,                         // RainViewer free tier: color 2 only, maxZoom 7
+    credit: 'Radar: <a href="https://github.com/JoshuaKimsey/LibreWXR" rel="noopener">LibreWXR</a> (CC BY 4.0)'
+  };
+  const forceRadar = /[?&]radar=1/.test(location.search);
+  const inLiveWindow = (now) => D.sessions.some((s) => now >= W.ms(s.start) - 30 * 6e4 && now <= W.ms(s.end) + 15 * 6e4);
+  let radar = null;
+  function checkRadar() {
+    if (!$("radar")) return;
+    const want = forceRadar || inLiveWindow(Date.now());
+    if (want && !radar) startRadar();
+    $("radar").hidden = !want && !forceRadar;
+  }
+  function loadLeaflet() {
+    if (window.L) return Promise.resolve();
+    return new Promise((ok, fail) => {
+      const css = document.createElement("link"); css.rel = "stylesheet";
+      css.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"; document.head.appendChild(css);
+      const js = document.createElement("script"); js.src = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
+      js.onload = ok; js.onerror = fail; document.head.appendChild(js);
+    });
+  }
+  async function loadFrames() {
+    try {
+      const r = await fetch(RADAR.api, { cache: "no-store" });
+      const j = await r.json();
+      const host = j.host || RADAR.fallbackHost;
+      const past = (j.radar && j.radar.past) || [];
+      if (past.length) return past.map((f) => ({ time: f.time * 1000, url: `${host}${f.path}/256/{z}/{x}/{y}/${RADAR.color}/${RADAR.opts}.png` }));
+    } catch (e) { /* fall back to the latest frame only */ }
+    return [{ time: null, url: `${RADAR.fallbackHost}/v2/radar/0/256/{z}/{x}/{y}/${RADAR.color}/${RADAR.opts}.png` }];
+  }
+  async function startRadar() {
+    radar = { layers: [], i: 0, playing: !reduce, timer: null, map: null };
+    $("radar").hidden = false;
+    try { await loadLeaflet(); } catch (e) { $("rTime").textContent = W.T[lang].radarErr; return; }
+    const L = window.L, c = [D.race.lat, D.race.lon];
+    const map = L.map("radarMap", { scrollWheelZoom: false, minZoom: 5, maxZoom: RADAR.maxZoom, attributionControl: true }).setView(c, 8);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      subdomains: "abcd", maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" rel="noopener">CARTO</a> · ' + RADAR.credit
+    }).addTo(map);
+    L.circleMarker(c, { radius: 7, color: "#ffffff", weight: 2, fillColor: "#e10600", fillOpacity: 1 }).addTo(map);
+    radar.map = map;
+    await refreshFrames();
+    setInterval(refreshFrames, 10 * 6e4);
+    $("rPlay").onclick = () => { radar.playing = !radar.playing; setPlay(); };
+    setPlay(); tick();
+  }
+  async function refreshFrames() {
+    const frames = await loadFrames();
+    for (const l of radar.layers) radar.map.removeLayer(l.layer);
+    radar.layers = frames.map((f) => ({ time: f.time, layer: window.L.tileLayer(f.url, { opacity: 0, maxNativeZoom: RADAR.maxZoom, maxZoom: RADAR.maxZoom, zIndex: 5 }).addTo(radar.map) }));
+    radar.i = radar.layers.length - 1; show(radar.i);
+  }
+  function show(i) {
+    radar.layers.forEach((l, k) => l.layer.setOpacity(k === i ? 0.75 : 0));
+    const f = radar.layers[i];
+    $("rTime").textContent = f && f.time ? W.fTime(f.time, lang) + (i === radar.layers.length - 1 ? " · " + W.T[lang].radarNow : "") : W.T[lang].radarNow;
+  }
+  function tick() {
+    clearTimeout(radar.timer);
+    if (radar.playing && radar.layers.length > 1) {
+      radar.i = (radar.i + 1) % radar.layers.length; show(radar.i);
+    }
+    radar.timer = setTimeout(tick, radar.i === radar.layers.length - 1 ? 2000 : 600);
+  }
+  function setPlay() {
+    const b = $("rPlay"); b.textContent = radar.playing ? W.T[lang].radarPause : W.T[lang].radarPlay; b.setAttribute("aria-pressed", String(radar.playing));
+    if (!radar.playing) { radar.i = radar.layers.length - 1; show(radar.i); }
+  }
+
+  renderLists(); renderHero(false); renderCount(); size(); checkRadar();
+  setInterval(checkRadar, 60000);
   if (reduce) { rainNow = rainTarget; frame(); } else requestAnimationFrame(frame);
   setInterval(renderCount, 1000);
   setInterval(() => { renderLists(); renderHero(false); }, 60000);

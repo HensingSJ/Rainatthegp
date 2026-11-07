@@ -56,6 +56,7 @@ export function parseRace(r) {
     season: r.season, round: +r.round, raceName: r.raceName, name,
     slug: meta.slug || r.Circuit.circuitId.replace(/_/g, "-"), circuitId: r.Circuit.circuitId,
     short: meta.short || r.Circuit.Location.locality, tz: meta.tz || null,
+    radar: meta.radar ?? null,
     station: meta.metar ? { id: meta.metar, name: meta.metarName || meta.metar, km: meta.metarKm ?? null } : null,
     circuitName: r.Circuit.circuitName, locality: r.Circuit.Location.locality,
     country: { en: c, nl: cn.nl || c, es: cn.es || c },

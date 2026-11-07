@@ -44,6 +44,15 @@ Zodra een sessie voorbij is, toont de site niet meer de kans, maar wat er gebeur
 
 De site zegt altijd welke bron gebruikt is. De uitkomst wordt tot 3 uur na de sessie bijgewerkt en ligt daarna vast.
 
+## Live buienradar
+
+Van 30 minuten vóór tot 15 minuten na elke sessie staat er onder het antwoord een kaart van het circuit met de buien van de afgelopen 2 uur (stappen van 10 minuten). Alles laadt in de browser van de bezoeker.
+
+- **Bron:** [LibreWXR](https://github.com/JoshuaKimsey/LibreWXR), publieke server, data onder CC BY 4.0. Echte radar in Europa, Noord-Amerika, Japan en Zuidoost-Azië; elders een satellietschatting. Per circuit staat in `data/circuits.json` of er radar is (`radar: true/false`); bij `false` vermeldt de site dat het een satellietschatting is.
+- **Achtergrondkaart:** CARTO (OpenStreetMap), met bronvermelding.
+- **Overstappen naar RainViewer:** pas in `src/app.js` bij `RADAR` het adres aan en zet `maxZoom` op 7. Let op: RainViewer is gratis alleen voor persoonlijk en educatief gebruik.
+- **Testen buiten een sessie:** zet `?radar=1` achter een pagina, bijvoorbeeld `rainatthegp.com/nl/?radar=1`. Dat werkt alleen tijdens een raceweekend.
+
 ## Historie en trackrecord
 
 - Per raceweekend komt er een bestand in `data/history/`, bijvoorbeeld `2026-21-interlagos.json`, met per sessie de laatste verwachting van vóór de start en de gemeten uitkomst. De workflow slaat dit zelf op (commit "Update forecast history").

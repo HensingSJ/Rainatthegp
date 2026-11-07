@@ -130,6 +130,13 @@ h2::before{content:"";width:18px;height:4px;background:var(--accent);transform:s
 .cal span{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
 
 .muted{color:var(--muted);margin:0}
+.radar{display:grid;gap:10px}
+.rmap{height:clamp(260px,55vw,440px);background:#11161c;border-radius:4px;overflow:hidden}
+.rbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rbtn{font:700 .8rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border:0;background:var(--fg);color:var(--bg);cursor:pointer;transform:skewX(-12deg)}
+.rtime{font-family:var(--f-mono);font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.rmap .leaflet-control-attribution{font-size:10px}
+#radarMap.leaflet-container{background:#11161c}
 .muted.small{font-size:.82rem;margin-top:10px}
 .lead{margin:0 0 12px;max-width:65ch;font-size:1.05rem}
 .hist{list-style:none;margin:0;padding:0;display:grid;gap:6px}

@@ -121,6 +121,14 @@ function calendar(lang, races, cur) {
     `<li><a href="${langPath(lang, r.slug)}" class="${r === cur ? "cur" : r.raceEnd < now ? "past" : ""}"><b>${esc(r.name[lang])}</b><span>R${r.round} · ${W.fmt(r.raceStart, lang, { day: "numeric", month: "short" }, "UTC")} · ${esc(r.short)}</span></a></li>`).join("")}</ul></section>`;
 }
 
+function radarSection(lang, D) {
+  const t = W.T[lang];
+  return `<section id="radar" class="radar" hidden aria-labelledby="h-radar"><h2 id="h-radar">${t.radarH}</h2>
+<div id="radarMap" class="rmap" role="img" aria-label="${esc(t.radarH)}"></div>
+<div class="rbar"><button type="button" id="rPlay" class="rbtn" aria-pressed="true">${t.radarPause}</button><span id="rTime" class="rtime"></span></div>
+<p class="muted small">${t.radarNote}${D.race.radar === false ? " " + t.radarSat : ""}</p></section>`;
+}
+
 export function circuitPage(lang, race, D, races, cur, isHome, hist) {
   D = { ...D, lang };
   const m = meta(lang, race, D, isHome ? "" : race.slug);
@@ -143,6 +151,7 @@ ${topBar(lang, isHome ? "" : race.slug)}
 </div>
 </header>
 <main class="gut"><div class="in">
+${D.state === "forecast" && D.race.lat != null ? radarSection(lang, D) : ""}
 ${lane}
 <section aria-labelledby="h-sessions"><h2 id="h-sessions">${t.sessions}</h2><ul class="tower" id="tower">${W.towerHTML(D, now, "W", lang, race.tz || "UTC")}</ul></section>
 ${historySection(lang, race, hist)}

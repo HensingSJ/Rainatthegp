@@ -23,6 +23,7 @@
     "United States":       { "en": "United States GP",       "nl": "GP van de Verenigde Staten", "es": "GP de Estados Unidos" },
     "Mexico City":         { "en": "Mexico City GP",         "nl": "GP van Mexico-Stad",        "es": "GP de Ciudad de México" },
     "São Paulo":           { "en": "São Paulo GP",           "nl": "GP van São Paulo",          "es": "GP de São Paulo" },
+    "Brazilian":           { "en": "Brazilian GP",           "nl": "GP van Brazilië",           "es": "GP de Brasil" },
     "Las Vegas":           { "en": "Las Vegas GP",           "nl": "GP van Las Vegas",          "es": "GP de Las Vegas" },
     "Qatar":               { "en": "Qatar GP",               "nl": "GP van Qatar",              "es": "GP de Catar" },
     "Abu Dhabi":           { "en": "Abu Dhabi GP",           "nl": "GP van Abu Dhabi",          "es": "GP de Abu Dabi" }
