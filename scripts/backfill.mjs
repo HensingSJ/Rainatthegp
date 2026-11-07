@@ -12,7 +12,7 @@ import { loadRaces, f1Index, f1Sessions, trackRain, loadIemMetars, metarRain, op
 import { histFile, newHist } from "./lib/history.mjs";
 
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? +process.argv[i + 1] : d; };
-const from = arg("--from", 2018), to = arg("--to", NOW.getUTCFullYear());
+const from = arg("--from", 2023), to = arg("--to", NOW.getUTCFullYear());
 const UPGRADE = process.argv.includes("--upgrade");
 const count = { openf1: 0, track: 0, metar: 0, upgraded: 0, skipped: 0, missing: 0 };
 

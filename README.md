@@ -43,7 +43,9 @@ Zodra een sessie voorbij is, toont de site niet meer de kans, maar wat er gebeur
 2. **F1 live timing-archief.** Weigert verzoeken van GitHub (HTTP 403), dus in de praktijk niet gebruikt. Uitzetten: variabele `F1_TRACK_WEATHER` = `off`.
 3. **Dichtstbijzijnde vliegveld** (terugval). METAR via aviationweather.gov (recent) of het archief van Iowa State University (ouder). Mist plaatselijke buien, zeker bij stations ver van het circuit.
 
-De site zegt altijd welke bron gebruikt is.
+**Wat de site toont.** Alleen uitkomsten die aan het circuit zelf gemeten zijn (OpenF1) of die je handmatig hebt gecorrigeerd. Een vliegveldmelding geldt alleen als voorlopige indicatie ("Nog niet bevestigd… Voorlopig: vliegveld Congonhas meldde geen regen") en telt niet mee in de regengeschiedenis of het trackrecord. Daardoor begint de zichtbare geschiedenis in 2023.
+
+In de regengeschiedenis betekent effen blauw: regen en coureurs op intermediates of regenbanden. Gestreept blauw: de sensor mat regen, maar iedereen bleef op slicks (vochtige baan, motregen).
 
 **Handmatige correctie.** Klopt een uitkomst niet, zet hem dan in `data/overrides.json`:
 

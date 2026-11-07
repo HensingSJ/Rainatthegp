@@ -18,7 +18,10 @@
       noteDid: (wet, st, km) => `${wet ? "Rain was" : "No rain was"} reported at the ${st} weather station, about ${km} km from the circuit.`,
       noteDidTrack: (wet) => `${wet ? "Rain was" : "No rain was"} measured by the circuit's own weather station.`,
       noteTyres: (n) => ` ${n} drivers used intermediate or wet tyres.`,
+      noteSlicks: " Everyone stayed on slick tyres.",
       noteManual: "Corrected by hand.",
+      noteAwait: "Not confirmed yet. We wait for the circuit's own weather station and tyre data, usually within 2 hours after the session.",
+      noteProv: (wet, st, km) => `Provisional: ${wet ? "rain" : "no rain"} reported at ${st} airport, about ${km} km away.`,
       noteNoObs: "No measurement yet. Check back in an hour.",
       sumWet: (list) => `Rain during ${list}.`, sumDry: "No rain during any session.",
       sumSrc: (st, km) => `Measured at the ${st} weather station, about ${km} km from the circuit.`,
@@ -51,7 +54,10 @@
       noteDid: (wet, st, km) => `Weerstation ${st}, ongeveer ${km} km van het circuit, ${wet ? "meldde regen" : "meldde geen regen"}.`,
       noteDidTrack: (wet) => `Het weerstation op het circuit ${wet ? "mat regen" : "mat geen regen"}.`,
       noteTyres: (n) => ` ${n} coureurs reden op intermediates of regenbanden.`,
+      noteSlicks: " Iedereen bleef op slicks.",
       noteManual: "Handmatig gecorrigeerd.",
+      noteAwait: "Nog niet bevestigd. We wachten op het weerstation van het circuit en de bandendata, meestal binnen 2 uur na de sessie.",
+      noteProv: (wet, st, km) => `Voorlopig: vliegveld ${st}, ongeveer ${km} km verderop, meldde ${wet ? "regen" : "geen regen"}.`,
       noteNoObs: "Nog geen meting. Kijk over een uur nog eens.",
       sumWet: (list) => `Regen tijdens ${list}.`, sumDry: "Geen regen tijdens de sessies.",
       sumSrc: (st, km) => `Gemeten bij weerstation ${st}, ongeveer ${km} km van het circuit.`,
@@ -84,7 +90,10 @@
       noteDid: (wet, st, km) => `La estación meteorológica de ${st}, a unos ${km} km del circuito, ${wet ? "registró" : "no registró"} lluvia.`,
       noteDidTrack: (wet) => `La estación meteorológica del circuito ${wet ? "registró" : "no registró"} lluvia.`,
       noteTyres: (n) => ` ${n} pilotos usaron neumáticos intermedios o de lluvia.`,
+      noteSlicks: " Todos siguieron con neumáticos de seco.",
       noteManual: "Corregido a mano.",
+      noteAwait: "Aún sin confirmar. Esperamos los datos de la estación del circuito y de los neumáticos, normalmente en menos de 2 horas tras la sesión.",
+      noteProv: (wet, st, km) => `Provisional: el aeropuerto de ${st}, a unos ${km} km, ${wet ? "registró" : "no registró"} lluvia.`,
       noteNoObs: "Aún no hay medición. Vuelve a mirar en una hora.",
       sumWet: (list) => `Llovió durante ${list}.`, sumDry: "No llovió en ninguna sesión.",
       sumSrc: (st, km) => `Medido en la estación de ${st}, a unos ${km} km del circuito.`,
@@ -112,7 +121,11 @@
   const ms = (s) => new Date(s).getTime();
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const stateOf = (s, now) => (now >= ms(s.end) ? "done" : now >= ms(s.start) ? "live" : "up");
-  const outcome = (s) => (s.outcome && s.outcome.wet != null ? s.outcome.wet : null); // true / false / null
+  // Only measurements at the circuit itself (OpenF1 / F1 timing) or manual corrections count as a result.
+  // Airport reports are kept as a provisional hint only.
+  const VERIFIED = ["openf1", "track", "manual"];
+  const verifiedOut = (o) => !!(o && o.wet != null && VERIFIED.includes(o.source));
+  const outcome = (s) => (verifiedOut(s.outcome) ? s.outcome.wet : null); // true / false / null
   // Color of a session: measured result once done, otherwise the forecast
   function colorOf(s, now) {
     if (stateOf(s, now) === "done") { const o = outcome(s); return o == null ? "var(--muted)" : o ? "var(--wet)" : "var(--dry)"; }
@@ -151,7 +164,7 @@
 
   function srcNote(out, o, st, t) {
     if (out.source === "manual") return t.noteManual;
-    if (out.source === "track" || out.source === "openf1") return t.noteDidTrack(o) + (out.wetTyres ? t.noteTyres(out.wetTyres) : "");
+    if (out.source === "track" || out.source === "openf1") return t.noteDidTrack(out.rain ?? o) + (out.wetTyres ? t.noteTyres(out.wetTyres) : out.rain ? t.noteSlicks : "");
     return st ? t.noteDid(o, st.name || st.id, st.km) : "";
   }
   function hero(D, now, sel, lang) {
@@ -166,7 +179,7 @@
         v: o == null ? "early" : o ? "yes" : "no", q: t.qDidS(t.names[chosen.code], gp),
         word: o == null ? t.unknown : o ? t.yes : t.no,
         pct: chosen.rain != null ? chosen.rain + "%" : "–", pctLab: t.pctWas,
-        note: esc(o == null ? t.noteNoObs : srcNote(chosen.outcome, o, st, t)), rain: o ? 60 : 0
+        note: esc(o == null ? t.noteAwait + (chosen.outcome && chosen.outcome.source === "metar" && st ? " " + t.noteProv(chosen.outcome.wet, st.name || st.id, st.km) : "") : srcNote(chosen.outcome, o, st, t)), rain: o ? 60 : 0
       };
     }
     if (chosen && chosen.rain != null) {
@@ -245,5 +258,5 @@
     return (h >= 24 ? Math.floor(h / 24) + "d " + p(h % 24) : p(h)) + ":" + p(m) + ":" + p(s);
   }
 
-  globalThis.WIR = { T, verdict, tyre, hero, summary, wordHTML, laneHTML, daysHTML, legendHTML, towerHTML, countdown, fDay, fTime, fLong, fmt, esc, stateOf, outcome, ms };
+  globalThis.WIR = { T, verifiedOut, verdict, tyre, hero, summary, wordHTML, laneHTML, daysHTML, legendHTML, towerHTML, countdown, fDay, fTime, fLong, fmt, esc, stateOf, outcome, ms };
 })();

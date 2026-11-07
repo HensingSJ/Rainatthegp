@@ -239,7 +239,9 @@ export async function openf1Rain(code, start) {
   const year = new Date(start).getUTCFullYear();
   if (year < 2023) return null;
   const list = await of1Sessions(year);
-  const s = (list || []).find((x) => OF1_NAMES[code].includes(x.session_name) && Math.abs(Date.parse(x.date_start) - start) < 3 * 36e5);
+  // Nearest session with the same name within 36 hours: also finds sessions that were postponed (e.g. 2024 São Paulo qualifying)
+  const s = (list || []).filter((x) => OF1_NAMES[code].includes(x.session_name) && Math.abs(Date.parse(x.date_start) - start) < 36 * 36e5)
+    .sort((a, b) => Math.abs(Date.parse(a.date_start) - start) - Math.abs(Date.parse(b.date_start) - start))[0];
   if (!s) return null;
   try {
     const from = Date.parse(s.date_start), to = Date.parse(s.date_end || s.date_start) + 10 * 6e4;

@@ -69,7 +69,8 @@ export async function updateHist(r, hasForecast) {
     if (hasForecast && s.rain != null && ((st === "up" && s.start - now <= FREEZE_BEFORE_MIN * 6e4) || (st !== "up" && e.forecast == null))) {
       e.forecast = s.rain; e.forecastAt = isoZ(now);
     }
-    if (st === "done" && !e.final) open.push(s);
+    const verified = ["openf1", "manual", "track"].includes(e.outcome?.source);
+    if (st === "done" && !(verified && e.final) && now - s.end < 48 * 36e5) open.push(s);
   }
   if (open.length) {
     const oldest = Math.min(...open.map((s) => s.start));
@@ -79,7 +80,7 @@ export async function updateHist(r, hasForecast) {
       const o = await measure(r, s, metars);
       const rank = (x) => ({ openf1: 3, track: 2, metar: 1 }[x?.source] || 0);
       if (o && rank(o) >= rank(e.outcome)) e.outcome = { ...o, checkedAt: isoZ(now) };
-      if (now - s.end > OUTCOME_FINAL_HOURS * 36e5) e.final = true;
+      e.final = ["openf1", "track"].includes(e.outcome?.source) ? now - s.end > 2 * 36e5 : now - s.end > OUTCOME_FINAL_HOURS * 36e5;
     }
   }
   await saveHist(r, h, before);
@@ -91,6 +92,6 @@ export function applyHist(r, h) {
   for (const s of r.sessions) {
     const e = h.sessions[s.code]; if (!e) continue;
     if (e.forecast != null && (s.rain == null || W.stateOf({ start: s.start, end: s.end }, now) !== "up")) s.rain = e.forecast;
-    s.outcome = e.outcome ? { wet: e.outcome.wet, source: e.outcome.source, wetTyres: e.outcome.wetTyres ?? null } : null;
+    s.outcome = e.outcome ? { wet: e.outcome.wet, source: e.outcome.source, rain: e.outcome.rain ?? null, wetTyres: e.outcome.wetTyres ?? null } : null;
   }
 }

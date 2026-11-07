@@ -94,26 +94,29 @@ export function historyFor(slug, allHist) {
 }
 function historySection(lang, race, hist) {
   const s = S[lang], t = W.T[lang];
-  const done = hist.filter((h) => Object.values(h.sessions).some((e) => e.outcome && e.outcome.wet != null));
+  // Only weekends with verified measurements (circuit station / tyres via OpenF1, or manual corrections)
+  const ok = (e) => W.verifiedOut(e && e.outcome);
+  const done = hist.filter((h) => Object.values(h.sessions).some(ok));
   if (!done.length) return `<section aria-labelledby="h-hist"><h2 id="h-hist">${esc(s.histH(race.short))}</h2><p class="muted">${s.histNone}</p></section>`;
-  const withRace = done.filter((h) => h.sessions.R?.outcome?.wet != null).slice(0, 10);
+  const withRace = done.filter((h) => ok(h.sessions.R)).slice(0, 10);
   const n = withRace.length, a = withRace.filter((h) => h.sessions.R.outcome.wet).length;
-  const b = withRace.filter((h) => Object.values(h.sessions).some((e) => e.outcome?.wet)).length;
+  const b = withRace.filter((h) => Object.values(h.sessions).some((e) => ok(e) && e.outcome.wet)).length;
   const order = ["FP1", "FP2", "FP3", "SQ", "S", "Q", "R"];
   const rows = done.slice(0, 10).map((h) => {
     const chips = order.filter((c) => h.sessions[c]).map((c) => {
-      const o = h.sessions[c].outcome?.wet;
-      const cls = o == null ? "na" : o ? "wet" : "dry";
-      const out = h.sessions[c].outcome, ty = out?.wetTyres ? t.noteTyres(out.wetTyres) : "", man = out?.source === "manual" ? " " + t.noteManual : "";
-      return `<span class="chip2 ${cls}" title="${esc(t.names[c] + ": " + (o == null ? s.histLeg[2] : o ? s.histLeg[0] : s.histLeg[1]) + ty + man)}">${c}</span>`;
+      const o = ok(h.sessions[c]) ? h.sessions[c].outcome.wet : null;
+      const out0 = h.sessions[c].outcome || {};
+      const cls = o == null ? "na" : !o ? "dry" : out0.source === "openf1" && !out0.wetTyres ? "damp" : "wet";
+      const out = h.sessions[c].outcome, ty = o == null ? "" : out?.wetTyres ? t.noteTyres(out.wetTyres) : out?.rain ? t.noteSlicks : "", man = out?.source === "manual" ? " " + t.noteManual : "";
+      return `<span class="chip2 ${cls}" title="${esc(t.names[c] + ": " + (o == null ? s.histLeg[2] : !o ? s.histLeg[1] : cls === "damp" ? s.histLeg[3] : s.histLeg[0]) + ty + man)}">${c}</span>`;
     }).join("");
     return `<li><b>${h.season}</b><span class="chips">${chips}</span></li>`;
   }).join("");
   return `<section aria-labelledby="h-hist"><h2 id="h-hist">${esc(s.histH(race.short))}</h2>
 ${n ? `<p class="lead">${esc(s.histSum(a, n, b))}</p>` : ""}
 <ul class="hist">${rows}</ul>
-${race.station && done.some((h) => Object.values(h.sessions).some((e) => e.outcome?.source === "metar")) ? `<p class="muted small">${esc(s.histSrc(race.station.name, race.station.km))}</p>` : ""}
-<div class="legend"><span><i style="background:var(--wet)"></i>${s.histLeg[0]}</span><span><i style="background:var(--dry)"></i>${s.histLeg[1]}</span><span><i style="background:var(--track);outline:1px solid var(--line)"></i>${s.histLeg[2]}</span></div></section>`;
+<p class="muted small">${s.histSrc}</p>
+<div class="legend"><span><i style="background:var(--wet)"></i>${s.histLeg[0]}</span><span><i class="dampi"></i>${s.histLeg[3]}</span><span><i style="background:var(--dry)"></i>${s.histLeg[1]}</span><span><i style="background:var(--track);outline:1px solid var(--line)"></i>${s.histLeg[2]}</span></div></section>`;
 }
 
 function calendar(lang, races, cur) {
@@ -175,7 +178,7 @@ ${footer(lang, D)}
 export function trackStats(allHist) {
   const rows = [];
   for (const h of allHist) for (const [code, e] of Object.entries(h.sessions)) {
-    if (e.forecast == null || e.outcome?.wet == null) continue;
+    if (e.forecast == null || !W.verifiedOut(e.outcome)) continue;
     rows.push({ h, code, start: e.start, forecast: e.forecast, wet: e.outcome.wet, v: W.verdict(e.forecast), source: e.outcome.source });
   }
   rows.sort((a, b) => Date.parse(b.start) - Date.parse(a.start));
