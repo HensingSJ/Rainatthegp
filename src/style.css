@@ -134,7 +134,11 @@ h2::before{content:"";width:18px;height:4px;background:var(--accent);transform:s
 .rmap{height:clamp(260px,55vw,440px);background:#11161c;border-radius:4px;overflow:hidden}
 .rbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .rbtn{font:700 .8rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border:0;background:var(--fg);color:var(--bg);cursor:pointer;transform:skewX(-12deg)}
-.rtime{font-family:var(--f-mono);font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.rstep{font:700 1.1rem var(--f-body);width:34px;height:32px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;line-height:1}
+.rslider{flex:1 1 180px;min-width:0;height:32px;accent-color:var(--accent);cursor:pointer;
+  background:linear-gradient(to right,transparent var(--fc,100%),color-mix(in srgb,var(--wet) 18%,transparent) var(--fc,100%)) center/100% 10px no-repeat}
+.radar.future .rtime{color:var(--wet)}
+.rtime{min-width:9.5rem;font-family:var(--f-mono);font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .rmap .leaflet-control-attribution{font-size:10px}
 #radarMap.leaflet-container{background:#11161c}
 #radarMap .basemap{filter:invert(1) hue-rotate(180deg) brightness(.8) contrast(.85) saturate(.4)}

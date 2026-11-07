@@ -103,13 +103,15 @@
       const r = await fetch(RADAR.api, { cache: "no-store" });
       const j = await r.json();
       const host = j.host || RADAR.fallbackHost;
-      const past = (j.radar && j.radar.past) || [];
-      if (past.length) return past.map((f) => ({ time: f.time * 1000, url: `${host}${f.path}/256/{z}/{x}/{y}/${RADAR.color}/${RADAR.opts}.png` }));
+      const mk = (f, future) => ({ time: f.time * 1000, future, url: `${host}${f.path}/256/{z}/{x}/{y}/${RADAR.color}/${RADAR.opts}.png` });
+      const past = ((j.radar && j.radar.past) || []).map((f) => mk(f, false));
+      const next = ((j.radar && j.radar.nowcast) || []).map((f) => mk(f, true));
+      if (past.length) return past.concat(next);
     } catch (e) { /* fall back to the latest frame only */ }
-    return [{ time: null, url: `${RADAR.fallbackHost}/v2/radar/0/256/{z}/{x}/{y}/${RADAR.color}/${RADAR.opts}.png` }];
+    return [{ time: null, future: false, url: `${RADAR.fallbackHost}/v2/radar/0/256/{z}/{x}/{y}/${RADAR.color}/${RADAR.opts}.png` }];
   }
   async function startRadar() {
-    radar = { layers: [], i: 0, playing: !reduce, timer: null, map: null };
+    radar = { layers: [], i: 0, last: 0, playing: !reduce, timer: null, map: null };
     $("radar").hidden = false;
     try { await loadLeaflet(); } catch (e) { $("rTime").textContent = W.T[lang].radarErr; return; }
     const L = window.L, c = [D.race.lat, D.race.lon];
@@ -120,32 +122,52 @@
     }).addTo(map);
     L.circleMarker(c, { radius: 7, color: "#ffffff", weight: 2, fillColor: "#e10600", fillOpacity: 1 }).addTo(map);
     radar.map = map;
+    $("rPlay").onclick = () => { radar.playing = !radar.playing; setPlay(); tick(); };
+    $("rSlider").oninput = (e) => { pause(); show(+e.target.value); };
+    $("rPrev").onclick = () => { pause(); show(Math.max(0, radar.i - 1)); };
+    $("rNext").onclick = () => { pause(); show(Math.min(radar.layers.length - 1, radar.i + 1)); };
     await refreshFrames();
     setInterval(refreshFrames, 10 * 6e4);
-    $("rPlay").onclick = () => { radar.playing = !radar.playing; setPlay(); };
     setPlay(); tick();
   }
   async function refreshFrames() {
+    const keep = radar.layers[radar.i] && radar.layers[radar.i].time;
     const frames = await loadFrames();
     for (const l of radar.layers) radar.map.removeLayer(l.layer);
-    radar.layers = frames.map((f) => ({ time: f.time, layer: window.L.tileLayer(f.url, { opacity: 0, maxNativeZoom: RADAR.maxZoom, maxZoom: RADAR.maxZoom, zIndex: 5 }).addTo(radar.map) }));
-    radar.i = radar.layers.length - 1; show(radar.i);
+    radar.layers = frames.map((f) => ({ time: f.time, future: f.future, layer: window.L.tileLayer(f.url, { opacity: 0, maxNativeZoom: RADAR.maxZoom, maxZoom: RADAR.maxZoom, zIndex: 5 }).addTo(radar.map) }));
+    radar.last = Math.max(0, radar.layers.map((l) => l.future).lastIndexOf(false));
+    const sl = $("rSlider"), n = radar.layers.length;
+    sl.max = String(Math.max(0, n - 1)); sl.disabled = n < 2;
+    const p = n > 1 ? ((radar.last + 0.5) / (n - 1)) * 100 : 100; // where the forecast part starts
+    sl.style.setProperty("--fc", Math.min(100, p) + "%");
+    const again = radar.layers.findIndex((l) => l.time === keep);
+    show(!radar.playing && again >= 0 ? again : radar.last);
   }
   function show(i) {
+    radar.i = i;
     radar.layers.forEach((l, k) => l.layer.setOpacity(k === i ? 0.75 : 0));
-    const f = radar.layers[i];
-    $("rTime").textContent = f && f.time ? W.fTime(f.time, lang) + (i === radar.layers.length - 1 ? " · " + W.T[lang].radarNow : "") : W.T[lang].radarNow;
+    const f = radar.layers[i], t = W.T[lang];
+    $("rSlider").value = String(i);
+    let label = t.radarNow;
+    if (f && f.time) {
+      label = W.fTime(f.time, lang);
+      if (f.future) label += " · " + t.radarFc(Math.round((f.time - radar.layers[radar.last].time) / 6e4));
+      else if (i === radar.last) label += " · " + t.radarNow;
+    }
+    $("rTime").textContent = label;
+    $("radar").classList.toggle("future", !!(f && f.future));
   }
   function tick() {
     clearTimeout(radar.timer);
-    if (radar.playing && radar.layers.length > 1) {
-      radar.i = (radar.i + 1) % radar.layers.length; show(radar.i);
-    }
-    radar.timer = setTimeout(tick, radar.i === radar.layers.length - 1 ? 2000 : 600);
+    if (!radar.playing) return;
+    if (radar.layers.length > 1) show((radar.i + 1) % radar.layers.length);
+    const end = radar.i === radar.layers.length - 1 || (radar.i === radar.last && radar.last === radar.layers.length - 1);
+    radar.timer = setTimeout(tick, end ? 2000 : radar.i === radar.last ? 1400 : 600);
   }
+  function pause() { if (radar.playing) { radar.playing = false; setPlay(); } }
   function setPlay() {
     const b = $("rPlay"); b.textContent = radar.playing ? W.T[lang].radarPause : W.T[lang].radarPlay; b.setAttribute("aria-pressed", String(radar.playing));
-    if (!radar.playing) { radar.i = radar.layers.length - 1; show(radar.i); }
+    if (!radar.playing) clearTimeout(radar.timer);
   }
 
   renderLists(); renderHero(false); renderCount(); size(); checkRadar();

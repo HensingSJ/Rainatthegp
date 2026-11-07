@@ -126,7 +126,11 @@ function radarSection(lang, D) {
   const t = W.T[lang];
   return `<section id="radar" class="radar" hidden aria-labelledby="h-radar"><h2 id="h-radar">${t.radarH}</h2>
 <div id="radarMap" class="rmap" role="img" aria-label="${esc(t.radarH)}"></div>
-<div class="rbar"><button type="button" id="rPlay" class="rbtn" aria-pressed="true">${t.radarPause}</button><span id="rTime" class="rtime"></span></div>
+<div class="rbar"><button type="button" id="rPlay" class="rbtn" aria-pressed="true">${t.radarPause}</button>
+<button type="button" id="rPrev" class="rstep" aria-label="${t.radarPrev}">‹</button>
+<input type="range" id="rSlider" class="rslider" min="0" max="0" step="1" value="0" aria-label="${t.radarTime}">
+<button type="button" id="rNext" class="rstep" aria-label="${t.radarNext}">›</button>
+<span id="rTime" class="rtime" aria-live="polite"></span></div>
 <p class="muted small">${t.radarNote}${D.race.radar === false ? " " + t.radarSat : ""}</p></section>`;
 }
 
