@@ -210,3 +210,44 @@ export async function trackRain(f1s) {
     return { wet: use.some((x) => String(x.d.Rainfall) === "1" || x.d.Rainfall === true), n: use.length };
   } catch (e) { console.warn(`F1 track weather unavailable for ${f1s.path}: ${e.message}`); return { wet: null, n: 0 }; }
 }
+
+// ---------- Observations 3: OpenF1 (open API on top of F1 timing data, 2023 onwards) ----------
+// Rain flag from the trackside station per minute + tyres per driver. Historical data is free; sessions
+// usually appear within an hour or two after they end.
+const OPENF1 = "https://api.openf1.org/v1";
+const OF1_NAMES = { FP1: ["Practice 1"], FP2: ["Practice 2"], FP3: ["Practice 3"], SQ: ["Sprint Qualifying", "Sprint Shootout"], S: ["Sprint"], Q: ["Qualifying"], R: ["Race"] };
+const of1Cache = new Map();
+let of1Last = 0;
+async function of1Get(path) {
+  const wait = of1Last + 2200 - Date.now(); if (wait > 0) await sleep(wait); // stay well under the free rate limit
+  of1Last = Date.now();
+  const { status, text } = await getText(`${OPENF1}${path}`, 2);
+  if (!text) throw new Error(`HTTP ${status}`);
+  return JSON.parse(text);
+}
+async function of1Sessions(year) {
+  if (!of1Cache.has(year)) of1Cache.set(year, of1Get(`/sessions?year=${year}`).catch((e) => { console.warn(`OpenF1 sessions ${year}: ${e.message}`); return null; }));
+  return of1Cache.get(year);
+}
+// -> { wet, rain, wetTyres, n } or null when OpenF1 has no data for this session
+export async function openf1Rain(code, start) {
+  if (OFFLINE) {
+    if (!["S", "Q", "R"].includes(code)) return null;
+    const d = new Date(start), rain = d.getUTCDate() % 2 === 1 && d.getUTCHours() >= 13 && d.getUTCHours() <= 16;
+    return { wet: rain, rain, wetTyres: rain ? 8 : 0, n: 60 };
+  }
+  const year = new Date(start).getUTCFullYear();
+  if (year < 2023) return null;
+  const list = await of1Sessions(year);
+  const s = (list || []).find((x) => OF1_NAMES[code].includes(x.session_name) && Math.abs(Date.parse(x.date_start) - start) < 3 * 36e5);
+  if (!s) return null;
+  try {
+    const from = Date.parse(s.date_start), to = Date.parse(s.date_end || s.date_start) + 10 * 6e4;
+    const weather = (await of1Get(`/weather?session_key=${s.session_key}`)).filter((w) => { const t = Date.parse(w.date); return t >= from && t <= to; });
+    const stints = await of1Get(`/stints?session_key=${s.session_key}`);
+    if (!weather.length && !stints.length) return null;
+    const rain = weather.some((w) => Number(w.rainfall) > 0);
+    const wetTyres = new Set(stints.filter((x) => /^(INTERMEDIATE|WET)$/i.test(x.compound || "")).map((x) => x.driver_number)).size;
+    return { wet: rain || wetTyres >= 3, rain, wetTyres, n: weather.length };
+  } catch (e) { console.warn(`OpenF1 ${code} ${new Date(start).toISOString()}: ${e.message}`); return null; }
+}

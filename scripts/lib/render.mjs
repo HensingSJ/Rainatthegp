@@ -104,7 +104,8 @@ function historySection(lang, race, hist) {
     const chips = order.filter((c) => h.sessions[c]).map((c) => {
       const o = h.sessions[c].outcome?.wet;
       const cls = o == null ? "na" : o ? "wet" : "dry";
-      return `<span class="chip2 ${cls}" title="${esc(t.names[c])}: ${o == null ? s.histLeg[2] : o ? s.histLeg[0] : s.histLeg[1]}">${c}</span>`;
+      const out = h.sessions[c].outcome, ty = out?.wetTyres ? t.noteTyres(out.wetTyres) : "", man = out?.source === "manual" ? " " + t.noteManual : "";
+      return `<span class="chip2 ${cls}" title="${esc(t.names[c] + ": " + (o == null ? s.histLeg[2] : o ? s.histLeg[0] : s.histLeg[1]) + ty + man)}">${c}</span>`;
     }).join("");
     return `<li><b>${h.season}</b><span class="chips">${chips}</span></li>`;
   }).join("");

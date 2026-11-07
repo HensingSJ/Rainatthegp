@@ -13,7 +13,7 @@ export const LANGS = ["en", "nl", "es"];                 // en lives at /, the o
 export const FORECAST_WINDOW_DAYS = 7;                   // show a forecast once the first session is this close
 export const KEEP_CURRENT_HOURS = 6;                     // keep a weekend "current" this long after the race
 export const FREEZE_BEFORE_MIN = 75;                     // store the forecast made this close to session start
-export const OUTCOME_FINAL_HOURS = 3;                    // keep re-checking the outcome this long after a session
+export const OUTCOME_FINAL_HOURS = 8;                    // keep re-checking the outcome this long after a session (OpenF1 needs a while)
 // F1 live timing (trackside weather station). Unofficial source: set F1_TRACK_WEATHER=off to switch it off.
 export const USE_F1_TRACK = (process.env.F1_TRACK_WEATHER || "on").toLowerCase() !== "off";
 

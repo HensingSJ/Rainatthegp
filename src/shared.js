@@ -17,6 +17,8 @@
       noteOver: "This race weekend is over.",
       noteDid: (wet, st, km) => `${wet ? "Rain was" : "No rain was"} reported at the ${st} weather station, about ${km} km from the circuit.`,
       noteDidTrack: (wet) => `${wet ? "Rain was" : "No rain was"} measured by the circuit's own weather station.`,
+      noteTyres: (n) => ` ${n} drivers used intermediate or wet tyres.`,
+      noteManual: "Corrected by hand.",
       noteNoObs: "No measurement yet. Check back in an hour.",
       sumWet: (list) => `Rain during ${list}.`, sumDry: "No rain during any session.",
       sumSrc: (st, km) => `Measured at the ${st} weather station, about ${km} km from the circuit.`,
@@ -47,6 +49,8 @@
       noteOver: "Dit raceweekend is voorbij.",
       noteDid: (wet, st, km) => `Weerstation ${st}, ongeveer ${km} km van het circuit, ${wet ? "meldde regen" : "meldde geen regen"}.`,
       noteDidTrack: (wet) => `Het weerstation op het circuit ${wet ? "mat regen" : "mat geen regen"}.`,
+      noteTyres: (n) => ` ${n} coureurs reden op intermediates of regenbanden.`,
+      noteManual: "Handmatig gecorrigeerd.",
       noteNoObs: "Nog geen meting. Kijk over een uur nog eens.",
       sumWet: (list) => `Regen tijdens ${list}.`, sumDry: "Geen regen tijdens de sessies.",
       sumSrc: (st, km) => `Gemeten bij weerstation ${st}, ongeveer ${km} km van het circuit.`,
@@ -77,6 +81,8 @@
       noteOver: "Este fin de semana de carreras ha terminado.",
       noteDid: (wet, st, km) => `La estación meteorológica de ${st}, a unos ${km} km del circuito, ${wet ? "registró" : "no registró"} lluvia.`,
       noteDidTrack: (wet) => `La estación meteorológica del circuito ${wet ? "registró" : "no registró"} lluvia.`,
+      noteTyres: (n) => ` ${n} pilotos usaron neumáticos intermedios o de lluvia.`,
+      noteManual: "Corregido a mano.",
       noteNoObs: "Aún no hay medición. Vuelve a mirar en una hora.",
       sumWet: (list) => `Llovió durante ${list}.`, sumDry: "No llovió en ninguna sesión.",
       sumSrc: (st, km) => `Medido en la estación de ${st}, a unos ${km} km del circuito.`,
@@ -134,12 +140,17 @@
     if (!known.length) return { v: "over", q: t.qDidW(gp), word: t.over, pct: "–", pctLab: t.pctLab, note: t.noteOver + next, rain: 0 };
     const wet = known.filter((s) => outcome(s));
     const st = D.race.station;
-    const track = known.every((s) => s.outcome.source === "track");
+    const track = known.every((s) => ["track", "openf1", "manual"].includes(s.outcome.source));
     const src = track ? t.sumSrcTrack : st ? t.sumSrc(st.name || st.id, st.km) : "";
     const note = (wet.length ? t.sumWet(list(wet.map((s) => t.names[s.code].toLowerCase()), lang)) : t.sumDry) + (src ? " " + src : "");
     return { v: wet.length ? "yes" : "no", q: t.qDidW(gp), word: wet.length ? t.yes : t.no, pct: "–", pctLab: t.pctLab, note: esc(note) + next, rain: wet.length ? 60 : 0 };
   }
 
+  function srcNote(out, o, st, t) {
+    if (out.source === "manual") return t.noteManual;
+    if (out.source === "track" || out.source === "openf1") return t.noteDidTrack(o) + (out.wetTyres ? t.noteTyres(out.wetTyres) : "");
+    return st ? t.noteDid(o, st.name || st.id, st.km) : "";
+  }
   function hero(D, now, sel, lang) {
     const t = T[lang], gp = D.race.name[lang] || D.race.name.en;
     if (D.state === "early") {
@@ -152,7 +163,7 @@
         v: o == null ? "early" : o ? "yes" : "no", q: t.qDidS(t.names[chosen.code], gp),
         word: o == null ? t.unknown : o ? t.yes : t.no,
         pct: chosen.rain != null ? chosen.rain + "%" : "–", pctLab: t.pctWas,
-        note: esc(o == null ? t.noteNoObs : chosen.outcome.source === "track" ? t.noteDidTrack(o) : st ? t.noteDid(o, st.name || st.id, st.km) : ""), rain: o ? 60 : 0
+        note: esc(o == null ? t.noteNoObs : srcNote(chosen.outcome, o, st, t)), rain: o ? 60 : 0
       };
     }
     if (chosen && chosen.rain != null) {

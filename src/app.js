@@ -114,9 +114,9 @@
     try { await loadLeaflet(); } catch (e) { $("rTime").textContent = W.T[lang].radarErr; return; }
     const L = window.L, c = [D.race.lat, D.race.lon];
     const map = L.map("radarMap", { scrollWheelZoom: false, minZoom: 5, maxZoom: RADAR.maxZoom, attributionControl: true }).setView(c, 8);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      subdomains: "abcd", maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" rel="noopener">CARTO</a> · ' + RADAR.credit
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19, className: "basemap",
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> · ' + RADAR.credit
     }).addTo(map);
     L.circleMarker(c, { radius: 7, color: "#ffffff", weight: 2, fillColor: "#e10600", fillOpacity: 1 }).addTo(map);
     radar.map = map;

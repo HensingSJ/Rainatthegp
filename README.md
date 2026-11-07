@@ -37,19 +37,30 @@ Het antwoord staat in de HTML zelf, in de `<title>`, de meta-omschrijving en de 
 
 ## Na afloop: uitkomst
 
-Zodra een sessie voorbij is, toont de site niet meer de kans, maar wat er gebeurde: **Droog** of **Regen**, met de verwachting erbij.
+Zodra een sessie voorbij is, toont de site niet meer de kans, maar wat er gebeurde: **Droog** of **Regen**, met de verwachting erbij. Bronnen, in volgorde:
 
-1. **Weerstation op het circuit** (eerste keus). Uit de openbare bestanden van de F1 live timing: een regen-ja/nee-vlag per minuut, alleen tussen de start en de finish van de sessie. Dit is een **onofficiële** bron. F1 kan het formaat of de toegang veranderen, en de data is van F1. Uitzetten kan zonder code: GitHub → *Settings → Secrets and variables → Actions → Variables* → `F1_TRACK_WEATHER` = `off`.
-2. **Dichtstbijzijnde vliegveld** (terugval). METAR-rapporten via aviationweather.gov. "Regen" als een rapport tussen 15 minuten voor en 15 minuten na de sessie neerslag meldt, of tot een uur erna "recente regen". Regen in de omgeving (`VC`) telt niet mee. Welk station bij welk circuit hoort staat in `data/circuits.json`; de afstanden zijn schattingen.
+1. **OpenF1** (api.openf1.org, vanaf 2023). Open API bovenop de F1-timingdata: de regenvlag van het weerstation op het circuit (per minuut) én welke banden elke coureur reed. "Regen" als het station regen meet tijdens de sessie, of als 3 of meer coureurs op intermediates of regenbanden reden. Gegevens verschijnen meestal binnen een à twee uur na de sessie; tot 8 uur na afloop wordt de uitkomst bijgewerkt. Onofficieel: de data is van F1.
+2. **F1 live timing-archief.** Weigert verzoeken van GitHub (HTTP 403), dus in de praktijk niet gebruikt. Uitzetten: variabele `F1_TRACK_WEATHER` = `off`.
+3. **Dichtstbijzijnde vliegveld** (terugval). METAR via aviationweather.gov (recent) of het archief van Iowa State University (ouder). Mist plaatselijke buien, zeker bij stations ver van het circuit.
 
-De site zegt altijd welke bron gebruikt is. De uitkomst wordt tot 3 uur na de sessie bijgewerkt en ligt daarna vast.
+De site zegt altijd welke bron gebruikt is.
+
+**Handmatige correctie.** Klopt een uitkomst niet, zet hem dan in `data/overrides.json`:
+
+```json
+{
+  "2025-interlagos": { "S": { "wet": true, "note": "vochtige baan na regen" } }
+}
+```
+
+Sleutel = seizoen + circuit (de URL-naam), daarbinnen de sessie (`FP1`, `FP2`, `FP3`, `SQ`, `S`, `Q`, `R`). Een correctie gaat altijd voor en de site vermeldt "handmatig gecorrigeerd".
 
 ## Live buienradar
 
 Van 30 minuten vóór tot 15 minuten na elke sessie staat er onder het antwoord een kaart van het circuit met de buien van de afgelopen 2 uur (stappen van 10 minuten). Alles laadt in de browser van de bezoeker.
 
 - **Bron:** [LibreWXR](https://github.com/JoshuaKimsey/LibreWXR), publieke server, data onder CC BY 4.0. Echte radar in Europa, Noord-Amerika, Japan en Zuidoost-Azië; elders een satellietschatting. Per circuit staat in `data/circuits.json` of er radar is (`radar: true/false`); bij `false` vermeldt de site dat het een satellietschatting is.
-- **Achtergrondkaart:** CARTO (OpenStreetMap), met bronvermelding.
+- **Achtergrondkaart:** OpenStreetMap, donker gemaakt met CSS, met bronvermelding. Alleen tijdens sessies geladen, dus licht gebruik.
 - **Overstappen naar RainViewer:** pas in `src/app.js` bij `RADAR` het adres aan en zet `maxZoom` op 7. Let op: RainViewer is gratis alleen voor persoonlijk en educatief gebruik.
 - **Testen buiten een sessie:** zet `?radar=1` achter een pagina, bijvoorbeeld `rainatthegp.com/nl/?radar=1`. Dat werkt alleen tijdens een raceweekend.
 
@@ -59,7 +70,7 @@ Van 30 minuten vóór tot 15 minuten na elke sessie staat er onder het antwoord 
 - Elke circuitpagina toont de **regengeschiedenis** van dat circuit ("Het regende tijdens de race in 2 van de laatste 7 GP's hier").
 - `/track-record/` vergelijkt verwachting en uitkomst. Sessies waarbij we "Misschien" zeiden tellen niet als goed of fout.
 
-**Eenmalig: oude seizoenen ophalen.** Ga naar GitHub → *Actions* → **Backfill rain history** → *Run workflow* (standaard 2018 t/m 2026). Dat duurt een paar minuten en vult de regengeschiedenis met metingen van het weerstation op het circuit. Oude seizoenen hebben geen verwachting, dus ze tellen niet mee voor het trackrecord. Bestaande bestanden worden niet overschreven; je kunt hem dus veilig opnieuw draaien.
+**Oude seizoenen ophalen.** GitHub → *Actions* → **Backfill rain history** → *Run workflow* (standaard 2018 t/m 2026). Vanaf 2023 via OpenF1, daarvóór via het vliegveldarchief. Met het vinkje *upgrade* (standaard aan) worden bestaande vliegveldmetingen vanaf 2023 opnieuw gecontroleerd met OpenF1. Verwachtingen blijven altijd staan. Oude seizoenen hebben geen verwachting en tellen dus niet mee voor het trackrecord. Je kunt hem veilig opnieuw draaien.
 
 ## Mappen
 
