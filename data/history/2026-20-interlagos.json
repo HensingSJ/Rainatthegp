@@ -52,13 +52,13 @@
         "reports": 66,
         "checkedAt": "2026-11-07T16:18:11Z"
       },
-      "final": false
+      "final": true
     },
     "Q": {
       "start": "2026-11-07T18:00:00Z",
       "end": "2026-11-07T19:00:00Z",
-      "forecast": null,
-      "forecastAt": null,
+      "forecast": 80,
+      "forecastAt": "2026-11-07T18:40:51Z",
       "outcome": null,
       "final": false
     },
