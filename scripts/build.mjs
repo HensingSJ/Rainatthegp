@@ -6,7 +6,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import "../src/shared.js";
-import { DIST, SITE, LANGS, NOW, now, OFFLINE, isoZ, langPath, FORECAST_WINDOW_DAYS, KEEP_CURRENT_HOURS, USE_F1_TRACK, PUBLIC_TRACK_RECORD, TRACK_RECORD_SESSIONS } from "./lib/config.mjs";
+import { DIST, SITE, LANGS, NOW, now, OFFLINE, isoZ, langPath, FORECAST_WINDOW_DAYS, KEEP_CURRENT_HOURS, USE_F1_TRACK, PUBLIC_TRACK_RECORD, TRACK_RECORD_SESSIONS, SECURITY_CONTACT } from "./lib/config.mjs";
 import { loadRaces, loadWeather, applyWeather } from "./lib/sources.mjs";
 import { updateHist, loadHist, applyHist, loadAllHistory } from "./lib/history.mjs";
 import { circuitPage, trackRecordPage, trackStats, historyFor } from "./lib/render.mjs";
@@ -124,6 +124,8 @@ ${["", ...urls].map(entry).join("\n")}
 </urlset>
 `);
 await write("robots.txt", `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
+// RFC 9116: Expires is required and must be less than a year ahead; rebuilt every hour, so it never runs out
+await write(".well-known/security.txt", `Contact: ${SECURITY_CONTACT}\nExpires: ${isoZ(now + 180 * 864e5)}\nPreferred-Languages: nl, en\nCanonical: ${SITE}/.well-known/security.txt\n`);
 await write("_headers", `/*\n  Cache-Control: public, max-age=300\n/og/*\n  Cache-Control: public, max-age=3600\n/api/*\n  Access-Control-Allow-Origin: *\n`);
 await write("404.html", `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Not found – Rain at the GP</title><style>body{font:16px system-ui;background:#151c24;color:#f3f6f9;display:grid;place-items:center;min-height:100vh;margin:0;padding:16px}a{color:#7cc0ff}</style><p>This page doesn't exist. <a href="/">See if it will rain this weekend →</a></p>`);
 

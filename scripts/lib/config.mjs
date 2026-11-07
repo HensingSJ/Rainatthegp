@@ -24,6 +24,9 @@ export const TRACK_RECORD_SESSIONS = ["R", "S"];          // sessions that count
 export const SESSION_MIN = { FP1: 60, FP2: 60, FP3: 60, SQ: 45, S: 60, Q: 60, R: 120 };
 export const HIST_DIR = path.join(ROOT, OFFLINE ? ".offline-history" : "data/history");
 
+// Contact for /.well-known/security.txt (set SECURITY_CONTACT to change)
+export const SECURITY_CONTACT = process.env.SECURITY_CONTACT || "mailto:security@rainatthegp.com";
+
 export const read = (p) => fs.readFile(path.join(ROOT, p), "utf8");
 export const isoZ = (t) => new Date(t).toISOString().replace(/\.\d{3}Z$/, "Z");
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

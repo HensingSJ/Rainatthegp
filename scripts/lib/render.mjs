@@ -71,6 +71,8 @@ function meta(lang, race, D, slug) {
   }
   const ld = {
     "@context": "https://schema.org", "@type": "SportsEvent", name: `${race.season} ${race.raceName}`, sport: "Motor racing",
+    description: desc, image: [`${SITE}/og/${lang}-${race.slug}.png`], inLanguage: lang,
+    organizer: { "@type": "Organization", name: "Formula 1", url: "https://www.formula1.com" },
     startDate: isoZ(race.firstStart), endDate: isoZ(race.raceEnd), eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode", url: `${SITE}${langPath(lang, race.slug)}`,
     location: { "@type": "Place", name: race.circuitName, address: { "@type": "PostalAddress", addressLocality: race.locality, addressCountry: race.country.en },
