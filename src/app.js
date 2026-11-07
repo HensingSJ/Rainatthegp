@@ -81,7 +81,9 @@
     credit: 'Radar: <a href="https://github.com/JoshuaKimsey/LibreWXR" rel="noopener">LibreWXR</a> (CC BY 4.0)'
   };
   const forceRadar = /[?&]radar=1/.test(location.search);
-  const inLiveWindow = (now) => D.sessions.some((s) => now >= W.ms(s.start) - 30 * 6e4 && now <= W.ms(s.end) + 15 * 6e4);
+  // Sessions can run long (red flags, rain delays): keep the radar up until the result is confirmed, max 3 hours extra
+  const inLiveWindow = (now) => D.sessions.some((s) => now >= W.ms(s.start) - 30 * 6e4 &&
+    (now <= W.ms(s.end) + 15 * 6e4 || (!W.verifiedOut(s.outcome) && now <= W.ms(s.end) + 3 * 36e5)));
   let radar = null;
   function checkRadar() {
     if (!$("radar")) return;

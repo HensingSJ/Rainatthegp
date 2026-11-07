@@ -19,17 +19,20 @@
       noteDidTrack: (wet) => `${wet ? "Rain was" : "No rain was"} measured by the circuit's own weather station.`,
       noteTyres: (n) => ` ${n} drivers used intermediate or wet tyres.`,
       noteSlicks: " Everyone stayed on slick tyres.",
+      noteWetTyres: (n) => `Wet session: ${n} drivers used intermediate or wet tyres.`,
+      noteDryTyres: "Dry session: nobody needed intermediate or wet tyres.",
+      noteDrizzle: "Light rain was measured at the circuit, but the session stayed on slick tyres, so it counts as dry.",
       noteManual: "Corrected by hand.",
-      noteAwait: "Not confirmed yet. We wait for the circuit's own weather station and tyre data, usually within 2 hours after the session.",
+      noteAwait: "Not confirmed yet. We wait for the tyre data from the session, usually within 2 hours after it ends.",
       noteProv: (wet, st, km) => `Provisional: ${wet ? "rain" : "no rain"} reported at ${st} airport, about ${km} km away.`,
       noteNoObs: "No measurement yet. Check back in an hour.",
-      sumWet: (list) => `Rain during ${list}.`, sumDry: "No rain during any session.",
+      sumWet: (list) => `Wet: ${list}.`, sumDry: "No wet sessions.",
       sumSrc: (st, km) => `Measured at the ${st} weather station, about ${km} km from the circuit.`,
-      sumSrcTrack: "Measured by the circuit's own weather station.",
+      sumSrcTrack: "Wet means at least 3 drivers on intermediate or wet tyres.",
       and: "and",
       nextLink: (n) => `Next up: ${n}`,
       cNext: (c) => `${c} in`, cLive: (c) => `${c} live`, cOpens: "Forecast in", cDone: "Weekend over",
-      live: "Live", done: "Done", dry: "Dry", wet: "Wet", fc: (p) => `forecast ${p}%`,
+      live: "Live", done: "Done", pending: "Result pending", dry: "Dry", wet: "Wet", fc: (p) => `forecast ${p}%`,
       tyre: { dry: "Slicks", inter: "Inters", wet: "Wets" },
       leg: ["Dry", "Unsure", "Wet"], wk: "Weekend", sessions: "Sessions", WKD: "WKD",
       radarH: "Live rain radar", radarPlay: "Play", radarPause: "Pause", radarNow: "latest", radarPrev: "Earlier", radarNext: "Later", radarTime: "Time",
@@ -55,17 +58,20 @@
       noteDidTrack: (wet) => `Het weerstation op het circuit ${wet ? "mat regen" : "mat geen regen"}.`,
       noteTyres: (n) => ` ${n} coureurs reden op intermediates of regenbanden.`,
       noteSlicks: " Iedereen bleef op slicks.",
+      noteWetTyres: (n) => `Natte sessie: ${n} coureurs reden op intermediates of regenbanden.`,
+      noteDryTyres: "Droge sessie: niemand had intermediates of regenbanden nodig.",
+      noteDrizzle: "Op het circuit werd lichte regen gemeten, maar er werd op slicks gereden. Daarom telt de sessie als droog.",
       noteManual: "Handmatig gecorrigeerd.",
-      noteAwait: "Nog niet bevestigd. We wachten op het weerstation van het circuit en de bandendata, meestal binnen 2 uur na de sessie.",
+      noteAwait: "Nog niet bevestigd. We wachten op de bandendata van de sessie, meestal binnen 2 uur na afloop.",
       noteProv: (wet, st, km) => `Voorlopig: vliegveld ${st}, ongeveer ${km} km verderop, meldde ${wet ? "regen" : "geen regen"}.`,
       noteNoObs: "Nog geen meting. Kijk over een uur nog eens.",
-      sumWet: (list) => `Regen tijdens ${list}.`, sumDry: "Geen regen tijdens de sessies.",
+      sumWet: (list) => `Nat: ${list}.`, sumDry: "Geen natte sessies.",
       sumSrc: (st, km) => `Gemeten bij weerstation ${st}, ongeveer ${km} km van het circuit.`,
-      sumSrcTrack: "Gemeten door het weerstation op het circuit.",
+      sumSrcTrack: "Nat betekent: minstens 3 coureurs op intermediates of regenbanden.",
       and: "en",
       nextLink: (n) => `Volgende: ${n}`,
       cNext: (c) => `${c} over`, cLive: (c) => `${c} live`, cOpens: "Verwachting over", cDone: "Weekend voorbij",
-      live: "Live", done: "Klaar", dry: "Droog", wet: "Regen", fc: (p) => `verwachting ${p}%`,
+      live: "Live", done: "Klaar", pending: "Uitslag volgt", dry: "Droog", wet: "Regen", fc: (p) => `verwachting ${p}%`,
       tyre: { dry: "Slicks", inter: "Inters", wet: "Wets" },
       leg: ["Droog", "Twijfel", "Nat"], wk: "Weekend", sessions: "Sessies", WKD: "WKD",
       radarH: "Live buienradar", radarPlay: "Afspelen", radarPause: "Pauze", radarNow: "laatste", radarPrev: "Eerder", radarNext: "Later", radarTime: "Tijd",
@@ -91,17 +97,20 @@
       noteDidTrack: (wet) => `La estación meteorológica del circuito ${wet ? "registró" : "no registró"} lluvia.`,
       noteTyres: (n) => ` ${n} pilotos usaron neumáticos intermedios o de lluvia.`,
       noteSlicks: " Todos siguieron con neumáticos de seco.",
+      noteWetTyres: (n) => `Sesión mojada: ${n} pilotos usaron neumáticos intermedios o de lluvia.`,
+      noteDryTyres: "Sesión seca: nadie necesitó neumáticos intermedios ni de lluvia.",
+      noteDrizzle: "Se midió lluvia ligera en el circuito, pero se rodó con slicks, así que cuenta como seca.",
       noteManual: "Corregido a mano.",
-      noteAwait: "Aún sin confirmar. Esperamos los datos de la estación del circuito y de los neumáticos, normalmente en menos de 2 horas tras la sesión.",
+      noteAwait: "Aún sin confirmar. Esperamos los datos de neumáticos de la sesión, normalmente en menos de 2 horas tras su final.",
       noteProv: (wet, st, km) => `Provisional: el aeropuerto de ${st}, a unos ${km} km, ${wet ? "registró" : "no registró"} lluvia.`,
       noteNoObs: "Aún no hay medición. Vuelve a mirar en una hora.",
-      sumWet: (list) => `Llovió durante ${list}.`, sumDry: "No llovió en ninguna sesión.",
+      sumWet: (list) => `Mojada: ${list}.`, sumDry: "Ninguna sesión mojada.",
       sumSrc: (st, km) => `Medido en la estación de ${st}, a unos ${km} km del circuito.`,
-      sumSrcTrack: "Medido por la estación meteorológica del circuito.",
+      sumSrcTrack: "Mojada significa al menos 3 pilotos con neumáticos intermedios o de lluvia.",
       and: "y",
       nextLink: (n) => `Siguiente: ${n}`,
       cNext: (c) => `${c} en`, cLive: (c) => `${c} en directo`, cOpens: "Previsión en", cDone: "Fin de semana terminado",
-      live: "En directo", done: "Terminada", dry: "Seco", wet: "Lluvia", fc: (p) => `previsión ${p}%`,
+      live: "En directo", done: "Terminada", pending: "Resultado pendiente", dry: "Seco", wet: "Lluvia", fc: (p) => `previsión ${p}%`,
       tyre: { dry: "Slicks", inter: "Inters", wet: "Lluvia" },
       leg: ["Seco", "Dudoso", "Mojado"], wk: "Fin de semana", sessions: "Sesiones", WKD: "FDS",
       radarH: "Radar de lluvia en directo", radarPlay: "Reproducir", radarPause: "Pausa", radarNow: "último", radarPrev: "Antes", radarNext: "Después", radarTime: "Hora",
@@ -125,7 +134,9 @@
   // Airport reports are kept as a provisional hint only.
   const VERIFIED = ["openf1", "track", "manual"];
   const verifiedOut = (o) => !!(o && o.wet != null && VERIFIED.includes(o.source));
-  const outcome = (s) => (verifiedOut(s.outcome) ? s.outcome.wet : null); // true / false / null
+  // Wet = at least 3 drivers on intermediate or wet tyres (recomputed, so older stored files follow the same rule)
+  const wetOf = (o) => (o.source === "openf1" && o.wetTyres != null ? o.wetTyres >= 3 : !!o.wet);
+  const outcome = (s) => (verifiedOut(s.outcome) ? wetOf(s.outcome) : null); // true / false / null
   // Color of a session: measured result once done, otherwise the forecast
   function colorOf(s, now) {
     if (stateOf(s, now) === "done") { const o = outcome(s); return o == null ? "var(--muted)" : o ? "var(--wet)" : "var(--dry)"; }
@@ -164,7 +175,8 @@
 
   function srcNote(out, o, st, t) {
     if (out.source === "manual") return t.noteManual;
-    if (out.source === "track" || out.source === "openf1") return t.noteDidTrack(out.rain ?? o) + (out.wetTyres ? t.noteTyres(out.wetTyres) : out.rain ? t.noteSlicks : "");
+    if (out.source === "openf1") return o ? t.noteWetTyres(out.wetTyres) : out.rain ? t.noteDrizzle : t.noteDryTyres;
+    if (out.source === "track") return t.noteDidTrack(o);
     return st ? t.noteDid(o, st.name || st.id, st.km) : "";
   }
   function hero(D, now, sel, lang) {
@@ -235,7 +247,7 @@
       const mid = done ? "" : has ? tyreSVG(ty) + `<span>${t.tyre[ty]}</span>` : "";
       return `<li><button type="button" id="row-${s.code}" data-s="${s.code}" class="row${isW ? " wk" : ""}${done ? " done" : ""}${done && o != null ? " res" : ""}" style="--c:${col}" aria-pressed="${(sel || "W") === s.code}">
 <span class="code">${isW ? t.WKD : s.code}</span>
-<span class="nm"><b>${esc(t.names[s.code])}</b><small>${esc(when)}${st !== "up" ? `<span class="tag ${st}">${st === "live" ? t.live : t.done}</span>` : ""}</small></span>
+<span class="nm"><b>${esc(t.names[s.code])}</b><small>${esc(when)}${st !== "up" ? `<span class="tag ${st}">${st === "live" ? t.live : o == null ? t.pending : t.done}</span>` : ""}</small></span>
 <span class="ty">${mid}</span>
 <span class="p">${right}</span>
 <span class="bar" aria-hidden="true"><i style="width:${done ? (o ? 100 : 0) : has ? s.rain : 0}%"></i></span></button></li>`;
@@ -258,5 +270,5 @@
     return (h >= 24 ? Math.floor(h / 24) + "d " + p(h % 24) : p(h)) + ":" + p(m) + ":" + p(s);
   }
 
-  globalThis.WIR = { T, verifiedOut, verdict, tyre, hero, summary, wordHTML, laneHTML, daysHTML, legendHTML, towerHTML, countdown, fDay, fTime, fLong, fmt, esc, stateOf, outcome, ms };
+  globalThis.WIR = { T, verifiedOut, wetOf, verdict, tyre, hero, summary, wordHTML, laneHTML, daysHTML, legendHTML, towerHTML, countdown, fDay, fTime, fLong, fmt, esc, stateOf, outcome, ms };
 })();

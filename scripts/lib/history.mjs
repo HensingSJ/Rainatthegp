@@ -10,14 +10,13 @@ const W = globalThis.WIR;
 export const histFile = (r) => path.join(HIST_DIR, `${r.season}-${String(r.round).padStart(2, "0")}-${r.slug}.json`);
 
 // Manual corrections: data/overrides.json, e.g. { "2025-interlagos": { "S": { "wet": true, "note": "damp track" } } }
-let OVERRIDES = {};
-try { OVERRIDES = JSON.parse(await fs.readFile(path.join(ROOT, "data/overrides.json"), "utf8")); } catch { /* none */ }
+import { overridesFor } from "./overrides.mjs";
 function withOverrides(h) {
-  const o = h && OVERRIDES[`${h.season}-${h.slug}`];
+  const o = h && overridesFor(h.season, h.slug);
   if (!o) return h;
   const c = structuredClone(h);
   for (const [code, v] of Object.entries(o)) {
-    if (code.startsWith("_") || typeof v !== "object") continue;
+    if (code.startsWith("_") || typeof v !== "object" || v.wet == null) continue;
     c.sessions[code] ||= { forecast: null, outcome: null, final: true };
     c.sessions[code].outcome = { ...(c.sessions[code].outcome || {}), wet: !!v.wet, source: "manual", note: v.note || null };
   }
@@ -46,7 +45,7 @@ export function newHist(r) {
 // Measure one finished session: F1 trackside station first, METAR as fallback.
 export async function measure(r, s, metars) {
   const of1 = await openf1Rain(s.code, s.start);
-  if (of1) return { wet: of1.wet, source: "openf1", rain: of1.rain, wetTyres: of1.wetTyres, reports: of1.n };
+  if (of1) return { wet: of1.wet, source: "openf1", rain: of1.rain, wetTyres: of1.wetTyres, reports: of1.n, actualStart: of1.actualStart, actualEnd: of1.actualEnd };
   const f1s = await findF1Session(s.code, s.start);
   const tr = await trackRain(f1s);
   if (tr.wet != null) return { wet: tr.wet, source: "track", reports: tr.n };

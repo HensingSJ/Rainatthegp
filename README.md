@@ -37,25 +37,26 @@ Het antwoord staat in de HTML zelf, in de `<title>`, de meta-omschrijving en de 
 
 ## Na afloop: uitkomst
 
-Zodra een sessie voorbij is, toont de site niet meer de kans, maar wat er gebeurde: **Droog** of **Regen**, met de verwachting erbij. Bronnen, in volgorde:
+Zodra een sessie voorbij is, toont de site wat er gebeurde: **Nat** of **Droog**, met de verwachting erbij.
 
-1. **OpenF1** (api.openf1.org, vanaf 2023). Open API bovenop de F1-timingdata: de regenvlag van het weerstation op het circuit (per minuut) én welke banden elke coureur reed. "Regen" als het station regen meet tijdens de sessie, of als 3 of meer coureurs op intermediates of regenbanden reden. Gegevens verschijnen meestal binnen een à twee uur na de sessie; tot 8 uur na afloop wordt de uitkomst bijgewerkt. Onofficieel: de data is van F1.
-2. **F1 live timing-archief.** Weigert verzoeken van GitHub (HTTP 403), dus in de praktijk niet gebruikt. Uitzetten: variabele `F1_TRACK_WEATHER` = `off`.
-3. **Dichtstbijzijnde vliegveld** (terugval). METAR via aviationweather.gov (recent) of het archief van Iowa State University (ouder). Mist plaatselijke buien, zeker bij stations ver van het circuit.
+**Nat = minstens 3 coureurs reden in die sessie op intermediates of regenbanden.** Dat komt uit de timingdata van de sessie zelf, via **OpenF1** (api.openf1.org, vanaf 2023), meestal binnen een à twee uur na afloop. Mat de sensor op het circuit wel regen maar bleef iedereen op slicks, dan telt de sessie als droog, met de vermelding "lichte regen gemeten, op slicks gereden".
 
-**Wat de site toont.** Alleen uitkomsten die aan het circuit zelf gemeten zijn (OpenF1) of die je handmatig hebt gecorrigeerd. Een vliegveldmelding geldt alleen als voorlopige indicatie ("Nog niet bevestigd… Voorlopig: vliegveld Congonhas meldde geen regen") en telt niet mee in de regengeschiedenis of het trackrecord. Daardoor begint de zichtbare geschiedenis in 2023.
+Vliegveldmeldingen (METAR) dienen alleen als voorlopige indicatie ("Uitslag volgt… Voorlopig: vliegveld Congonhas meldde geen regen"). Ze tellen nergens mee. De zichtbare regengeschiedenis begint daarom in 2023.
 
-In de regengeschiedenis betekent effen blauw: regen en coureurs op intermediates of regenbanden. Gestreept blauw: de sensor mat regen, maar iedereen bleef op slicks (vochtige baan, motregen).
-
-**Handmatige correctie.** Klopt een uitkomst niet, zet hem dan in `data/overrides.json`:
+### Handmatige correcties en uitgestelde sessies: `data/overrides.json`
 
 ```json
 {
-  "2025-interlagos": { "S": { "wet": true, "note": "vochtige baan na regen" } }
+  "2025-interlagos": { "S": { "wet": true } },
+  "2026-interlagos": { "Q": { "start": "2026-11-08T10:30:00Z" } }
 }
 ```
 
-Sleutel = seizoen + circuit (de URL-naam), daarbinnen de sessie (`FP1`, `FP2`, `FP3`, `SQ`, `S`, `Q`, `R`). Een correctie gaat altijd voor en de site vermeldt "handmatig gecorrigeerd".
+- Sleutel = seizoen + circuit (de URL-naam), daarbinnen de sessie (`FP1`, `FP2`, `FP3`, `SQ`, `S`, `Q`, `R`).
+- `"wet": true/false` overschrijft de gemeten uitkomst. De site vermeldt dan "handmatig gecorrigeerd".
+- `"start"` (en eventueel `"end"`), in **UTC**, verplaatst een sessie, bijvoorbeeld als de kwalificatie naar zondag gaat. Na de volgende build (of *Run workflow*) kloppen de aftelklok, de radar en de verwachting voor het nieuwe tijdstip.
+
+Een kortere vertraging hoef je niet in te voeren: de radar blijft na de geplande eindtijd zichtbaar tot de uitslag bevestigd is (maximaal 3 uur), en de sessie toont "Uitslag volgt". OpenF1 vindt ook uitgestelde sessies zelf terug.
 
 ## Live buienradar
 
@@ -68,11 +69,11 @@ Van 30 minuten vóór tot 15 minuten na elke sessie staat er onder het antwoord 
 
 ## Historie en trackrecord
 
-- Per raceweekend komt er een bestand in `data/history/`, bijvoorbeeld `2026-21-interlagos.json`, met per sessie de laatste verwachting van vóór de start en de gemeten uitkomst. De workflow slaat dit zelf op (commit "Update forecast history").
-- Elke circuitpagina toont de **regengeschiedenis** van dat circuit ("Het regende tijdens de race in 2 van de laatste 7 GP's hier").
-- `/track-record/` vergelijkt verwachting en uitkomst. Sessies waarbij we "Misschien" zeiden tellen niet als goed of fout.
+- Per raceweekend komt er een bestand in `data/history/`, met per sessie de laatste verwachting van vóór de start en de uitkomst. De workflow slaat dit zelf op.
+- Elke circuitpagina toont de **regengeschiedenis** van dat circuit, alleen met bevestigde sessies.
+- Het **trackrecord** is intern. Je vindt het bij elke run van *Build & deploy*: open de run en kijk onder **Summary**. Daar staat een tabel voor races + sprints en voor alle sessies. Wil je het later weer openbaar maken, zet dan `PUBLIC_TRACK_RECORD` in `scripts/lib/config.mjs` op `true`. Dan telt alleen `TRACK_RECORD_SESSIONS` (race en sprint).
 
-**Oude seizoenen ophalen.** GitHub → *Actions* → **Backfill rain history** → *Run workflow* (standaard 2018 t/m 2026). Vanaf 2023 via OpenF1, daarvóór via het vliegveldarchief. Met het vinkje *upgrade* (standaard aan) worden bestaande vliegveldmetingen vanaf 2023 opnieuw gecontroleerd met OpenF1. Verwachtingen blijven altijd staan. Oude seizoenen hebben geen verwachting en tellen dus niet mee voor het trackrecord. Je kunt hem veilig opnieuw draaien.
+**Oude seizoenen ophalen.** *Actions* → **Backfill rain history** → *Run workflow* (vanaf 2023, met *upgrade* aan). Daarna start hij zelf een nieuwe build.
 
 ## Mappen
 
@@ -80,6 +81,7 @@ Van 30 minuten vóór tot 15 minuten na elke sessie staat er onder het antwoord 
 data/circuits.json       URL-naam, tijdzone en weerstation per circuit
 data/names.json          Namen van GP's en landen in NL en ES
 data/history/            Verwachting + uitkomst per sessie (automatisch)
+data/overrides.json      Handmatige correcties en verplaatste sessies
 src/style.css            Vormgeving
 src/shared.js            Teksten (EN/NL/ES) en opbouw van de pagina, gedeeld door build en browser
 src/app.js               Browser: aftellen, regen, sessie kiezen

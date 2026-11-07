@@ -6,7 +6,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import "../src/shared.js";
-import { DIST, SITE, LANGS, NOW, now, OFFLINE, isoZ, langPath, FORECAST_WINDOW_DAYS, KEEP_CURRENT_HOURS, USE_F1_TRACK } from "./lib/config.mjs";
+import { DIST, SITE, LANGS, NOW, now, OFFLINE, isoZ, langPath, FORECAST_WINDOW_DAYS, KEEP_CURRENT_HOURS, USE_F1_TRACK, PUBLIC_TRACK_RECORD, TRACK_RECORD_SESSIONS } from "./lib/config.mjs";
 import { loadRaces, loadWeather, applyWeather } from "./lib/sources.mjs";
 import { updateHist, loadHist, applyHist, loadAllHistory } from "./lib/history.mjs";
 import { circuitPage, trackRecordPage, trackStats, historyFor } from "./lib/render.mjs";
@@ -79,18 +79,38 @@ for (const r of races.filter((x) => x.season === cur.season)) {
   }
 }
 
-// Track record
-const stats = trackStats(allHist);
-for (const lang of LANGS) {
-  await write(`${langPath(lang, "track-record").slice(1)}index.html`, trackRecordPage(lang, stats));
-  if (ogImage) {
-    const tr = S[lang].tr;
-    await write(`og/${lang}-track-record.png`, await ogImage({ v: stats.hit == null ? "early" : "maybe", word: stats.hit == null ? "–" : `${stats.hit}%`,
-      q: tr.q, pct: String(stats.n), pctLab: tr.sessions, topLeft: tr.h1, topRight: "Rain at the GP", footer: "" }));
-    images++;
+// Track record: internal report in the Actions run summary; public page only when switched on
+const stats = trackStats(allHist, TRACK_RECORD_SESSIONS);
+const statsAll = trackStats(allHist);
+if (PUBLIC_TRACK_RECORD) {
+  for (const lang of LANGS) {
+    await write(`${langPath(lang, "track-record").slice(1)}index.html`, trackRecordPage(lang, stats));
+    if (ogImage) {
+      const tr = S[lang].tr;
+      await write(`og/${lang}-track-record.png`, await ogImage({ v: stats.hit == null ? "early" : "maybe", word: stats.hit == null ? "–" : `${stats.hit}%`,
+        q: tr.q, pct: String(stats.n), pctLab: tr.sessions, topLeft: tr.h1, topRight: "Rain at the GP", footer: "" }));
+      images++;
+    }
   }
+  urls.push("track-record");
 }
-urls.push("track-record");
+const pctOf = (st) => { const c = st.buckets.no.length + st.buckets.yes.length; const r = st.buckets.no.filter((x) => !x.wet).length + st.buckets.yes.filter((x) => x.wet).length; return c ? `${Math.round((r / c) * 100)}% (${r}/${c})` : "–"; };
+const bucketLine = (st) => ["no", "maybe", "yes"].map((k) => `${k}: ${st.buckets[k].filter((x) => x.wet).length}/${st.buckets[k].length} wet`).join(" · ");
+const report = `## Track record (internal)
+
+| | Sessions | Right when we said yes/no | Per forecast bucket |
+|---|---|---|---|
+| Races + sprints | ${stats.n} | ${pctOf(stats)} | ${bucketLine(stats)} |
+| All sessions | ${statsAll.n} | ${pctOf(statsAll)} | ${bucketLine(statsAll)} |
+
+Wet = at least 3 drivers on intermediate or wet tyres. "Maybe" (25–55%) is not counted as right or wrong.
+
+### Latest sessions
+| GP | Session | Forecast | Result |
+|---|---|---|---|
+${statsAll.rows.slice(0, 25).map((r) => `| ${r.h.season} ${r.h.raceName} | ${r.code} | ${r.forecast}% | ${r.wet ? "wet" : "dry"} |`).join("\n")}
+`;
+if (process.env.GITHUB_STEP_SUMMARY) await fs.appendFile(process.env.GITHUB_STEP_SUMMARY, report);
 
 // Sitemap with language alternates
 const lastmod = isoZ(NOW).slice(0, 10);
@@ -107,4 +127,4 @@ await write("robots.txt", `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml
 await write("_headers", `/*\n  Cache-Control: public, max-age=300\n/og/*\n  Cache-Control: public, max-age=3600\n/api/*\n  Access-Control-Allow-Origin: *\n`);
 await write("404.html", `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Not found – Rain at the GP</title><style>body{font:16px system-ui;background:#151c24;color:#f3f6f9;display:grid;place-items:center;min-height:100vh;margin:0;padding:16px}a{color:#7cc0ff}</style><p>This page doesn't exist. <a href="/">See if it will rain this weekend →</a></p>`);
 
-console.log(`Built ${urls.length} pages × ${LANGS.length} languages, ${images} share images. Current: ${cur.raceName} (${stateFor(cur)}). Track weather: ${USE_F1_TRACK ? "on" : "off"}. Track record: ${stats.n} sessions.${OFFLINE ? " [OFFLINE TEST DATA]" : ""}`);
+console.log(`Built ${urls.length} pages × ${LANGS.length} languages, ${images} share images. Current: ${cur.raceName} (${stateFor(cur)}). Track weather: ${USE_F1_TRACK ? "on" : "off"}. Track record (R+S): ${stats.n} sessions, ${pctOf(stats)}; all: ${statsAll.n}.${OFFLINE ? " [OFFLINE TEST DATA]" : ""}`);

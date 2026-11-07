@@ -15,10 +15,10 @@ export const S = {
     th: ["Session", "Day", "Local time", "UTC"],
     calH: (y) => `${y} calendar`,
     histH: (short) => `Rain history at ${short}`,
-    histSum: (a, n, b) => `It rained during the race in ${a} of the last ${n} grands prix here, and during at least one session in ${b} of ${n}.`,
+    histSum: (a, n, b) => `The race was wet in ${a} of the last ${n} grands prix here, and at least one session was wet in ${b} of ${n}.`,
     histNone: "No rain measurements for this circuit yet. They appear after each session.",
-    histLeg: ["Wet tyres", "Dry", "No verified data", "Rain, on slicks"],
-    histSrc: "Measured by the circuit's own weather station and checked against the tyres the drivers used (via OpenF1, from 2023). Sessions without that data are shown in grey.",
+    histLeg: ["Wet", "Dry", "No verified data"],
+    histSrc: "Wet = at least 3 drivers on intermediate or wet tyres in that session, from the timing data (via OpenF1, from 2023). Grey = no verified data.",
     navTR: "Track record",
     foot1: "Weather forecast by Open-Meteo.com (CC BY 4.0). Measurements from the F1 live timing feed and aviationweather.gov. Calendar via the Jolpica F1 API.",
     foot2: "An independent fan site. Not affiliated with Formula 1, the FIA or any team.",
@@ -33,6 +33,7 @@ export const S = {
       rained: (p, n) => `rain in ${p}% of ${n} sessions`, none: "no sessions yet",
       listH: "Latest sessions", th: ["Grand prix", "Session", "Forecast", "Result", ""],
       empty: "The first results appear after the first session we tracked.",
+      collecting: (c, min) => `We show a score once we have ${min} sessions where we said yes or no. So far: ${c}. Every session is listed below.`,
       ok: "Right", miss: "Wrong", na: "–"
     }
   },
@@ -51,10 +52,10 @@ export const S = {
     th: ["Sessie", "Dag", "Lokale tijd", "UTC"],
     calH: (y) => `Kalender ${y}`,
     histH: (short) => `Regengeschiedenis ${short}`,
-    histSum: (a, n, b) => `Het regende tijdens de race in ${a} van de laatste ${n} GP's hier, en tijdens minstens één sessie in ${b} van de ${n}.`,
+    histSum: (a, n, b) => `De race was nat in ${a} van de laatste ${n} GP's hier, en minstens één sessie was nat in ${b} van de ${n}.`,
     histNone: "Nog geen regenmetingen voor dit circuit. Ze verschijnen na elke sessie.",
-    histLeg: ["Regenbanden", "Droog", "Geen bevestigde data", "Regen, op slicks"],
-    histSrc: "Gemeten door het weerstation op het circuit en gecontroleerd met de banden die de coureurs gebruikten (via OpenF1, vanaf 2023). Sessies zonder die gegevens zijn grijs.",
+    histLeg: ["Nat", "Droog", "Geen bevestigde data"],
+    histSrc: "Nat = minstens 3 coureurs op intermediates of regenbanden in die sessie, uit de timingdata (via OpenF1, vanaf 2023). Grijs = geen bevestigde data.",
     navTR: "Trackrecord",
     foot1: "Weersverwachting van Open-Meteo.com (CC BY 4.0). Metingen uit de F1 live timing en aviationweather.gov. Kalender via de Jolpica F1 API.",
     foot2: "Een onafhankelijke fansite. Niet verbonden aan Formule 1, de FIA of een team.",
@@ -69,6 +70,7 @@ export const S = {
       rained: (p, n) => `regen in ${p}% van ${n} sessies`, none: "nog geen sessies",
       listH: "Laatste sessies", th: ["Grand prix", "Sessie", "Verwachting", "Uitkomst", ""],
       empty: "De eerste resultaten verschijnen na de eerste sessie die we gevolgd hebben.",
+      collecting: (c, min) => `We tonen een score zodra we ${min} sessies hebben waarbij we ja of nee zeiden. Nu: ${c}. Alle sessies staan hieronder.`,
       ok: "Goed", miss: "Fout", na: "–"
     }
   },
@@ -87,10 +89,10 @@ export const S = {
     th: ["Sesión", "Día", "Hora local", "UTC"],
     calH: (y) => `Calendario ${y}`,
     histH: (short) => `Historial de lluvia en ${short}`,
-    histSum: (a, n, b) => `Llovió durante la carrera en ${a} de los últimos ${n} grandes premios aquí, y en al menos una sesión en ${b} de ${n}.`,
+    histSum: (a, n, b) => `La carrera fue mojada en ${a} de los últimos ${n} grandes premios aquí, y al menos una sesión fue mojada en ${b} de ${n}.`,
     histNone: "Aún no hay mediciones de lluvia para este circuito. Aparecen después de cada sesión.",
-    histLeg: ["Neumáticos de lluvia", "Seco", "Sin datos verificados", "Lluvia, con slicks"],
-    histSrc: "Medido por la estación meteorológica del circuito y comprobado con los neumáticos usados por los pilotos (vía OpenF1, desde 2023). Las sesiones sin esos datos aparecen en gris.",
+    histLeg: ["Mojada", "Seca", "Sin datos verificados"],
+    histSrc: "Mojada = al menos 3 pilotos con neumáticos intermedios o de lluvia en esa sesión, según los datos de cronometraje (vía OpenF1, desde 2023). Gris = sin datos verificados.",
     navTR: "Aciertos",
     foot1: "Previsión de Open-Meteo.com (CC BY 4.0). Mediciones del live timing de la F1 y aviationweather.gov. Calendario vía la Jolpica F1 API.",
     foot2: "Una web independiente de aficionados. Sin relación con la Fórmula 1, la FIA ni ningún equipo.",
@@ -105,6 +107,7 @@ export const S = {
       rained: (p, n) => `lluvia en el ${p}% de ${n} sesiones`, none: "aún no hay sesiones",
       listH: "Últimas sesiones", th: ["Gran premio", "Sesión", "Previsión", "Resultado", ""],
       empty: "Los primeros resultados aparecen después de la primera sesión que seguimos.",
+      collecting: (c, min) => `Mostramos una puntuación cuando tengamos ${min} sesiones en las que dijimos sí o no. Por ahora: ${c}. Todas las sesiones aparecen abajo.`,
       ok: "Acierto", miss: "Fallo", na: "–"
     }
   }

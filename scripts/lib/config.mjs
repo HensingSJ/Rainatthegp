@@ -17,6 +17,10 @@ export const OUTCOME_FINAL_HOURS = 8;                    // keep re-checking the
 // F1 live timing (trackside weather station). Unofficial source: set F1_TRACK_WEATHER=off to switch it off.
 export const USE_F1_TRACK = (process.env.F1_TRACK_WEATHER || "on").toLowerCase() !== "off";
 
+// Track record: kept internally (shown in the GitHub Actions run summary). Set true to publish /track-record/ again.
+export const PUBLIC_TRACK_RECORD = false;
+export const TRACK_RECORD_SESSIONS = ["R", "S"];          // sessions that count for the (public) track record
+
 export const SESSION_MIN = { FP1: 60, FP2: 60, FP3: 60, SQ: 45, S: 60, Q: 60, R: 120 };
 export const HIST_DIR = path.join(ROOT, OFFLINE ? ".offline-history" : "data/history");
 

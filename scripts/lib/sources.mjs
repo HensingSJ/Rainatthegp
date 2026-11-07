@@ -1,5 +1,6 @@
 // Data sources: calendar (Jolpica), forecast (Open-Meteo), observations (METAR + F1 trackside station).
 import { OFFLINE, NOW, now, read, sleep, UA, SESSION_MIN, USE_F1_TRACK } from "./config.mjs";
+import { overridesFor } from "./overrides.mjs";
 
 const CIRCUITS = JSON.parse(await read("data/circuits.json"));
 const NAMES = JSON.parse(await read("data/names.json"));
@@ -50,6 +51,14 @@ export function parseRace(r) {
   sessions.push({ code: "R", start: iso(r.date, r.time), timed: !!r.time });
   sessions.sort((a, b) => a.start - b.start);
   for (const s of sessions) s.end = s.start + SESSION_MIN[s.code] * 6e4;
+  // Moved sessions from data/overrides.json
+  const ov = overridesFor(r.season, meta.slug || r.Circuit.circuitId.replace(/_/g, "-"));
+  if (ov) for (const s of sessions) {
+    const o = ov[s.code]; if (!o || typeof o !== "object") continue;
+    if (o.start) { const d = s.end - s.start; s.start = Date.parse(o.start); s.end = o.end ? Date.parse(o.end) : s.start + d; s.moved = true; }
+    else if (o.end) s.end = Date.parse(o.end);
+  }
+  sessions.sort((a, b) => a.start - b.start);
   const name = gpName(r.raceName);
   const c = r.Circuit.Location.country, cn = NAMES.countries[c] || {};
   return {
@@ -250,6 +259,7 @@ export async function openf1Rain(code, start) {
     if (!weather.length && !stints.length) return null;
     const rain = weather.some((w) => Number(w.rainfall) > 0);
     const wetTyres = new Set(stints.filter((x) => /^(INTERMEDIATE|WET)$/i.test(x.compound || "")).map((x) => x.driver_number)).size;
-    return { wet: rain || wetTyres >= 3, rain, wetTyres, n: weather.length };
+    // Wet = at least 3 drivers on intermediate or wet tyres. A rain flag alone (drizzle on slicks) counts as dry.
+    return { wet: wetTyres >= 3, rain, wetTyres, n: weather.length, actualStart: s.date_start, actualEnd: s.date_end || null };
   } catch (e) { console.warn(`OpenF1 ${code} ${new Date(start).toISOString()}: ${e.message}`); return null; }
 }
