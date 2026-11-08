@@ -1130,8 +1130,8 @@
     "R": {
       "start": "2026-11-08T17:00:00Z",
       "end": "2026-11-08T19:00:00Z",
-      "forecast": null,
-      "forecastAt": null,
+      "forecast": 100,
+      "forecastAt": "2026-11-08T17:00:11Z",
       "outcome": null,
       "final": false
     }
