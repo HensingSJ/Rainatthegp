@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import "../../src/shared.js";
 import { HIST_DIR, now, isoZ, FREEZE_BEFORE_MIN, OUTCOME_FINAL_HOURS } from "./config.mjs";
-import { loadMetars, metarRain, findF1Session, trackRain, openf1Rain } from "./sources.mjs";
+import { loadMetars, metarRain, findF1Session, trackRain, openf1Rain, openf1Results } from "./sources.mjs";
 import { ROOT } from "./config.mjs";
 
 const W = globalThis.WIR;
@@ -82,6 +82,13 @@ export async function updateHist(r, hasForecast) {
       e.final = ["openf1", "track"].includes(e.outcome?.source) ? now - s.end > 2 * 36e5 : now - s.end > OUTCOME_FINAL_HOURS * 36e5;
     }
   }
+  // Top 10 per finished session, once OpenF1 has it
+  for (const s of r.sessions) {
+    const e = h.sessions[s.code];
+    if (!e || e.resultsFull || W.stateOf({ start: s.start, end: s.end }, now) !== "done" || now - s.end > 72 * 36e5) continue;
+    const res = await openf1Results(s.code, s.start);
+    if (res && res.length) { e.results = res; e.resultsFull = true; }
+  }
   await saveHist(r, h, before);
   return withOverrides(h);
 }
@@ -91,6 +98,7 @@ export function applyHist(r, h) {
   for (const s of r.sessions) {
     const e = h.sessions[s.code]; if (!e) continue;
     if (e.forecast != null && (s.rain == null || W.stateOf({ start: s.start, end: s.end }, now) !== "up")) s.rain = e.forecast;
+    s.results = e.results || null;
     s.outcome = e.outcome ? { wet: e.outcome.wet, source: e.outcome.source, rain: e.outcome.rain ?? null, wetTyres: e.outcome.wetTyres ?? null } : null;
   }
 }

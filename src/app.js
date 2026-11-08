@@ -3,7 +3,7 @@
   const D = JSON.parse(document.getElementById("wir-data").textContent);
   const W = globalThis.WIR, $ = (id) => document.getElementById(id);
   const lang = D.lang || "en";
-  let sel = "W", lastWord = "";
+  let sel = "W", lastWord = "", openRes = false;
 
   function renderHero(animate) {
     const h = W.hero(D, Date.now(), sel, lang);
@@ -32,7 +32,7 @@
     }
     $("h-wk") && ($("h-wk").textContent = t.wk);
     $("h-sessions").textContent = t.sessions;
-    $("tower").innerHTML = W.towerHTML(D, now, sel, lang, undefined);
+    $("tower").innerHTML = W.towerHTML(D, now, sel, lang, undefined, openRes);
     if ($("updated") && D.state === "forecast") $("updated").textContent = t.updated(W.fDay(D.updated, lang) + " " + W.fTime(D.updated, lang));
   }
   function renderCount() {
@@ -45,10 +45,13 @@
     if (D.state === "early") return;
     sel = fromLane && sel === code ? "W" : code;
     renderLists(); renderHero(true);
-    if (sel !== "W" && matchMedia("(max-width:700px)").matches) $("hero").scrollIntoView({ behavior: "smooth" });
+    const chosen = D.sessions.find((s) => s.code === sel);
+    if (sel !== "W" && !(chosen && chosen.results && chosen.results.length && W.stateOf(chosen, Date.now()) === "done") && matchMedia("(max-width:700px)").matches) $("hero").scrollIntoView({ behavior: "smooth" });
   }
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-s]"); if (b) select(b.dataset.s, b.classList.contains("blk"));
+    const m = e.target.closest("[data-more]");
+    if (m) { openRes = !openRes; renderLists(); const btn = document.querySelector("[data-more]"); if (btn) btn.focus(); return; }
+    const b = e.target.closest("[data-s]"); if (b) { openRes = false; select(b.dataset.s, b.classList.contains("blk")); }
   });
 
   // Rain canvas: number of drops follows the chance of rain on screen

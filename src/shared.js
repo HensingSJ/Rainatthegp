@@ -22,6 +22,7 @@
       noteWetTyres: (n) => `Wet session: ${n} drivers used intermediate or wet tyres.`,
       noteDryTyres: "Dry session: nobody needed intermediate or wet tyres.",
       noteDrizzle: "Light rain was measured at the circuit, but the session stayed on slick tyres, so it counts as dry.",
+      resH: (n) => `Result · ${n}`, resSrc: "Classification via OpenF1.", resLap: (n) => `+${n} lap${n > 1 ? "s" : ""}`, resOut: (q) => `out in Q${q}`, resAll: (n) => `Show all ${n} drivers`, resTop: "Show top 10",
       noteManual: "Corrected by hand.",
       noteAwait: "Not confirmed yet. We wait for the tyre data from the session, usually within 2 hours after it ends.",
       noteProv: (wet, st, km) => `Provisional: ${wet ? "rain" : "no rain"} reported at ${st} airport, about ${km} km away.`,
@@ -61,6 +62,7 @@
       noteWetTyres: (n) => `Natte sessie: ${n} coureurs reden op intermediates of regenbanden.`,
       noteDryTyres: "Droge sessie: niemand had intermediates of regenbanden nodig.",
       noteDrizzle: "Op het circuit werd lichte regen gemeten, maar er werd op slicks gereden. Daarom telt de sessie als droog.",
+      resH: (n) => `Uitslag · ${n}`, resSrc: "Uitslag via OpenF1.", resLap: (n) => `+${n} ronde${n > 1 ? "s" : ""}`, resOut: (q) => `uit in Q${q}`, resAll: (n) => `Toon alle ${n} coureurs`, resTop: "Toon top 10",
       noteManual: "Handmatig gecorrigeerd.",
       noteAwait: "Nog niet bevestigd. We wachten op de bandendata van de sessie, meestal binnen 2 uur na afloop.",
       noteProv: (wet, st, km) => `Voorlopig: vliegveld ${st}, ongeveer ${km} km verderop, meldde ${wet ? "regen" : "geen regen"}.`,
@@ -100,6 +102,7 @@
       noteWetTyres: (n) => `Sesión mojada: ${n} pilotos usaron neumáticos intermedios o de lluvia.`,
       noteDryTyres: "Sesión seca: nadie necesitó neumáticos intermedios ni de lluvia.",
       noteDrizzle: "Se midió lluvia ligera en el circuito, pero se rodó con slicks, así que cuenta como seca.",
+      resH: (n) => `Resultado · ${n}`, resSrc: "Clasificación vía OpenF1.", resLap: (n) => `+${n} vuelta${n > 1 ? "s" : ""}`, resOut: (q) => `eliminado en Q${q}`, resAll: (n) => `Ver los ${n} pilotos`, resTop: "Ver top 10",
       noteManual: "Corregido a mano.",
       noteAwait: "Aún sin confirmar. Esperamos los datos de neumáticos de la sesión, normalmente en menos de 2 horas tras su final.",
       noteProv: (wet, st, km) => `Provisional: el aeropuerto de ${st}, a unos ${km} km, ${wet ? "registró" : "no registró"} lluvia.`,
@@ -231,7 +234,31 @@
     return ["no", "maybe", "yes"].map((v, i) => `<span><i style="background:${vColor[v]}"></i>${t.leg[i]} (${["&lt;25", "25–55", "&gt;55"][i]}%)</span>`).join("");
   }
 
-  function towerHTML(D, now, sel, lang, tz) {
+  // Top 10 of a finished session
+  function lapTime(sec) {
+    if (sec == null || isNaN(sec)) return "";
+    const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), x = (sec % 60).toFixed(3).padStart(6, "0");
+    return h ? `${h}:${String(m).padStart(2, "0")}:${x}` : `${m}:${x}`;
+  }
+  function gapText(r, lang) {
+    if (r.st) return r.st;
+    if (r.q) return T[lang].resOut(r.q);
+    if (r.p === 1) return lapTime(r.t);
+    if (typeof r.g === "number") return "+" + r.g.toFixed(3);
+    const m = /(\d+)\s*LAP/i.exec(r.g || "");
+    return m ? T[lang].resLap(+m[1]) : r.g || "";
+  }
+  function resultsHTML(s, lang, open) {
+    const t = T[lang];
+    if (!s.results || !s.results.length) return "";
+    const n = s.results.length, more = n > 10;
+    const rows = s.results.map((r, i) => `<li${i >= 10 ? ' class="more"' : ""}><span class="rp">${r.p}</span><i style="background:#${esc(r.c)}"></i><b title="${esc(r.name)}">${esc(r.a)}</b><span class="rn">${esc(r.name)}</span><span class="rteam">${esc(r.team)}</span><span class="rg">${esc(gapText(r, lang))}</span></li>`).join("");
+    return `<div class="rpanel${open ? " open" : ""}"><h3>${esc(t.resH(t.names[s.code]))}</h3><ol class="rlist">${rows}</ol>` +
+      (more ? `<button type="button" class="rmore" data-more="${s.code}" aria-expanded="${!!open}">${open ? t.resTop : t.resAll(n)}</button>` : "") +
+      `<p class="muted small">${t.resSrc}</p></div>`;
+  }
+
+  function towerHTML(D, now, sel, lang, tz, openRes) {
     const t = T[lang];
     const rows = [];
     const f = focus(D, now);
@@ -250,7 +277,7 @@
 <span class="nm"><b>${esc(t.names[s.code])}</b><small>${esc(when)}${st !== "up" ? `<span class="tag ${st}">${st === "live" ? t.live : o == null ? t.pending : t.done}</span>` : ""}</small></span>
 <span class="ty">${mid}</span>
 <span class="p">${right}</span>
-<span class="bar" aria-hidden="true"><i style="width:${done ? (o ? 100 : 0) : has ? s.rain : 0}%"></i></span></button></li>`;
+<span class="bar" aria-hidden="true"><i style="width:${done ? (o ? 100 : 0) : has ? s.rain : 0}%"></i></span></button>${!isW && done && sel === s.code ? resultsHTML(s, lang, openRes) : ""}</li>`;
     }).join("");
   }
 
@@ -270,5 +297,5 @@
     return (h >= 24 ? Math.floor(h / 24) + "d " + p(h % 24) : p(h)) + ":" + p(m) + ":" + p(s);
   }
 
-  globalThis.WIR = { T, verifiedOut, wetOf, verdict, tyre, hero, summary, wordHTML, laneHTML, daysHTML, legendHTML, towerHTML, countdown, fDay, fTime, fLong, fmt, esc, stateOf, outcome, ms };
+  globalThis.WIR = { T, verifiedOut, wetOf, resultsHTML, verdict, tyre, hero, summary, wordHTML, laneHTML, daysHTML, legendHTML, towerHTML, countdown, fDay, fTime, fLong, fmt, esc, stateOf, outcome, ms };
 })();

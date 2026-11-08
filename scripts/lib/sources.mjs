@@ -238,6 +238,14 @@ async function of1Sessions(year) {
   if (!of1Cache.has(year)) of1Cache.set(year, of1Get(`/sessions?year=${year}`).catch((e) => { console.warn(`OpenF1 sessions ${year}: ${e.message}`); return null; }));
   return of1Cache.get(year);
 }
+// Nearest session with the same name within 36 hours: also finds sessions that were postponed (e.g. 2024 São Paulo qualifying)
+async function of1Find(code, start) {
+  const year = new Date(start).getUTCFullYear();
+  if (year < 2023) return null;
+  const list = await of1Sessions(year);
+  return (list || []).filter((x) => OF1_NAMES[code].includes(x.session_name) && Math.abs(Date.parse(x.date_start) - start) < 36 * 36e5)
+    .sort((a, b) => Math.abs(Date.parse(a.date_start) - start) - Math.abs(Date.parse(b.date_start) - start))[0] || null;
+}
 // -> { wet, rain, wetTyres, n } or null when OpenF1 has no data for this session
 export async function openf1Rain(code, start) {
   if (OFFLINE) {
@@ -245,12 +253,7 @@ export async function openf1Rain(code, start) {
     const d = new Date(start), rain = d.getUTCDate() % 2 === 1 && d.getUTCHours() >= 13 && d.getUTCHours() <= 16;
     return { wet: rain, rain, wetTyres: rain ? 8 : 0, n: 60 };
   }
-  const year = new Date(start).getUTCFullYear();
-  if (year < 2023) return null;
-  const list = await of1Sessions(year);
-  // Nearest session with the same name within 36 hours: also finds sessions that were postponed (e.g. 2024 São Paulo qualifying)
-  const s = (list || []).filter((x) => OF1_NAMES[code].includes(x.session_name) && Math.abs(Date.parse(x.date_start) - start) < 36 * 36e5)
-    .sort((a, b) => Math.abs(Date.parse(a.date_start) - start) - Math.abs(Date.parse(b.date_start) - start))[0];
+  const s = await of1Find(code, start);
   if (!s) return null;
   try {
     const from = Date.parse(s.date_start), to = Date.parse(s.date_end || s.date_start) + 10 * 6e4;
@@ -262,4 +265,48 @@ export async function openf1Rain(code, start) {
     // Wet = at least 3 drivers on intermediate or wet tyres. A rain flag alone (drizzle on slicks) counts as dry.
     return { wet: wetTyres >= 3, rain, wetTyres, n: weather.length, actualStart: s.date_start, actualEnd: s.date_end || null };
   } catch (e) { console.warn(`OpenF1 ${code} ${new Date(start).toISOString()}: ${e.message}`); return null; }
+}
+
+// Final classification of a finished session from OpenF1: position, driver, team colour, time or gap.
+// Qualifying: only the final result. Drivers who reached the last part get its time/gap; the others "out in Q2/Q1".
+// -> [{ p, n, a, name, team, c, t, g, q, st }] or null when not available yet
+const lastIdx = (v) => { if (!Array.isArray(v)) return -1; for (let i = v.length - 1; i >= 0; i--) if (v[i] != null) return i; return -1; };
+export async function openf1Results(code, start) {
+  const quali = code === "Q" || code === "SQ";
+  if (OFFLINE) {
+    const names = [["VER", "Max Verstappen", "Red Bull Racing", "4781D7"], ["NOR", "Lando Norris", "McLaren", "F47600"], ["LEC", "Charles Leclerc", "Ferrari", "ED1131"],
+      ["PIA", "Oscar Piastri", "McLaren", "F47600"], ["RUS", "George Russell", "Mercedes", "00D7B6"], ["HAM", "Lewis Hamilton", "Ferrari", "ED1131"],
+      ["ALO", "Fernando Alonso", "Aston Martin", "229971"], ["SAI", "Carlos Sainz", "Williams", "1868DB"], ["ANT", "Andrea Kimi Antonelli", "Mercedes", "00D7B6"], ["GAS", "Pierre Gasly", "Alpine", "00A1E8"],
+      ["ALB", "Alexander Albon", "Williams", "1868DB"], ["HUL", "Nico Hulkenberg", "Audi", "BB0A30"], ["OCO", "Esteban Ocon", "Haas", "B6BABD"], ["LAW", "Liam Lawson", "Racing Bulls", "6C98FF"],
+      ["STR", "Lance Stroll", "Aston Martin", "229971"], ["BEA", "Oliver Bearman", "Haas", "B6BABD"], ["HAD", "Isack Hadjar", "Red Bull Racing", "4781D7"], ["BOR", "Gabriel Bortoleto", "Audi", "BB0A30"],
+      ["COL", "Franco Colapinto", "Alpine", "00A1E8"], ["LIN", "Arvid Lindblad", "Racing Bulls", "6C98FF"], ["PER", "Sergio Perez", "Cadillac", "AAAAAD"], ["BOT", "Valtteri Bottas", "Cadillac", "AAAAAD"]];
+    return names.map(([a, name, team, c], i) => {
+      const q = quali && i >= 10 ? (i < 16 ? 2 : 1) : null;  // only eliminated drivers get a stage
+      return { p: i + 1, n: i + 1, a, name, team, c, q, st: i === 21 && !quali ? "DNF" : null,
+        t: i === 0 ? 70.123 + (code === "R" ? 5400 : 0) : null, g: i && !q ? +(i * 0.231).toFixed(3) : null };
+    });
+  }
+  const s = await of1Find(code, start);
+  if (!s) return null;
+  try {
+    const res = await of1Get(`/session_result?session_key=${s.session_key}`);
+    if (!res.length) return null;
+    const drivers = await of1Get(`/drivers?session_key=${s.session_key}`);
+    const byNum = new Map(drivers.map((d) => [d.driver_number, d]));
+    const finalPart = Math.max(...res.map((r) => lastIdx(r.duration)));          // index of Q3 (or the last part held)
+    return res.filter((r) => r.position != null).sort((a, b) => a.position - b.position).map((r) => {
+      const d = byNum.get(r.driver_number) || {};
+      let t = null, g = null, q = null;
+      if (Array.isArray(r.duration)) {                                             // qualifying / sprint qualifying
+        const k = lastIdx(r.duration); q = k + 1;
+        if (k === finalPart) { t = r.position === 1 ? r.duration[k] : null; g = Array.isArray(r.gap_to_leader) ? r.gap_to_leader[k] : null; }
+      } else {
+        t = r.position === 1 ? r.duration ?? null : null;
+        g = r.position === 1 ? null : r.gap_to_leader ?? null;
+      }
+      return { p: r.position, n: r.driver_number, a: d.name_acronym || String(r.driver_number), name: d.full_name || "", team: d.team_name || "",
+        c: /^[0-9a-f]{6}$/i.test(d.team_colour || "") ? d.team_colour : "8fa3b8", t, g: typeof g === "number" ? g : g ? String(g) : null,
+        q: q && q - 1 < finalPart ? q : null, st: r.dsq ? "DSQ" : r.dnf ? "DNF" : r.dns ? "DNS" : null };
+    });
+  } catch (e) { console.warn(`OpenF1 results ${code}: ${e.message}`); return null; }
 }

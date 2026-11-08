@@ -43,7 +43,7 @@ function pageData(race, state, next) {
     state, updated: isoZ(NOW), opensAt: isoZ(race.firstStart - FORECAST_WINDOW_DAYS * 864e5),
     race: { name: race.name, short: race.short, slug: race.slug, round: race.round, season: race.season, tz: race.tz, station: race.station, lat: race.lat, lon: race.lon, radar: race.radar },
     laneStart: isoZ(localMidnight), laneEnd: isoZ(localMidnight + 3 * 864e5),
-    sessions: race.sessions.map((s) => ({ code: s.code, start: isoZ(s.start), end: isoZ(s.end), rain: s.rain ?? null, temp: s.temp ?? null, outcome: s.outcome ?? null })),
+    sessions: race.sessions.map((s) => ({ code: s.code, start: isoZ(s.start), end: isoZ(s.end), rain: s.rain ?? null, temp: s.temp ?? null, outcome: s.outcome ?? null, results: s.results ?? null })),
     next: next ? { name: next.name, slug: next.slug } : null
   };
 }
