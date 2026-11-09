@@ -1,7 +1,7 @@
 // Text that only appears in the server-rendered HTML (not needed by the browser script).
 export const S = {
   en: {
-    langName: "English", siteName: "Rain at the GP",
+    langName: "English", siteName: "Rain at the GP", menuRaces: "Races",
     metaForecast: (gp, word, pct) => `Will it rain at the ${gp}? ${word} – ${pct}`,
     metaForecastDesc: (short, parts, upd) => `Chance of rain per session at ${short}: ${parts}. Hourly forecast, updated ${upd} UTC.`,
     metaEarly: (gp) => `Will it rain at the ${gp}? Rain chance per session`,
@@ -38,7 +38,7 @@ export const S = {
     }
   },
   nl: {
-    langName: "Nederlands", siteName: "Rain at the GP",
+    langName: "Nederlands", siteName: "Rain at the GP", menuRaces: "Races",
     metaForecast: (gp, word, pct) => `Gaat het regenen bij de ${gp}? ${word} – ${pct}`,
     metaForecastDesc: (short, parts, upd) => `Kans op regen per sessie in ${short}: ${parts}. Uurverwachting, bijgewerkt ${upd} UTC.`,
     metaEarly: (gp) => `Gaat het regenen bij de ${gp}? Regenkans per sessie`,
@@ -75,7 +75,7 @@ export const S = {
     }
   },
   es: {
-    langName: "Español", siteName: "Rain at the GP",
+    langName: "Español", siteName: "Rain at the GP", menuRaces: "Carreras",
     metaForecast: (gp, word, pct) => `¿Lloverá en el ${gp}? ${word} – ${pct}`,
     metaForecastDesc: (short, parts, upd) => `Probabilidad de lluvia por sesión en ${short}: ${parts}. Previsión horaria, actualizada ${upd} UTC.`,
     metaEarly: (gp) => `¿Lloverá en el ${gp}? Probabilidad de lluvia por sesión`,

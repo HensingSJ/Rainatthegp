@@ -48,6 +48,9 @@
     const chosen = D.sessions.find((s) => s.code === sel);
     if (sel !== "W" && !(chosen && chosen.results && chosen.results.length && W.stateOf(chosen, Date.now()) === "done") && matchMedia("(max-width:700px)").matches) $("hero").scrollIntoView({ behavior: "smooth" });
   }
+  // Close the race menu when clicking elsewhere or pressing Escape
+  document.addEventListener("click", (e) => { const m = document.querySelector(".racemenu[open]"); if (m && !m.contains(e.target)) m.open = false; });
+  document.addEventListener("keydown", (e) => { const m = document.querySelector(".racemenu[open]"); if (m && e.key === "Escape") { m.open = false; m.querySelector("summary").focus(); } });
   document.addEventListener("click", (e) => {
     const m = e.target.closest("[data-more]");
     if (m) { openRes = !openRes; renderLists(); const btn = document.querySelector("[data-more]"); if (btn) btn.focus(); return; }

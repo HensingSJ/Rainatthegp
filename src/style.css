@@ -42,6 +42,23 @@ a{color:inherit}
 .lang a[aria-current="true"]{background:#f3f6f9;color:#0e1318}
 .lang a:hover{color:#fff}.lang a[aria-current="true"]:hover{color:#0e1318}
 .topr{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.racemenu{position:relative}
+.racemenu summary{list-style:none;cursor:pointer;font:700 .8rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;background:rgba(255,255,255,.1);color:#f3f6f9;transform:skewX(-12deg);user-select:none}
+.racemenu summary::-webkit-details-marker{display:none}
+.racemenu summary:hover,.racemenu[open] summary{background:#f3f6f9;color:#0e1318}
+.racemenu summary:focus-visible{outline:2px solid var(--glow);outline-offset:2px}
+.rmenu{position:absolute;right:0;top:calc(100% + 8px);z-index:20;width:min(340px,calc(100vw - 32px));max-height:min(70vh,560px);overflow:auto;background:var(--surface);color:var(--fg);box-shadow:0 12px 32px rgba(0,0,0,.35);padding:10px 0}
+.rmh{margin:0;padding:4px 14px 8px;font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:.85rem;color:var(--muted)}
+.rmenu ul{list-style:none;margin:0;padding:0}
+.rmenu a{display:grid;grid-template-columns:2.6rem minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:7px 14px;text-decoration:none;color:var(--fg);border-left:3px solid transparent}
+.rmenu a:hover,.rmenu a:focus-visible{background:color-mix(in srgb,var(--surface) 85%,var(--accent));outline:none}
+.rmenu a.cur{border-left-color:var(--accent)}
+.rmenu a[aria-current="page"]{background:color-mix(in srgb,var(--surface) 80%,var(--accent))}
+.rmenu a.past{color:var(--muted)}
+.rmenu .mr,.rmenu .md{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.rmenu b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top{position:relative}
+@media (max-width:640px){.racemenu{position:static}.rmenu{left:0;right:0;width:auto}}
 .navl{font-weight:600;font-size:.85rem;color:rgba(255,255,255,.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}
 .navl:hover{color:#fff;border-bottom-color:#fff}
 button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}

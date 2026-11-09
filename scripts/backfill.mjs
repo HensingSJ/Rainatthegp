@@ -4,17 +4,33 @@
 // otherwise the METAR archive of the nearest airport (Iowa Environmental Mesonet).
 // Existing files are left alone, unless --upgrade: then sessions measured at an airport are
 // re-checked with OpenF1 (forecasts and later outcomes are kept).
+// --results: also fetch the full classification (OpenF1) of qualifying, sprint qualifying, sprint and race.
 import fs from "node:fs/promises";
 import path from "node:path";
 import "../src/shared.js";
 import { NOW, now, isoZ, sleep, SESSION_MIN } from "./lib/config.mjs";
-import { loadRaces, f1Index, f1Sessions, trackRain, loadIemMetars, metarRain, openf1Rain } from "./lib/sources.mjs";
+import { loadRaces, f1Index, f1Sessions, trackRain, loadIemMetars, metarRain, openf1Rain, openf1Results } from "./lib/sources.mjs";
 import { histFile, newHist } from "./lib/history.mjs";
 
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? +process.argv[i + 1] : d; };
 const from = arg("--from", 2023), to = arg("--to", NOW.getUTCFullYear());
 const UPGRADE = process.argv.includes("--upgrade");
-const count = { openf1: 0, track: 0, metar: 0, upgraded: 0, skipped: 0, missing: 0 };
+const RESULTS = process.argv.includes("--results");
+const RESULT_CODES = ["SQ", "S", "Q", "R"];
+const count = { openf1: 0, track: 0, metar: 0, upgraded: 0, skipped: 0, missing: 0, results: 0 };
+// Adds missing classifications to a history object; returns how many sessions got one
+async function addResults(r, h) {
+  if (!RESULTS || +r.season < 2023) return 0;
+  let n = 0;
+  for (const s of r.sessions.filter((x) => x.timed && RESULT_CODES.includes(x.code))) {
+    const e = (h.sessions[s.code] ||= { start: isoZ(s.start), end: isoZ(s.end), forecast: null, forecastAt: null, outcome: null, final: true, backfill: true });
+    if (e.resultsFull) continue;
+    const res = await openf1Results(s.code, s.start);
+    if (res && res.length) { e.results = res; e.resultsFull = true; n++; }
+  }
+  count.results += n;
+  return n;
+}
 
 for (let y = from; y <= to; y++) {
   let races;
@@ -28,22 +44,22 @@ for (let y = from; y <= to; y++) {
     let existing = null;
     try { existing = JSON.parse(await fs.readFile(histFile(r), "utf8")); } catch { /* not there yet */ }
     if (existing) {
-      if (!UPGRADE || +r.season < 2023) { count.skipped++; continue; }
+      if ((!UPGRADE && !RESULTS) || +r.season < 2023) { count.skipped++; continue; }
       let changed = false;
       for (const s of r.sessions.filter((x) => x.timed)) {
         const e = existing.sessions[s.code];
-        if (e && e.outcome && e.outcome.source !== "metar") continue;
+        if (!UPGRADE || (e && e.outcome && e.outcome.source !== "metar")) continue;
         const o = await openf1Rain(s.code, s.start);
         if (!o) continue;
         existing.sessions[s.code] = { ...(e || { start: isoZ(s.start), end: isoZ(s.end), forecast: null, forecastAt: null, final: true, backfill: true }),
           outcome: { wet: o.wet, source: "openf1", rain: o.rain, wetTyres: o.wetTyres, reports: o.n, checkedAt: isoZ(now) } };
         changed = true;
       }
-      if (changed) {
+      const added = await addResults(r, existing);
+      if (changed || added) {
         await fs.writeFile(histFile(r), JSON.stringify(existing, null, 2) + "\n");
-        const wet = Object.entries(existing.sessions).filter(([, e]) => e.outcome?.wet).map(([c]) => c);
-        console.log(`  R${r.round} ${r.raceName}: upgraded with OpenF1, rain in ${wet.join(", ") || "none"}`);
-        count.upgraded++;
+        console.log(`  R${r.round} ${r.raceName}:${changed ? " outcome upgraded with OpenF1;" : ""}${added ? ` ${added} classifications added` : ""}`);
+        if (changed) count.upgraded++;
       } else count.skipped++;
       continue;
     }
@@ -84,6 +100,7 @@ for (let y = from; y <= to; y++) {
       }
     }
     if (!source) { console.warn(`  R${r.round} ${r.raceName}: no data`); count.missing++; continue; }
+    await addResults(r, h);
     await fs.mkdir(path.dirname(histFile(r)), { recursive: true });
     await fs.writeFile(histFile(r), JSON.stringify(h, null, 2) + "\n");
     const wet = Object.entries(h.sessions).filter(([, e]) => e.outcome?.wet).map(([c]) => c);
@@ -91,4 +108,4 @@ for (let y = from; y <= to; y++) {
     count[source]++;
   }
 }
-console.log(`Done: ${count.openf1} weekends from OpenF1, ${count.track} from the F1 archive, ${count.metar} from airports, ${count.upgraded} upgraded, ${count.skipped} unchanged, ${count.missing} without data.`);
+console.log(`Done: ${count.openf1} weekends from OpenF1, ${count.track} from the F1 archive, ${count.metar} from airports, ${count.upgraded} upgraded, ${count.results} classifications added, ${count.skipped} unchanged, ${count.missing} without data.`);

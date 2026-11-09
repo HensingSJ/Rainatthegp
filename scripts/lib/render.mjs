@@ -39,12 +39,22 @@ ${m.ld ? `<script type="application/ld+json">${JSON.stringify(m.ld).replace(/</g
 <body>`;
 }
 
-function topBar(lang, slug) {
+function raceMenu(lang, races, cur, slug) {
+  if (!races || !cur) return "";
+  const s = S[lang], list = races.filter((r) => r.season === cur.season);
+  const items = list.map((r) => {
+    const cls = r === cur ? "cur" : r.raceEnd < now ? "past" : "";
+    return `<li><a href="${langPath(lang, r.slug)}" class="${cls}"${r.slug === slug ? ' aria-current="page"' : ""}><span class="mr">R${r.round}</span><b>${esc(r.name[lang])}</b><span class="md">${W.fmt(r.raceStart, lang, { day: "numeric", month: "short" }, "UTC")}</span></a></li>`;
+  }).join("");
+  return `<details class="racemenu"><summary>${s.menuRaces} <span aria-hidden="true">▾</span></summary><div class="rmenu"><p class="rmh">${s.calH(cur.season)}</p><ul>${items}</ul></div></details>`;
+}
+
+function topBar(lang, slug, races, cur) {
   const s = S[lang];
   const langs = LANGS.map((l) => `<a href="${langPath(l, slug)}" hreflang="${l}" lang="${l}" title="${S[l].langName}"${l === lang ? ' aria-current="true"' : ""}><span>${l.toUpperCase()}</span></a>`).join("");
   return `<div class="top">
 <a class="brand" href="${langPath(lang)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 4.5 6 8 6 11.5A6 6 0 0 1 6 13.5C6 10 9 6.5 12 2z" fill="#7cc0ff"/><path d="M3 21h18" stroke="#fff" stroke-width="2" stroke-dasharray="3 2"/></svg>Rain at the GP</a>
-<div class="topr"><nav class="lang" aria-label="Language">${langs}</nav></div>
+<div class="topr">${raceMenu(lang, races, cur, slug)}<nav class="lang" aria-label="Language">${langs}</nav></div>
 </div>`;
 }
 
@@ -151,7 +161,7 @@ export function circuitPage(lang, race, D, races, cur, isHome, hist) {
 <header class="hero gut" id="hero" data-v="${h.v}">
 <canvas id="rain" aria-hidden="true"></canvas>
 <div class="in">
-${topBar(lang, isHome ? "" : race.slug)}
+${topBar(lang, isHome ? "" : race.slug, races, cur)}
 <p class="gp"><span class="chip">${esc(race.country[lang])}</span><span>${esc(race.circuitName)}</span><span class="round">R${race.round} · ${race.season}</span></p>
 <h1 class="q" id="q">${esc(h.q)}</h1>
 <div class="answer"><div class="word${h.word.replace("\u00AD", "").length > 5 ? " long" : ""}" id="word" aria-live="polite">${W.wordHTML(h.word)}</div>
