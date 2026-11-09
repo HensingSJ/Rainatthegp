@@ -73,6 +73,8 @@ Van 30 minuten vóór tot 15 minuten na elke sessie staat er onder het antwoord 
 - Elke circuitpagina toont de **regengeschiedenis** van dat circuit, alleen met bevestigde sessies.
 - Het **trackrecord** is intern. Je vindt het bij elke run van *Build & deploy*: open de run en kijk onder **Summary**. Daar staat een tabel voor races + sprints en voor alle sessies. Wil je het later weer openbaar maken, zet dan `PUBLIC_TRACK_RECORD` in `scripts/lib/config.mjs` op `true`. Dan telt alleen `TRACK_RECORD_SESSIONS` (race en sprint).
 
+**Uitslagen.** Na elke sessie haalt de build de volledige uitslag op (OpenF1). Voor eerdere weekenden: zet bij de backfill het vinkje *results* aan. Dan komen de uitslagen van kwalificatie, sprintkwalificatie, sprint en race erbij (vanaf 2023).
+
 **Oude seizoenen ophalen.** *Actions* → **Backfill rain history** → *Run workflow* (vanaf 2023, met *upgrade* aan). Daarna start hij zelf een nieuwe build.
 
 ## Mappen
