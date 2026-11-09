@@ -7,7 +7,7 @@ on:
     inputs:
       from:
         description: "First season"
-        default: "2023"
+        default: "2018"
       to:
         description: "Last season"
         default: "2026"
