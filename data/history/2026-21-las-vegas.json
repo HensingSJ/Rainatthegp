@@ -1,0 +1,54 @@
+{
+  "season": "2026",
+  "round": 21,
+  "slug": "las-vegas",
+  "circuitId": "vegas",
+  "raceName": "Las Vegas Grand Prix",
+  "station": {
+    "id": "KLAS",
+    "name": "Harry Reid (Las Vegas)",
+    "km": 2
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2026-11-20T00:30:00Z",
+      "end": "2026-11-20T01:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "FP2": {
+      "start": "2026-11-20T04:00:00Z",
+      "end": "2026-11-20T05:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "FP3": {
+      "start": "2026-11-21T00:30:00Z",
+      "end": "2026-11-21T01:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "Q": {
+      "start": "2026-11-21T04:00:00Z",
+      "end": "2026-11-21T05:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "R": {
+      "start": "2026-11-22T04:00:00Z",
+      "end": "2026-11-22T06:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    }
+  }
+}
