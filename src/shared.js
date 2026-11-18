@@ -5,13 +5,15 @@
   const T = {
     en: {
       yes: "Yes", maybe: "Maybe", no: "No", early: "Not yet", over: "Over", unknown: "?",
-      names: { FP1: "Practice 1", FP2: "Practice 2", FP3: "Practice 3", SQ: "Sprint Qualifying", S: "Sprint", Q: "Qualifying", R: "Race", W: "Whole weekend" },
+      names: { FP1: "Practice 1", FP2: "Practice 2", FP3: "Practice 3", SQ: "Sprint Qualifying", S: "Sprint", Q: "Qualifying", R: "Race", W: "Qualifying & race" },
       qW: (gp) => `Will it rain at the ${gp}?`,
       qS: (n, gp) => `Will it rain during ${n.toLowerCase()} at the ${gp}?`,
       qDidW: (gp) => `Did it rain at the ${gp}?`,
       qDidS: (n, gp) => `Did it rain during ${n.toLowerCase()} at the ${gp}?`,
       pctLab: "chance of rain", pctWas: "forecast was",
-      noteW: (p, n) => `Biggest risk: ${n.toLowerCase()} at ${p}%. Tap a session for its own answer.`,
+      noteW: (p, n) => `Looking at qualifying and the race: the biggest risk is ${n.toLowerCase()} at ${p}%.`,
+      noteTap: "Tap a session for its own answer.",
+      notePractice: (n, p) => `${n} has a higher chance (${p}%), but practice matters less.`,
       noteS: "Chance of rain at any point during the session, from the hourly forecast for the circuit.",
       noteEarly: (d) => `Forecasts this far out are guesswork. The rain chance per session appears on ${d}.`,
       noteOver: "This race weekend is over.",
@@ -45,13 +47,15 @@
     },
     nl: {
       yes: "Ja", maybe: "Mis\u00ADschien", no: "Nee", early: "Nog niet", over: "Voorbij", unknown: "?",
-      names: { FP1: "Vrije training 1", FP2: "Vrije training 2", FP3: "Vrije training 3", SQ: "Sprintkwalificatie", S: "Sprint", Q: "Kwalificatie", R: "Race", W: "Heel het weekend" },
+      names: { FP1: "Vrije training 1", FP2: "Vrije training 2", FP3: "Vrije training 3", SQ: "Sprintkwalificatie", S: "Sprint", Q: "Kwalificatie", R: "Race", W: "Kwalificatie & race" },
       qW: (gp) => `Gaat het regenen bij de ${gp}?`,
       qS: (n, gp) => `Gaat het regenen tijdens de ${n.toLowerCase()} van de ${gp}?`,
       qDidW: (gp) => `Heeft het geregend bij de ${gp}?`,
       qDidS: (n, gp) => `Heeft het geregend tijdens de ${n.toLowerCase()} van de ${gp}?`,
       pctLab: "kans op regen", pctWas: "verwachting was",
-      noteW: (p, n) => `Grootste risico: ${n.toLowerCase()} met ${p}%. Tik op een sessie voor het antwoord per sessie.`,
+      noteW: (p, n) => `Gekeken naar kwalificatie en race: het grootste risico is de ${n.toLowerCase()} met ${p}%.`,
+      noteTap: "Tik op een sessie voor het antwoord per sessie.",
+      notePractice: (n, p) => `${n} heeft een grotere kans (${p}%), maar trainingen tellen minder.`,
       noteS: "Kans op regen op enig moment tijdens de sessie, uit de uurverwachting voor het circuit.",
       noteEarly: (d) => `Zo ver vooruit is een verwachting gokwerk. De regenkans per sessie verschijnt op ${d}.`,
       noteOver: "Dit raceweekend is voorbij.",
@@ -85,13 +89,15 @@
     },
     es: {
       yes: "Sí", maybe: "Quizás", no: "No", early: "Aún no", over: "Fin", unknown: "?",
-      names: { FP1: "Libres 1", FP2: "Libres 2", FP3: "Libres 3", SQ: "Clasificación sprint", S: "Sprint", Q: "Clasificación", R: "Carrera", W: "Todo el fin de semana" },
+      names: { FP1: "Libres 1", FP2: "Libres 2", FP3: "Libres 3", SQ: "Clasificación sprint", S: "Sprint", Q: "Clasificación", R: "Carrera", W: "Clasificación y carrera" },
       qW: (gp) => `¿Lloverá en el ${gp}?`,
       qS: (n, gp) => `¿Lloverá durante ${n === "Sprint" ? "la sprint" : "la " + n.toLowerCase()} del ${gp}?`,
       qDidW: (gp) => `¿Llovió en el ${gp}?`,
       qDidS: (n, gp) => `¿Llovió durante ${n === "Sprint" ? "la sprint" : "la " + n.toLowerCase()} del ${gp}?`,
       pctLab: "probabilidad de lluvia", pctWas: "la previsión era",
-      noteW: (p, n) => `Mayor riesgo: ${n.toLowerCase()}, con un ${p}%. Toca una sesión para ver su respuesta.`,
+      noteW: (p, n) => `Mirando la clasificación y la carrera: el mayor riesgo es ${n === "Sprint" ? "la sprint" : "la " + n.toLowerCase()}, con un ${p}%.`,
+      noteTap: "Toca una sesión para ver su respuesta.",
+      notePractice: (n, p) => `${n} tiene más probabilidad (${p}%), pero los libres importan menos.`,
       noteS: "Probabilidad de lluvia en algún momento de la sesión, según la previsión horaria del circuito.",
       noteEarly: (d) => `Con tanta antelación, una previsión es pura conjetura. La probabilidad por sesión aparece el ${d}.`,
       noteOver: "Este fin de semana de carreras ha terminado.",
@@ -157,9 +163,18 @@
   const list = (items, lang) => (items.length < 2 ? items.join("") : items.slice(0, -1).join(", ") + " " + T[lang].and + " " + items.at(-1));
 
   // Highest remaining risk of the weekend (sessions that haven't finished)
+  // The headline answer is about the sessions that matter: qualifying, sprint qualifying, sprint and race.
+  // Practice only counts once those are over (or for a weekend without them, which doesn't happen in practice).
+  const KEY = ["SQ", "S", "Q", "R"];
+  const maxOf = (list) => (list.length ? list.reduce((a, b) => (b.rain > a.rain ? b : a)) : null);
   function focus(D, now) {
     const rem = D.sessions.filter((s) => s.rain != null && stateOf(s, now) !== "done");
-    return rem.length ? rem.reduce((a, b) => (b.rain > a.rain ? b : a)) : null;
+    return maxOf(rem.filter((s) => KEY.includes(s.code))) || maxOf(rem);
+  }
+  // Wettest practice session still to come, if it is wetter than the key sessions
+  function practiceRisk(D, now, f) {
+    const p = maxOf(D.sessions.filter((s) => s.rain != null && stateOf(s, now) !== "done" && !KEY.includes(s.code)));
+    return p && f && KEY.includes(f.code) && p.rain > f.rain && p.rain >= 25 ? p : null;
   }
 
   // Summary once every session has finished (or the page is for a past race)
@@ -205,7 +220,9 @@
     const f = focus(D, now);
     if (!f) return summary(D, lang);
     const v = verdict(f.rain);
-    return { v, q: t.qW(gp), word: t[v], pct: f.rain + "%", pctLab: t.pctLab, note: esc(t.noteW(f.rain, t.names[f.code])), rain: f.rain };
+    const pr = practiceRisk(D, now, f);
+    return { v, q: t.qW(gp), word: t[v], pct: f.rain + "%", pctLab: t.pctLab,
+      note: esc(t.noteW(f.rain, t.names[f.code]) + (pr ? " " + t.notePractice(t.names[pr.code], pr.rain) : "") + " " + t.noteTap), rain: f.rain };
   }
 
   function wordHTML(word) {
