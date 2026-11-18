@@ -1,5 +1,7 @@
 // Data sources: calendar (Jolpica), forecast (Open-Meteo), observations (METAR + F1 trackside station).
-import { OFFLINE, NOW, now, read, sleep, UA, SESSION_MIN, USE_F1_TRACK } from "./config.mjs";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { OFFLINE, NOW, now, read, sleep, UA, SESSION_MIN, USE_F1_TRACK, ROOT } from "./config.mjs";
 import { overridesFor } from "./overrides.mjs";
 
 const CIRCUITS = JSON.parse(await read("data/circuits.json"));
@@ -32,8 +34,20 @@ export async function loadRaces(years) {
   let raw = [];
   if (OFFLINE) raw = JSON.parse(await read("fixtures/races.json")).MRData.RaceTable.Races;
   else for (const [i, y] of years.entries()) {
-    try { raw = raw.concat((await getJSON(`https://api.jolpi.ca/ergast/f1/${y}/races.json?limit=100`, i === 0 ? 3 : 1)).MRData.RaceTable.Races); }
-    catch (e) { if (i === 0) throw e; /* later seasons may not be published yet */ }
+    // The calendar API is sometimes briefly unavailable: keep a copy and fall back to it
+    const cache = path.join(ROOT, "data/cache", `calendar-${y}.json`);
+    try {
+      const races = (await getJSON(`https://api.jolpi.ca/ergast/f1/${y}/races.json?limit=100`, i === 0 ? 3 : 1)).MRData.RaceTable.Races;
+      raw = raw.concat(races);
+      if (races.length) {
+        const body = JSON.stringify(races, null, 1) + "\n";
+        let old = ""; try { old = await fs.readFile(cache, "utf8"); } catch { /* first time */ }
+        if (old !== body) { await fs.mkdir(path.dirname(cache), { recursive: true }); await fs.writeFile(cache, body); }
+      }
+    } catch (e) {
+      try { raw = raw.concat(JSON.parse(await fs.readFile(cache, "utf8"))); console.warn(`Calendar ${y}: API unavailable (${e.message}), using saved copy`); }
+      catch { if (i === 0) throw e; /* later seasons may not be published yet */ }
+    }
   }
   return raw.map(parseRace).filter((r) => r.sessions.length).sort((a, b) => a.raceStart - b.raceStart);
 }
