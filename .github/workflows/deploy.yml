@@ -27,7 +27,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build pages with live data
-        run: node scripts/build.mjs
+        # Data sources sometimes hiccup for a minute: try once more before giving up
+        run: node scripts/build.mjs || { echo "::warning::Build failed, retrying in 90 seconds"; sleep 90; node scripts/build.mjs; }
         env:
           SITE_URL: ${{ vars.SITE_URL || 'https://rainatthegp.com' }}
           F1_TRACK_WEATHER: ${{ vars.F1_TRACK_WEATHER || 'on' }}
@@ -41,6 +42,7 @@ jobs:
         run: |
           if [ ! -d data/history ]; then echo "No history yet"; exit 0; fi
           git add data/history
+          [ -d data/cache ] && git add data/cache
           if git diff --cached --quiet; then echo "No history changes"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898599+github-actions[bot]@users.noreply.github.com"
