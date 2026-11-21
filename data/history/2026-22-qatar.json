@@ -1,0 +1,54 @@
+{
+  "season": "2026",
+  "round": 22,
+  "slug": "qatar",
+  "circuitId": "losail",
+  "raceName": "Qatar Grand Prix",
+  "station": {
+    "id": "OTHH",
+    "name": "Hamad (Doha)",
+    "km": 30
+  },
+  "sessions": {
+    "FP1": {
+      "start": "2026-11-27T13:30:00Z",
+      "end": "2026-11-27T14:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "FP2": {
+      "start": "2026-11-27T17:00:00Z",
+      "end": "2026-11-27T18:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "FP3": {
+      "start": "2026-11-28T14:30:00Z",
+      "end": "2026-11-28T15:30:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "Q": {
+      "start": "2026-11-28T18:00:00Z",
+      "end": "2026-11-28T19:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    },
+    "R": {
+      "start": "2026-11-29T16:00:00Z",
+      "end": "2026-11-29T18:00:00Z",
+      "forecast": null,
+      "forecastAt": null,
+      "outcome": null,
+      "final": false
+    }
+  }
+}

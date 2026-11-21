@@ -314,8 +314,8 @@
     "FP3": {
       "start": "2026-11-21T00:30:00Z",
       "end": "2026-11-21T01:30:00Z",
-      "forecast": null,
-      "forecastAt": null,
+      "forecast": 3,
+      "forecastAt": "2026-11-21T01:24:15Z",
       "outcome": null,
       "final": false
     },
