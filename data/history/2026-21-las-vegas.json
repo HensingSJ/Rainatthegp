@@ -870,8 +870,8 @@
     "R": {
       "start": "2026-11-22T04:00:00Z",
       "end": "2026-11-22T06:00:00Z",
-      "forecast": null,
-      "forecastAt": null,
+      "forecast": 0,
+      "forecastAt": "2026-11-22T03:02:21Z",
       "outcome": null,
       "final": false
     }
